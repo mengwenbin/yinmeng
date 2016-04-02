@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_item"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content" >
+    
+    <CheckBox 
+        android:id="@+id/check_box"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:button="@null"
+        android:background="@drawable/bg_checked"/>
+
+    <ImageView
+        android:id="@+id/music_image"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:padding="5dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/check_box"
+        android:src="@drawable/test_default_wait_img" />
+
+    <TextView
+        android:id="@+id/music_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/music_image"
+        android:singleLine="true"
+        android:text="@string/music_name"
+        android:textSize="@dimen/edituser_key_textsize" />
+
+    <TextView
+        android:id="@+id/music_date"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/music_name"
+        android:layout_toRightOf="@id/music_image"
+        android:singleLine="true"
+        android:textColor="@color/dimgrey"
+        android:textSize="@dimen/edituser_value_textsize" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/music_image"
+        android:layout_marginLeft="10dp"
+        android:background="@color/line_color" />
+
+    <ImageView
+        android:id="@+id/right_btn"
+        android:src="@drawable/btn_right_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp" />
+
+</RelativeLayout>

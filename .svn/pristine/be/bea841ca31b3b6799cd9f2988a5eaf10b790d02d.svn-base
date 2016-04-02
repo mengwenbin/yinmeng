@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include android:id="@+id/setting_title"
+        layout="@layout/title_layout_main"/>
+    
+    <com.xiaoxu.music.community.view.MyScrollView
+        android:id="@+id/setting_srcoll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/setting_title"
+        android:background="@color/fm_mine_bg"
+        android:scrollbars="none" >
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:orientation="vertical"
+        	android:layout_marginBottom="20dp" >
+        	
+			
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_update_pwd"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/modify_pwd" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		         <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentBottom="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+	        		
+	    	</RelativeLayout>
+	    	
+        	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_only_wifi"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/only_wifi"/>
+		        	
+		        <ImageButton
+	                android:id="@+id/btn_switch_wifi"
+	                android:layout_width="50dp"
+	                android:layout_height="30dp"
+	                android:layout_alignParentRight="true"
+	                android:layout_marginRight="10dp"
+	                android:layout_centerVertical="true"
+	                android:background="@drawable/btn_switch_off" />
+		        
+		         <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentBottom="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+	        		
+	    	</RelativeLayout>
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_message_notification"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/message_notification"/>
+		        	
+		        <ImageButton
+	                android:id="@+id/btn_switch_push"
+	                android:layout_width="50dp"
+	                android:layout_height="30dp"
+	                android:layout_alignParentRight="true"
+	                android:layout_marginRight="10dp"
+	                android:layout_centerVertical="true"
+	                android:background="@drawable/btn_switch_on" />
+	        		
+	    	</RelativeLayout>
+        	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_spitslot"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/spitslot_app" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+	        		
+	    	</RelativeLayout>
+	    	
+        	<!-- <RelativeLayout
+		        android:id="@+id/setting_layout_dw_load"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top"
+		        android:background="@color/white">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/download_position" />
+		        <TextView
+		            android:id="@+id/dw_loadtv"
+		            android:layout_toLeftOf="@+id/right_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="5dp"
+		            android:textSize="@dimen/mine_userinfo_item_text_size"
+		            android:gravity="center"/>
+		        
+		        <ImageButton
+		            android:id="@+id/right_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		         <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentBottom="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+	        		
+	    	</RelativeLayout> -->
+        	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_about_app"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white">
+		        <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentTop="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/about_app" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		         <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentBottom="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+	        		
+	    	</RelativeLayout>
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_attention_app"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/attention_app" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		         <View
+                    android:layout_width="match_parent"
+                	android:layout_height="1dp"
+                	android:layout_alignParentBottom="true"
+                	android:background="@color/line_color"
+                	android:layout_marginLeft="@dimen/edituser_line_margin_left"/>
+	        		
+	    	</RelativeLayout>
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_share_app"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/share" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+	        		
+	    	</RelativeLayout>
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_version_change"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/version_change" />
+		        <!-- android:textColor="@color/act_set_text_color"
+		        android:textSize="@dimen/edituser_key_textsize" -->
+		        <ImageButton
+		            android:id="@+id/image_btn"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		        <TextView
+	                android:id="@+id/version_name"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerVertical="true"
+	                android:layout_toLeftOf="@+id/new_tv"
+	                android:layout_marginRight="8dp"
+	                android:textColor="@color/act_set_text_color2"
+	                android:textSize="@dimen/edituser_value_textsize"
+	                android:text="2.1"/>
+		        
+		        <TextView
+	                android:id="@+id/new_tv"
+	                android:layout_width="25dp"
+	                android:layout_height="16dp"
+	                android:layout_toLeftOf="@id/image_btn"
+	                android:background="@drawable/version_bg"
+	                android:layout_marginRight="5dp"
+	                android:layout_marginTop="7dp"
+	                android:textColor="@color/white"
+	                android:gravity="center"
+	                android:textSize="10sp"
+	                android:text="new"/>
+	        		
+	    	</RelativeLayout>
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_clear_cache"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:background="@color/white"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top">
+				
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="@dimen/edituser_item_margin_top"
+		            android:gravity="center"
+		            android:text="@string/clear_cache" />
+		        
+		        <ImageButton
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_alignParentRight="true"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+		            android:background="@drawable/btn_right_gray" />
+		        
+		        <TextView
+	                android:id="@+id/cache_size"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_centerVertical="true"
+	                android:layout_alignParentRight="true"
+	                android:layout_marginRight="@dimen/edituser_value_margin_right"
+	                android:textColor="@color/act_set_text_color2"
+	                android:textSize="@dimen/edituser_value_textsize"
+	                android:text="0.0MB"/>
+	        		
+	    	</RelativeLayout>
+        	
+	    	
+        	<RelativeLayout
+		        android:id="@+id/setting_layout_exit"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/edituser_height_item"
+		        android:layout_marginTop="@dimen/edituser_item_margin_top"
+		        android:layout_marginLeft="30dp"
+		        android:layout_marginRight="30dp"
+		        android:layout_marginBottom="20dp">
+				
+		        <Button
+		            android:id="@+id/btn_exit"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_centerHorizontal="true"
+		            android:paddingTop="10dp"
+		            android:paddingBottom="10dp"
+		            android:background="@drawable/bg_shape_exit_current_accounts"
+		            android:gravity="center"
+		            android:textColor="@color/white"
+		            android:textSize="@dimen/edituser_key_textsize"
+		            android:text="@string/exit_current_accounts" />
+	        		
+	    	</RelativeLayout>
+		    
+        </LinearLayout>
+        
+    </com.xiaoxu.music.community.view.MyScrollView>
+
+</RelativeLayout>

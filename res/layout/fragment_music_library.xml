@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color">
+    
+	<android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp" >
+        
+	    <android.support.v7.widget.RecyclerView
+	        android:id="@+id/listview_musiclib"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" />
+	    
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:loading_width="5dp"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+   		android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+    
+    <include layout="@layout/comment_layout_no_network"/>
+		
+</RelativeLayout>

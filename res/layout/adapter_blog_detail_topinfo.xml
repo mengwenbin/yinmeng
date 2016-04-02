@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <RelativeLayout
+        android:id="@+id/layout_content1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+            android:id="@+id/post_author_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/test_default_head_bg_blue" />
+
+        <TextView
+            android:id="@+id/post_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/post_author_head"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/post_author_head"
+            android:textColor="@color/act_blog_detail_author_name"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/post_author_sex"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignBottom="@+id/post_author_name"
+            android:layout_alignTop="@+id/post_author_name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/post_author_name"
+            android:src="@drawable/sex_man" />
+
+        <TextView
+            android:id="@+id/post_release_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/post_author_head"
+            android:layout_below="@id/post_author_name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="1dp"
+            android:layout_toRightOf="@+id/post_author_head"
+            android:text="dfd"
+            android:textColor="@color/act_blog_detail_release_time"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/post_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/post_author_head"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/post_icon"
+            android:textColor="@color/act_blog_detail_body"
+            android:textSize="17sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_content1"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/layout_images"
+        android:background="@color/act_blog_detail_bg" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="@string/new_comment"
+            android:layout_centerVertical="true"
+            android:textColor="#929293" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/act_blog_detail_line"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

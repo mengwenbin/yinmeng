@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color" >
+    <RelativeLayout
+        android:id="@+id/play_item"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white" >
+
+        <ImageView
+            android:id="@+id/playall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_play_all" />
+
+        <TextView
+            android:id="@+id/songs_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/playall"
+            android:text="播放全部（共0首）"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/eidt_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/edit_menu" />
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_color"/>
+    </RelativeLayout>
+
+    <com.xiaoxu.music.community.view.xlistview.XListView
+        android:id="@+id/listview"
+        android:layout_above="@+id/rel_del"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/play_item"
+        android:divider="@color/transparent"
+        android:listSelector="@color/transparent"
+        android:scrollbars="none" />
+
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:loading_width="5dp" />
+    <include layout="@layout/comment_layout_no_network"/>
+    <RelativeLayout
+        android:id="@+id/rel_del"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="50dp">
+        
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/line_color" />
+
+        <ImageView
+            android:id="@+id/del_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/delete_mine_download" />
+    </RelativeLayout>
+
+</RelativeLayout>

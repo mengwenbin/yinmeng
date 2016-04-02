@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xiaoxu.music.community"
+    android:versionCode="9"
+    android:versionName="2.3" >
+	
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	
+    <!-- ***** 短信验证  ***** -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	
+    <!-- ***** 友盟分享 ***** -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- Jpush Required 自定义用来收发消息的相关权限 -->               
+    <permission
+        android:name="com.xiaoxu.music.community.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- Jpush Required  一些系统要求的权限，如访问网络等-->
+    <uses-permission android:name="com.xiaoxu.music.community.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- Jpush Optional for location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    
+   	<!--  环信权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+	
+    <application
+        android:name=".YmApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".activity.MainTabActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.NoOverlay" >
+        </activity>
+
+        <!-- 登录注册 -->
+        <activity
+            android:name=".activity.StartActivity"
+            android:theme="@style/Theme.NoOverlay" >
+        </activity>
+        
+        <!-- 引导页 -->
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:theme="@style/Theme.NoOverlay" >
+        </activity>
+        
+        <!-- 启动 -->
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.NoOverlay" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+				
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- 重置密码（忘记） -->
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 使用条款和隐私政策 -->
+        <activity
+            android:name=".activity.LawItemActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 编辑用户资料 -->
+        <activity
+            android:name=".activity.EditUserInfoActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 编辑用户资料 -->
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.EditContentActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.UpdatePwdActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.SpitslotActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.AboutAppActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.AttentionActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.ShareAppActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.CircleCategoryActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.CircleBlogsActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.CircleBlogDetailActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.ImageActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.RecommendSongMenuActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 发布说说 -->
+        <activity
+            android:name=".activity.ReleaseBlogActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 播放音乐 -->
+        <activity
+            android:name=".activity.MusicListActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.RecommendMusicUserActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.RecommendMusicActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.RecommendAdActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.PlayActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 音乐人详情 -->
+        <activity
+            android:name=".activity.MusicUserDetailActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <activity
+            android:name=".activity.MusicDetailsActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <activity
+            android:name=".activity.MusicDetailActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 活动详情 -->
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 视频 -->
+        <activity
+            android:name=".activity.VideoPlayActivity"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 本地音乐 -->
+        <activity
+            android:name=".activity.UploadMusicActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 上传音乐信息 -->
+        <activity
+            android:name=".activity.AddMusicInfoActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 编辑上传音乐信息 -->
+        <activity
+            android:name=".activity.EditMusicInfoActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 我的作品 -->
+        <activity
+            android:name=".activity.MineWorksActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 我的歌单详情-->
+        <activity
+            android:name=".activity.SongMenuDetailsActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 编辑歌单简介详情-->
+        <activity
+            android:name=".activity.EditSongInfoActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 编辑歌单-->
+        <activity
+            android:name=".activity.EditMineSongActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 歌单简介-->
+        <activity
+            android:name=".activity.SongMenuSummaryActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 我的收藏 -->
+        <activity
+            android:name=".activity.MineCollectActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 我的帖子 -->
+        <activity
+            android:name=".activity.MineInvitationActivity"
+            android:theme="@style/Theme.NoOverlay" />
+
+        <!-- 我的下载 -->
+        <activity
+            android:name=".activity.MineDownloadActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+         <!-- 我的关注 -->
+        <activity
+            android:name=".activity.MineAttentionActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 我的粉丝 -->
+        <activity
+            android:name=".activity.MineFansActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 我的歌单 -->
+        <activity
+            android:name=".activity.MineSongActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 系统通知 -->
+        <activity
+            android:name=".activity.SysteminformActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 更多推荐 -->
+        <activity
+            android:name=".activity.MoreRecommendActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 更多视频 -->
+        <activity
+            android:name=".activity.VideoActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 播放视频 -->
+        <activity
+            android:name=".activity.PlayVideoActivity"
+            android:theme="@style/Theme.NoOverlay"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
+        
+        <!-- 搜索 -->
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 聊天界面 -->
+        <activity
+            android:name=".im.activity.ChatActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 会话列表 -->
+        <activity
+            android:name=".im.activity.ChatAllHistoryActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 百度定位界面 -->
+        <!-- <activity
+            android:name=".im.activity.BaiduMapActivity"
+            android:theme="@style/Theme.NoOverlay" /> -->
+        
+        <!-- 自定义alert -->
+        <activity
+            android:name=".im.activity.AlertDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" />
+        
+        <!-- 查看大图 -->
+        <activity
+            android:name=".im.activity.ShowBigImage"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 下载文件 -->
+        <activity
+            android:name=".im.activity.ShowNormalFileActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 选择音乐文件 -->
+        <activity
+            android:name=".im.activity.SelectFileActivity"
+            android:theme="@style/Theme.NoOverlay" />
+        
+        <!-- 长按显示菜单 -->
+        <activity
+            android:name=".im.activity.ContextMenu"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" />
+        
+        <!-- 下载服务 -->
+        <service
+            android:name="com.xiaoxu.music.community.service.DownLoadService"
+            android:permission="android.permission.INTERNET" >
+            <intent-filter>
+                <action android:name="com.xiaoxu.music.community.service.DownLoadService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.xiaoxu.music.community.service.MediaPlayerService"
+            android:permission="android.permission.INTERNET" >
+            <intent-filter>
+                <action android:name="com.xiaoxu.music.community.service.MediaService" />
+            </intent-filter>
+        </service>
+
+        <!-- 短信验证 -->
+        <activity
+            android:name="cn.smssdk.SMSSDKUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!-- ***** 友盟分享  ***** -->
+        <!-- 分享编辑页 -->
+        <activity
+            android:name="com.umeng.socialize.view.ShareActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.UMDialog"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+
+        <!-- QQ空间和QQ SSO授权的Activity注册 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 100424468，如果你使用的公用账号，则不需要修改；否则修改成你在QQ开放平台申请的 APP ID -->
+                <data android:scheme="1104749644" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 添加UmengAppkey -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5593565b67e58efaf200123d" />
+        <!-- ***** 友盟分享 end  **** -->
+        
+        
+        
+        
+        
+		<!-- ***** Jpush start ***** -->
+		
+		<!-- Required SDK核心功能-->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden" 
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.xiaoxu.music.community" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Required  SDK核心功能-->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+        
+        <!-- Required SDK 核心功能-->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+                
+            </intent-filter>
+        </service>
+        
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter >
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+                <category android:name="com.xiaoxu.music.community"/>
+            </intent-filter>
+        </service>
+        
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <category android:name="com.xiaoxu.music.community" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+             <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- Required SDK核心功能-->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+        
+        <!-- User defined.    用户自定义的广播接收器-->
+        <receiver
+            android:name="com.xiaoxu.music.community.receiver.JPushReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />  
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.xiaoxu.music.community" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- Required  . Enable it you can get statistics data with channel -->
+        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+        <meta-data android:name="JPUSH_APPKEY" android:value="59d80370de8fa0e81fefe2f2" /> <!--  </>值来自开发者平台取得的AppKey-->
+        
+		<!-- ***** Jpush end ***** -->
+		
+		
+		
+		
+        <!-- 友盟统计API Key -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5593565b67e58efaf200123d" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" >
+        </meta-data>
+
+        <!-- 友盟更新Service -->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        
+		<!-- 友盟更新dialog -->
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- 设置环信应用的appkey  -->
+<!--         <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="yinmeng#local-test" /> -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="yinmeng#inmoe" />
+            
+        <!-- 百度地图所需的service -->
+        <!-- <service
+            android:name="com.baidu.location.f" 
+            android:enabled="true"
+            android:process=":remote" />
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3ecea51f560650b1ed8a4b99808f52e8" /> -->
+        
+        <!-- 声明sdk所需的service -->
+        <service android:name="com.easemob.chat.EMChatService" 
+            android:exported="true"/>
+        
+         <!-- 开机自启动服务 -->
+        <receiver android:name="com.easemob.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

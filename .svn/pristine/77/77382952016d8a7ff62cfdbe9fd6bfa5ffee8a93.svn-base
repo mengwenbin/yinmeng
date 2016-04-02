@@ -1,0 +1,439 @@
+package com.xiaoxu.music.community.activity;
+
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseNewActivity;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.YmApplication;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.MusicUserDetailEntity;
+import com.xiaoxu.music.community.entity.MusicUserInfoEntity;
+import com.xiaoxu.music.community.fragment.MusicUserAttentionFragment;
+import com.xiaoxu.music.community.fragment.MusicUserFansFragment;
+import com.xiaoxu.music.community.fragment.MusicUserWorksFragment;
+import com.xiaoxu.music.community.im.activity.ChatActivity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.AttentionPersonTask;
+import com.xiaoxu.music.community.model.task.CancleAttentionTask;
+import com.xiaoxu.music.community.model.task.MusicUserInfoTask;
+import com.xiaoxu.music.community.util.AccountInfoUtils;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.view.CustomViewPager;
+import com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView;
+
+public class MusicUserDetailActivity extends BaseNewActivity implements OnClickListener{
+	
+	private ImageButton btn_back,btn_play,btn_attention;
+	private TextView title;
+	private ImageButton letter_btn;
+	private CircleImageView iv_head;
+	private ImageView iv_sex;
+	private TextView tv_name, tv_summary, tv_works, tv_attentions, tv_fans;
+	
+	private CustomViewPager viewpager;
+	private ViewPagerAdapter adapter;
+	private MusicUserAttentionFragment f_attention;
+	private MusicUserFansFragment f_fans;
+	private MusicUserWorksFragment f_works;
+	
+	private View indicator_works, indicator_attentions, indicator_fans;
+	
+	private int position;
+	private Intent intent;
+	private String user_id;
+	private MusicUserInfoEntity userInfo;
+	
+	private final String mPageName = "MusicUserDetailActivity";
+	private String Login_Tag = "com.xiaoxu.music.community.activity.MusicUserDetailActivity";
+	
+	@Override
+	public void setContent() {
+		
+		setContentView(R.layout.activity_music_user_detail);
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(this);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_head_bg_blue);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_head_bg_blue);// 加载失败图片
+		intent = getIntent();
+		position = intent.getIntExtra("position", 0);
+		userInfo = (MusicUserInfoEntity) intent.getSerializableExtra("MusicUserInfoEntity");
+		if(null == userInfo){
+			user_id = intent.getStringExtra("user_id");
+		} else {
+			user_id = userInfo.getUser_id();
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(this);//友盟统计
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(this);
+	}
+	
+	@Override
+	public void setupView() {
+		btn_back = getImageButton(R.id.title_left_btn);
+		btn_play = getImageButton(R.id.title_right_btn);
+		initAnimation(btn_play);
+		
+		title = getTextView(R.id.title_center_content);
+		btn_attention = getImageButton(R.id.btn_attention);
+		btn_back.setOnClickListener(this);
+		btn_play.setOnClickListener(this);
+		btn_attention.setOnClickListener(this);
+		
+		iv_head = (CircleImageView) getImageView(R.id.iv_head);
+		iv_sex = getImageView(R.id.iv_sex);
+		tv_name = getTextView(R.id.tv_name);
+		tv_summary = getTextView(R.id.tv_summary);
+		
+		tv_works =  getTextView(R.id.tv_works);
+		tv_attentions =  getTextView(R.id.tv_attentions);
+		tv_fans =  getTextView(R.id.tv_fans);
+		letter_btn = getImageButton(R.id.letter_iv);
+		
+		f_works = new MusicUserWorksFragment();
+		f_attention = new MusicUserAttentionFragment();
+		f_fans = new MusicUserFansFragment();
+		
+		viewpager = (CustomViewPager) getViewPager(R.id.viewpager_content);
+		adapter = new ViewPagerAdapter(getSupportFragmentManager());
+		viewpager.setOnPageChangeListener(listener);
+		viewpager.setScanScroll(true);
+		viewpager.setOffscreenPageLimit(3);
+		viewpager.setAdapter(adapter);
+		
+		indicator_works = findViewById(R.id.indicator_works);
+		indicator_attentions = findViewById(R.id.indicator_attentions);
+		indicator_fans =  findViewById(R.id.indicator_fans);
+		letter_btn.setOnClickListener(this);
+		getRelativeLayout(R.id.layout_fans).setOnClickListener(this);
+		getRelativeLayout(R.id.layout_works).setOnClickListener(this);
+		getRelativeLayout(R.id.layout_attention).setOnClickListener(this);
+	}
+	
+	@Override
+	public void setModel() {
+		if(null != userInfo){
+			letter_btn.setClickable(true);
+			updateUserUI();
+		}
+		taskUser();
+	}
+	
+	public void login(){
+		Intent i = new Intent(context, StartActivity.class);
+		i.putExtra(StartActivity.LOGIN_KEY, Login_Tag);
+		startActivity(i);
+	}
+	
+	public String getUser_id() {
+		return user_id;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.layout_works:
+			viewpager.setCurrentItem(0);
+			break;
+		case R.id.layout_attention:
+			viewpager.setCurrentItem(1);
+			break;
+		case R.id.layout_fans:
+			viewpager.setCurrentItem(2);
+			break;
+		case R.id.title_left_btn:
+			intent = new Intent();
+			intent.putExtra("MusicUserInfoEntity", userInfo);
+			intent.putExtra("position", position);
+			setResult(1, intent);
+			finish();
+			break;
+		case R.id.title_right_btn:
+			startActivity(new Intent(context, PlayActivity.class));
+			break;
+		case R.id.btn_attention:
+			
+			if(AccountInfoUtils.getInstance(context).isLogin()){
+				if(haveNetwork()){
+					btn_attention.setClickable(false);
+					if(userInfo.getIs_attention().equals("0")){
+						AttentionPersonTask attention_task = new AttentionPersonTask(context, userInfo.getUser_id(), attention_callback);
+						attention_task.excute();
+					}else if(userInfo.getIs_attention().equals("1")){
+						CancleAttentionTask cancleattention_task = new CancleAttentionTask(context, userInfo.getUser_id(), cancleattention_callback);
+						cancleattention_task.excute();
+					}
+				}
+			}else{
+				Intent intent = new Intent(context, StartActivity.class);
+				intent.putExtra(StartActivity.LOGIN_KEY, Login_Tag);
+				startActivity(intent);
+			}
+			break;
+		case R.id.letter_iv:
+			
+			if(AccountInfoUtils.getInstance(context).isLogin() && YmApplication.getInstance().isLogined()){
+				Intent intent = new Intent(context, ChatActivity.class);
+					if(userInfo.getUser_nick().equals(AccountInfoUtils.getInstance(context).getUserInfo().getUser_nick())){
+						ActivityUtil.showShortToast(context, getResources().getString(R.string.Cant_chat_with_yourself));
+						return;
+					}
+					String imuser_name = userInfo.getImEaseMob_username();
+					if(imuser_name!=null && !imuser_name.equals("")){
+						String usernick = userInfo.getUser_nick();
+						String userimg = userInfo.getUser_img();
+						intent.putExtra("userName", imuser_name);
+						intent.putExtra("userId", userInfo.getUser_id());
+						intent.putExtra("userNick", usernick);
+						intent.putExtra("userimg", userimg);
+						intent.putExtra("chatType", ChatActivity.CHATTYPE_SINGLE);
+						startActivity(intent);
+					}else{
+						return;
+					}
+			}else{
+				Intent intent = new Intent(context, StartActivity.class);
+				intent.putExtra(StartActivity.LOGIN_KEY, Login_Tag);
+				startActivity(intent);
+			}
+			
+			break;
+		}
+	}
+	
+	public void taskUser(){
+		MusicUserInfoTask task_user = new MusicUserInfoTask(context, user_id, callback_userinfo);
+		task_user.excute();
+	}
+	
+	BaseRequestCallBack callback_userinfo = new BaseRequestCallBack(MusicUserDetailEntity.class) {
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			if(null != obj){
+				MusicUserDetailEntity entity = (MusicUserDetailEntity) obj;
+				userInfo = entity.getUser();
+				updateUserUI();
+			}
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+	};
+	
+	/*
+	 * 关注他人
+	 */
+	BaseRequestCallBack attention_callback = new BaseRequestCallBack() {
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			ActivityUtil.showAttentionToast(context, "关注成功").show();
+			btn_attention.setBackgroundResource(R.drawable.btn_attention_white_select);
+			userInfo.setIs_attention("1");
+			int c_fans = Integer.valueOf(userInfo.getC_fans()) + 1;
+			userInfo.setC_fans(c_fans+"");
+			tv_fans.setText(c_fans+"");
+			f_fans.loading();
+			Intent intent = new Intent(Constant.ACTION_MINE_UPDATE_USERINFO);
+			intent.putExtra("isAttention", true);
+			context.sendBroadcast(intent);
+			btn_attention.setClickable(true);
+			
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+	};
+	
+	/*
+	 * 取消关注
+	 */
+	BaseRequestCallBack cancleattention_callback = new BaseRequestCallBack() {
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			ActivityUtil.showAttentionToast(context, "取消成功").show();
+			btn_attention.setBackgroundResource(R.drawable.btn_attention_white_normal);
+			userInfo.setIs_attention("0");
+			int c_fans = Integer.valueOf(userInfo.getC_fans()) - 1;
+			userInfo.setC_fans(c_fans+"");
+			tv_fans.setText(c_fans+"");
+			f_fans.loading();
+			Intent intent = new Intent(Constant.ACTION_MINE_UPDATE_USERINFO);
+			intent.putExtra("isAttention", true);
+			context.sendBroadcast(intent);
+			btn_attention.setClickable(true);
+			
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+	};
+	
+	public void updateUserUI(){
+		if(null == userInfo)
+			return;
+		String name = userInfo.getUser_nick();
+		String summary = userInfo.getUser_summary();
+		int sex = Integer.parseInt(userInfo.getUser_sex());
+		title.setText(name+"");
+		tv_name.setText(name+"");//昵称
+		if(!TextUtils.isEmpty(summary))//简介
+			tv_summary.setText("简介："+summary.replace("简介：", ""));
+		switch (sex) { //性别
+			case 0: iv_sex.setImageResource(R.drawable.sex_martian); break;
+			case 1: iv_sex.setImageResource(R.drawable.sex_man); break;
+			case 2: iv_sex.setImageResource(R.drawable.sex_woman); break;
+			default: break;
+		}
+		String isAttention = userInfo.getIs_attention();
+		btn_attention.setBackgroundResource(R.drawable.btn_attention_white_normal);
+		if(Integer.parseInt(isAttention!=null?isAttention:"0")==1){
+			btn_attention.setBackgroundResource(R.drawable.btn_attention_white_select);
+		}
+		
+		tv_works.setText(null!=userInfo.getC_music()?userInfo.getC_music():"0");
+		tv_attentions.setText(null!=userInfo.getC_attention()?userInfo.getC_attention():"0");
+		tv_fans.setText(null!=userInfo.getC_fans()?userInfo.getC_fans():"0");
+		bitmapUtils.display(iv_head, StringUtil.replaceImagePath(userInfo.getUser_img(), 100));
+	}
+	
+	public void initIndicator(){
+		indicator_works.setBackgroundColor(getResources().getColor(R.color.transparent));
+		indicator_attentions.setBackgroundColor(getResources().getColor(R.color.transparent));
+		indicator_fans.setBackgroundColor(getResources().getColor(R.color.transparent));
+	}
+	
+	public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+		
+		private Fragment fragment;
+		
+		public ViewPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+		
+		@Override
+		public Fragment getItem(int arg0) {
+			switch (arg0) {
+			case 0:
+				fragment = f_works;
+				break;
+			case 1:
+				fragment = f_attention;
+				break;
+			case 2:
+				fragment = f_fans;
+				break;
+			default:
+				break;
+			}
+			return fragment;
+		}
+		
+		@Override
+		public int getCount() {
+			return 3;
+		}
+		
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			super.destroyItem(container, position, object);
+		}
+	}
+	
+	OnPageChangeListener listener = new OnPageChangeListener() {
+		@Override
+		public void onPageSelected(int arg0) {
+			switch (arg0) {
+			case 0:
+				initIndicator();
+				indicator_works.setBackgroundColor(getResources().getColor(R.color.white));
+				break;
+			case 1:
+				initIndicator();
+				indicator_attentions.setBackgroundColor(getResources().getColor(R.color.white));
+				break;
+			case 2:
+				initIndicator();
+				indicator_fans.setBackgroundColor(getResources().getColor(R.color.white));
+				break;
+			default:
+				break;
+			}
+		}
+		
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
+	};
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		taskUser();
+		f_attention.loading();
+		f_fans.loading();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			intent = new Intent();
+			intent.putExtra("MusicUserInfoEntity", userInfo);
+			intent.putExtra("position", position);
+			setResult(1, intent);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+}

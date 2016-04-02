@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- 背景图，不可加clip结点，否则无显示效果 -->
+    <item android:id="@android:id/background">
+            <shape>
+                <solid android:color="#ffffff" />
+            </shape>
+    </item>
+	
+    <!-- 第一进度条，必须放在第二进度条的下面，否则会被第二进度条覆盖而无效果 -->
+    <item android:id="@android:id/progress">
+        <clip>
+                <shape>
+                    <solid android:color="#11c8fc" />
+                </shape>
+        </clip>
+    </item>
+
+</layer-list>

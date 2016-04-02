@@ -1,0 +1,130 @@
+package com.xiaoxu.music.community.adapter;
+
+import java.util.List;
+
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadCallBack;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadFrom;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.MusicDetailActivity;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.SongInfoEntity;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView;
+import com.xiaoxu.music.community.view.imageview.ImageUtils;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class MusicRecommendycAdapter extends RecyclerView.Adapter<MusicRecommendycAdapter.YcViewHolder>{
+	
+	
+	private Context context;
+	private BitmapUtils bitmapUtils;
+	private LayoutInflater inflater;
+	private List<SongInfoEntity> list;
+    
+	public List<SongInfoEntity> getList() {
+		return list;
+	}
+
+	public void setList(List<SongInfoEntity> list) {
+		this.list = list;
+	}
+	
+	
+	public MusicRecommendycAdapter(Context context,List<SongInfoEntity> list) {
+		
+		this.context = context;
+		this.list = list;
+		inflater = LayoutInflater.from(context);
+		setBitmapUtils();
+	}
+	
+	private void setBitmapUtils(){
+		
+		bitmapUtils = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		bitmapUtils.configDefaultBitmapConfig(Config.RGB_565);//设置图片压缩类型
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_wait_img);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_wait_img);// 加载失败图片
+		
+	}
+	
+	@Override
+	public int getItemCount() {
+		
+		return list != null ? list.size() : 0;
+	}
+
+	@Override
+	public void onBindViewHolder(YcViewHolder holder, int position) {
+		
+		SongInfoEntity songInfoEntity = list.get(position);
+		bitmapUtils.display(holder.image_iv,StringUtil.replaceImagePath(songInfoEntity.getMusic_coverimg(), 300));
+		bitmapUtils.display(holder.circle_iv, StringUtil.replaceImagePath(songInfoEntity.getUser().getUser_img(),100));
+		holder.writer_tv.setText(songInfoEntity.getUser().getUser_nick());
+		holder.music_name.setText(songInfoEntity.getMusic_name());
+		//将创建的View注册点击事件
+		holder.rel_recommend.setOnClickListener(new ClickListener(position));
+	}
+
+
+	@Override
+	public YcViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+		
+		 View view = inflater.inflate(R.layout.horizontal_item, viewGroup, false);
+		 YcViewHolder holder = new YcViewHolder(view);
+		 holder.rel_recommend = (RelativeLayout) view.findViewById(R.id.rel_recommend);
+		 holder.image_iv = (RectangleImageView) view.findViewById(R.id.image_view);
+		 holder.image_iv.setRoundedCorner(true);
+		 holder.image_iv.setRoundPx(ActivityUtil.dip2px(context, 6));
+		 holder.circle_iv = (ImageView) view.findViewById(R.id.circle_iv);
+		 holder.writer_tv = (TextView) view.findViewById(R.id.writer_tv);
+		 holder.music_name = (TextView) view.findViewById(R.id.music_name);
+	     return holder;
+	}
+	
+	//自定义的ViewHolder，持有每个Item的的所有界面元素
+	class YcViewHolder extends RecyclerView.ViewHolder {
+		ImageView circle_iv;
+		TextView writer_tv;
+		TextView music_name;
+		RectangleImageView image_iv;
+		RelativeLayout rel_recommend;
+		public YcViewHolder(View view){
+			super(view);
+		}
+	}
+	
+	class ClickListener implements OnClickListener{
+		
+		private int position;
+		
+		public ClickListener(int position){
+			this.position = position;
+		}
+		@Override
+		public void onClick(View v) {
+			
+			Intent intent = new Intent(context, MusicDetailActivity.class);
+			intent.putExtra("SongInfoEntity", list.get(position));
+			context.startActivity(intent);
+			
+		}
+	}
+
+}

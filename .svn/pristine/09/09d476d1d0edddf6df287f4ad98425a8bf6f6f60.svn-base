@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <RelativeLayout 
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#E9E9EB">
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/sort_list_indicator_tv_title"
+            android:text="当前" />
+        
+        <ImageButton 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_oldtime_normal"
+            android:visibility="gone"/>
+        
+    </RelativeLayout>
+	
+    <com.xiaoxu.music.community.view.xlistview.XListView
+        android:id="@+id/listview_sort_hot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_title"
+        android:scrollbars="none"
+        android:dividerHeight="1dp"
+	    android:divider="@color/transparent" />
+	
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:loading_width="5dp" />
+    
+    <include layout="@layout/comment_layout_no_network"/>
+
+</RelativeLayout>

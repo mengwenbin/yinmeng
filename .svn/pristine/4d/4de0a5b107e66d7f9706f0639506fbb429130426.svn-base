@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        
+        <View
+	        android:layout_width="match_parent"
+	        android:layout_height="3dp"
+	        android:background="@color/main_color"/>
+        
+        <RelativeLayout
+            android:id="@+id/title"
+	        android:layout_width="match_parent"
+	        android:layout_height="45dp">
+	        
+            <ImageButton
+                android:id="@+id/mode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/btn_mode_his_order"
+                android:layout_alignParentLeft="true"/>
+	        
+            <TextView 
+                android:id="@+id/num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_centerInParent="true"
+                android:text="历史播放（0）" />
+            
+            <TextView
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:paddingRight="15dp"
+                android:text="清空"/>
+            
+            <View
+	            android:id="@+id/line_bottom"
+		        android:layout_width="match_parent"
+		        android:layout_height="1px"
+		        android:background="@color/line_color"
+		        android:layout_alignParentBottom="true"/>
+	        
+        </RelativeLayout>
+        
+        <ListView
+	        android:id="@+id/listview_history"
+	        android:layout_width="match_parent"
+	        android:layout_height="250dp"
+	        android:background="@color/white"
+	        android:scrollbars="none"
+	        android:layout_alignParentBottom="true" />
+        
+    </LinearLayout>
+	
+</RelativeLayout>

@@ -1,0 +1,83 @@
+package com.xiaoxu.music.community.fragment;
+
+import android.view.View;
+
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.utils.Log;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.MusicUserEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.SearchTask;
+
+public class SearchUserFragment extends BaseNewFragment{
+	
+	private String key = "";
+	private int pageNum = 1;
+	private final String mPageName = "SearchMusicFragment";
+
+	@Override
+	public int setLayoutId() {
+		// TODO Auto-generated method stub
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_search_user;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart(mPageName);//友盟统计
+		MobclickAgent.onResume(activity);//友盟统计
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+
+	@Override
+	public void setupView(View view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setModel() {
+		// TODO Auto-generated method stub
+	}
+	
+	public void search(String search){
+		key = search;
+		pageNum = 1;
+		task_user();
+	}
+	
+	public void task_user(){
+		SearchTask task_user = new SearchTask(context, Constant.SEARCH_TYPE_USER, key, pageNum, callback_user);
+		task_user.excute();
+	}
+	
+	BaseRequestCallBack callback_user = new BaseRequestCallBack(MusicUserEntity.class) {
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			// TODO Auto-generated method stub
+			Log.e("----222----", result);
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+			// TODO Auto-generated method stub
+		}
+		
+	};
+
+}

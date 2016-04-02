@@ -1,0 +1,230 @@
+package com.xiaoxu.music.community.adapter;
+
+import java.util.List;
+
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.StartActivity;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.MusicUserInfoEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.AttentionPersonTask;
+import com.xiaoxu.music.community.model.task.CancleAttentionTask;
+import com.xiaoxu.music.community.util.AccountInfoUtils;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.NetUtils;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class MusicUserAdapter extends BaseAdapter {
+	
+	private Context context;
+	private ViewHolder holder = null;
+	private List<MusicUserInfoEntity> list;
+	private BitmapUtils bitUtil;
+	private String Login_Tag = "com.xiaoxu.music.community.activity.MainTabActivity";
+	
+	public List<MusicUserInfoEntity> getList() {
+		return list;
+	}
+	public void setList(List<MusicUserInfoEntity> list) {
+		this.list = list;
+	}
+	
+	public MusicUserAdapter(Context context,List<MusicUserInfoEntity> list) {
+		super();
+		this.context = context;
+		this.list = list;
+		this.bitUtil = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		this.bitUtil.configDefaultLoadingImage(R.drawable.test_default_head_bg_blue);// 默认背景图片
+		this.bitUtil.configDefaultLoadFailedImage(R.drawable.test_default_head_bg_blue);// 加载失败图片
+	}
+	
+	@Override
+	public int getCount() {
+		return list!=null?list.size():0;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if(convertView == null){
+			holder = new ViewHolder();
+			convertView = LayoutInflater.from(context).inflate(R.layout.adapter_music_man_item, null);
+			holder.head_bg = (ImageView) convertView.findViewById(R.id.head_bg);
+			holder.head = (CircleImageView) convertView.findViewById(R.id.head_img);
+			holder.tv_name = (TextView) convertView.findViewById(R.id.name);
+			holder.tv_fans =  (TextView) convertView.findViewById(R.id.fans);
+			holder.tv_summary =  (TextView) convertView.findViewById(R.id.summary);
+			holder.btn_attention =  (ImageView) convertView.findViewById(R.id.btn_attention);
+			convertView.setTag(holder);
+		}else{
+			holder = (ViewHolder) convertView.getTag();
+		}
+		holder.head_bg.setVisibility(View.VISIBLE);
+		bitUtil.display(holder.head, StringUtil.replaceImagePath(list.get(position).getUser_img(), 100));
+		holder.tv_name.setText(list.get(position).getUser_nick());
+		holder.tv_fans.setText("粉丝："+list.get(position).getC_fans());
+		String summary = list.get(position).getUser_summary();
+		holder.tv_summary.setText("简介："+summary.replace(" ", ""));
+		if(list.get(position).getIs_attention().equals("1")){
+			holder.btn_attention.setImageResource(R.drawable.btn_cancle_attention);
+		}else if(list.get(position).getIs_attention().equals("0")){
+			holder.btn_attention.setImageResource(R.drawable.btn_attention_normal);
+		}
+		
+		holder.btn_attention.setOnClickListener(new OnClick(holder.btn_attention, holder.tv_fans, position));
+		return convertView;
+	}
+	class ViewHolder {
+		
+		ImageView head_bg;
+		CircleImageView head;
+		ImageView btn_attention;
+		TextView tv_name, tv_fans, tv_summary;
+	}
+	
+	class OnClick implements OnClickListener{
+		
+		private int position;
+		private ImageView btn;
+		private TextView c_fans;
+		
+		public OnClick(ImageView btn, TextView c_fans, int position) {
+			super();
+			this.btn = btn;
+			this.c_fans = c_fans;
+			this.position = position;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			if(AccountInfoUtils.getInstance(context).isLogin()){
+				if(haveNetwork()){
+					btn.setClickable(false);
+					MusicUserInfoEntity userInfo = list.get(position);
+					if(userInfo.getIs_attention().equals("0")){
+						AttentionPersonTask attention_task = new AttentionPersonTask(context, userInfo.getUser_id(), new AttentionCallback(btn, c_fans, position));
+						attention_task.excute();
+					}else if(userInfo.getIs_attention().equals("1")){
+						CancleAttentionTask cancleattention_task = new CancleAttentionTask(context, userInfo.getUser_id(), new CancleAttentionCallback(btn, c_fans, position));
+						cancleattention_task.excute();
+					}
+				}
+			}else{
+				Intent intent = new Intent(context, StartActivity.class);
+				intent.putExtra(StartActivity.LOGIN_KEY, Login_Tag);
+				context.startActivity(intent);
+			}
+		}
+	}
+	
+	/*
+	 * 关注他人
+	 */
+	class AttentionCallback extends BaseRequestCallBack {
+		
+		private int position;
+		private ImageView btn;
+		private TextView c_fans;
+		
+		public AttentionCallback(ImageView btn, TextView c_fans, int position) {
+			super();
+			this.btn = btn;
+			this.c_fans = c_fans;
+			this.position = position;
+		}
+
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			ActivityUtil.showAttentionToast(context, "关注成功").show();
+			btn.setImageResource(R.drawable.btn_cancle_attention);
+			list.get(position).setIs_attention("1");
+			int c_fan = Integer.valueOf(list.get(position).getC_fans()) + 1;
+			c_fans.setText("粉丝："+c_fan);
+			list.get(position).setC_fans(c_fan+"");
+			Intent intent = new Intent(Constant.ACTION_MINE_UPDATE_USERINFO);
+			intent.putExtra("isAttention", true);
+			context.sendBroadcast(intent);
+			btn.setClickable(true);
+			
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+	}
+	
+	/*
+	 * 取消关注
+	 */
+	class CancleAttentionCallback extends BaseRequestCallBack {
+		
+		private int position;
+		private ImageView btn;
+		private TextView c_fans;
+		
+		public CancleAttentionCallback(ImageView btn, TextView c_fans, int position) {
+			super();
+			this.btn = btn;
+			this.c_fans = c_fans;
+			this.position = position;
+		}
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			ActivityUtil.showAttentionToast(context, "取消成功").show();
+			btn.setImageResource(R.drawable.btn_attention_normal);
+			list.get(position).setIs_attention("0");
+			int c_fan = Integer.valueOf(list.get(position).getC_fans()) - 1;
+			c_fans.setText("粉丝："+c_fan);
+			list.get(position).setC_fans(c_fan+"");
+			Intent intent = new Intent(Constant.ACTION_MINE_UPDATE_USERINFO);
+			intent.putExtra("isAttention", true);
+			context.sendBroadcast(intent);
+			btn.setClickable(true);
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+	}
+	
+	public boolean haveNetwork(){
+		if (NetUtils.getAPNType(context) == -1) { //判断网络状态
+			ActivityUtil.showShortToast(context, context.getString(R.string.no_network));
+			return false;
+		}else{
+			return true;
+		}
+	}
+
+}

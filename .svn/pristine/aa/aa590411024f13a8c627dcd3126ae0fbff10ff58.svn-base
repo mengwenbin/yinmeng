@@ -1,0 +1,284 @@
+package com.xiaoxu.music.community.fragment;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.entity.SongInfoEntity;
+import com.xiaoxu.music.community.view.CustomViewPager;
+
+public class SortListFragment extends BaseNewFragment implements OnClickListener{
+	
+	private RelativeLayout layout_indicator_original, layout_indicator_cover;
+	private TextView tv_indicator_original, tv_indicator_cover;
+	private View line_indicator_hot, line_indicator_week, line_indicator_month, line_indicator_all;
+	private Button btn_indicator_hot, btn_indicator_week, btn_indicator_month, btn_indicator_all;
+	
+	private CustomViewPager viewpager;
+	private ViewPagerAdapter adapter;
+	private SortHotFragment frag_hot;
+	private SortWeekFragment frag_week;
+	private SortMonthFragment frag_month;
+	private SortAllFragment frag_all;
+	
+	private int music_category = 51;
+	
+	private final String mPageName = "SortListFragment";
+	
+	public int getMusic_category() {
+		return music_category;
+	}
+
+	@Override
+	public int setLayoutId() {
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_sort_list;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(activity);//友盟统计
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+
+	@Override
+	public void setupView(View view) {
+		//原创翻唱指示器
+		layout_indicator_original = getRelativeLayout(view, R.id.layout_indicator_original);
+		layout_indicator_cover = getRelativeLayout(view, R.id.layout_indicator_cover);
+		tv_indicator_original = getTextView(view, R.id.tv_indicator_original);
+		tv_indicator_cover = getTextView(view, R.id.tv_indicator_cover);
+		layout_indicator_original.setOnClickListener(this);
+		layout_indicator_cover.setOnClickListener(this);
+		//热门，周榜，月榜，总榜
+		btn_indicator_hot = getButton(view, R.id.btn_indicator_hot);
+		btn_indicator_week = getButton(view, R.id.btn_indicator_week);
+		btn_indicator_month = getButton(view, R.id.btn_indicator_month);
+		btn_indicator_all = getButton(view, R.id.btn_indicator_all);
+		line_indicator_hot = getView(view, R.id.indicator_hot);
+		line_indicator_week = getView(view, R.id.indicator_week);
+		line_indicator_month = getView(view, R.id.indicator_month);
+		line_indicator_all = getView(view, R.id.indicator_all);
+		btn_indicator_hot.setOnClickListener(this);
+		btn_indicator_week.setOnClickListener(this);
+		btn_indicator_month.setOnClickListener(this);
+		btn_indicator_all.setOnClickListener(this);
+		
+		frag_hot = new SortHotFragment();
+		frag_week = new SortWeekFragment();
+		frag_month = new SortMonthFragment();
+		frag_all = new SortAllFragment();
+		
+		viewpager = (CustomViewPager) view.findViewById(R.id.viewpager_song);
+		viewpager.setScanScroll(true);
+		viewpager.setOnPageChangeListener(listener);
+		adapter = new ViewPagerAdapter(getChildFragmentManager());
+		viewpager.setAdapter(adapter);
+	}
+
+	@Override
+	public void setModel() {
+	}
+	
+	//初始化歌曲类型指示器
+	public void initIndicatorSong(){
+		layout_indicator_original.setBackgroundResource(R.drawable.bg_shape_original_normal);
+		layout_indicator_cover.setBackgroundResource(R.drawable.bg_shape_cover_normal);
+		tv_indicator_original.setTextColor(getResources().getColor(R.color.cyan8));
+		tv_indicator_cover.setTextColor(getResources().getColor(R.color.cyan8));
+	}
+	
+	//初始化歌曲类型指示器
+	public void initIndicatorSort(){
+		btn_indicator_hot.setTextColor(getResources().getColor(R.color.tab_text_normal));
+		btn_indicator_week.setTextColor(getResources().getColor(R.color.tab_text_normal));
+		btn_indicator_month.setTextColor(getResources().getColor(R.color.tab_text_normal));
+		btn_indicator_all.setTextColor(getResources().getColor(R.color.tab_text_normal));
+		line_indicator_hot.setVisibility(View.GONE);
+		line_indicator_week.setVisibility(View.GONE);
+		line_indicator_month.setVisibility(View.GONE);
+		line_indicator_all.setVisibility(View.GONE);
+	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.layout_indicator_original:
+			initIndicatorSong();
+			layout_indicator_original.setBackgroundResource(R.drawable.bg_shape_original_press);
+			tv_indicator_original.setTextColor(getResources().getColor(R.color.white));
+			if(music_category == 52){
+				music_category = 51;
+				changeData();
+			}
+			break;
+		case R.id.layout_indicator_cover:
+			initIndicatorSong();
+			layout_indicator_cover.setBackgroundResource(R.drawable.bg_shape_cover_press);
+			tv_indicator_cover.setTextColor(getResources().getColor(R.color.white));
+			if(music_category == 51){
+				music_category = 52;
+				changeData();
+			}
+			break;
+		case R.id.btn_indicator_hot:
+			viewpager.setCurrentItem(0);
+			break;
+		case R.id.btn_indicator_week:
+			viewpager.setCurrentItem(1);
+			break;
+		case R.id.btn_indicator_month:
+			viewpager.setCurrentItem(2);
+			break;
+		case R.id.btn_indicator_all:
+			viewpager.setCurrentItem(3);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void changeData(){
+		frag_hot.setMusic_category(music_category);
+		frag_week.setMusic_category(music_category);
+		frag_month.setMusic_category(music_category);
+		frag_all.setMusic_category(music_category);
+		frag_hot.loading();
+		frag_week.loading();
+		frag_month.loading();
+		frag_all.loading();
+	}
+	
+	public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+		
+		private Fragment fragment;
+		
+		public ViewPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+		
+		@Override
+		public Fragment getItem(int arg0) {
+			// TODO Auto-generated method stub
+			switch (arg0) {
+			case 0:
+				fragment = frag_hot;
+				break;
+			case 1:
+				fragment = frag_week;
+				break;
+			case 2:
+				fragment = frag_month;
+				break;
+			case 3:
+				fragment = frag_all;
+				break;
+			default:
+				break;
+			}
+			return fragment;
+		}
+		
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return 4;
+		}
+		
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			// TODO Auto-generated method stub
+			super.destroyItem(container, position, object);
+		}
+	}
+	
+	OnPageChangeListener listener = new OnPageChangeListener() {
+		@Override
+		public void onPageSelected(int arg0) {
+			// TODO Auto-generated method stub
+			if (arg0 == 0) {
+				initIndicatorSort();
+				btn_indicator_hot.setTextColor(getResources().getColor(R.color.tab_text_select));
+				line_indicator_hot.setVisibility(View.VISIBLE);
+			} else if (arg0 == 1) {
+				initIndicatorSort();
+				btn_indicator_week.setTextColor(getResources().getColor(R.color.tab_text_select));
+				line_indicator_week.setVisibility(View.VISIBLE);
+			} else if (arg0 == 2) {
+				initIndicatorSort();
+				btn_indicator_month.setTextColor(getResources().getColor(R.color.tab_text_select));
+				line_indicator_month.setVisibility(View.VISIBLE);
+			} else if (arg0 == 3) {
+				initIndicatorSort();
+				btn_indicator_all.setTextColor(getResources().getColor(R.color.tab_text_select));
+				line_indicator_all.setVisibility(View.VISIBLE);
+			}
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+			// TODO Auto-generated method stub
+		}
+	};
+	
+	public void onActivityResult(int requestCode, SongInfoEntity info, int position){
+		if(info!=null&&position!=-1){
+			switch (requestCode) {
+			case 11:
+				if(frag_hot!=null){
+					frag_hot.changeData(position, info);
+				}
+				break;
+			case 12:
+				if(frag_week!=null){
+					frag_week.changeData(position, info);
+				}
+				break;
+			case 13:
+				if(frag_month!=null){
+					frag_month.changeData(position, info);
+				}
+				break;
+			case 14:
+				if(frag_all!=null){
+					frag_all.changeData(position, info);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
+}

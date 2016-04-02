@@ -1,0 +1,302 @@
+package com.xiaoxu.music.community.fragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseLazyLoadFragment;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.PlayActivity;
+import com.xiaoxu.music.community.adapter.MusicUserAdapter;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.MusicUserInfoEntity;
+import com.xiaoxu.music.community.fragment.HomePageFragment.ViewPagerAdapter;
+import com.xiaoxu.music.community.view.CustomViewPager;
+
+/*
+ * 音乐人模块
+ */
+public class MusicUserFragment extends BaseLazyLoadFragment {
+
+	private ImageButton right_btn;
+	private TextView tv_random;
+	private TextView tv_approve;
+	private TextView tv_popularity;
+	private RelativeLayout rel_random;
+	private RelativeLayout rel_approve;
+	private RelativeLayout rel_popularity;
+	private CustomViewPager viewPager;
+	private List<Fragment> fragments;
+	
+	private RandomFragment randomFragment;
+	private ApproveFragment approveFragment;
+	private PopularityFragment popularityFragment;
+	
+	private MineBroadcastReceiver receiver;
+	private final  String mPageName = "ApproveFragment";
+	
+	@Override
+	public int setLayoutId() {
+		
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_random;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(activity);//友盟统计
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+
+	@Override
+	public void setupView(View view) {
+		right_btn = getImageButton(view, R.id.title_right_btn);
+		initAnimation(right_btn);
+		tv_random = getTextView(view, R.id.tv_random);
+		tv_approve = getTextView(view, R.id.tv_approve);
+		tv_popularity = getTextView(view, R.id.tv_popularity);
+		rel_random = getRelativeLayout(view, R.id.rel_random);
+		rel_approve = getRelativeLayout(view, R.id.rel_approve);
+		rel_popularity = getRelativeLayout(view, R.id.rel_popularity);
+		viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
+		viewPager.setOffscreenPageLimit(1);
+		viewPager.setScanScroll(true);
+		initListener();
+		
+		// 注册广播 (action:修改用户信息)
+		receiver = new MineBroadcastReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constant.ACTION_MINE_UPDATE_USERINFO);
+		context.registerReceiver(receiver, filter);
+	}
+
+	private void initListener() {
+		rel_random.setOnClickListener(new ClickListener());
+		rel_popularity.setOnClickListener(new ClickListener());
+		rel_approve.setOnClickListener(new ClickListener());
+		right_btn.setOnClickListener(new ClickListener());
+		viewPager.setOnPageChangeListener(listener);
+	}
+
+	@Override
+	public void setModel() {
+		lazyLoad();
+	}
+	
+	@Override
+	protected void lazyLoad() {
+		// TODO Auto-generated method stub
+		if(!isVisible || !isPrepared || mHasLoadOnce)
+			return;
+		handler.sendEmptyMessageDelayed(1, 10);
+	}
+	
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			randomFragment = new RandomFragment();
+			approveFragment = new ApproveFragment();
+			popularityFragment = new PopularityFragment();
+			initFragment();
+			viewPager.setCurrentItem(0);
+			mHasLoadOnce = true;
+		};
+	};
+	
+	/*
+	 * 初始化Fragment
+	 */
+	private void initFragment() {
+		fragments = new ArrayList<Fragment>();
+		fragments.add(randomFragment);
+		fragments.add(popularityFragment);
+		fragments.add(approveFragment);
+		viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
+	}
+	
+	private class ViewPagerAdapter extends FragmentPagerAdapter{
+
+		public ViewPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			return fragments.get(position);
+		}
+
+		@Override
+		public int getCount() {
+			return fragments.size();
+		}
+		
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			super.destroyItem(container, position, object);
+		}
+		
+	}
+	
+	/*
+	 * viewPager监听
+	 */
+	OnPageChangeListener listener = new OnPageChangeListener() {
+		@Override
+		public void onPageSelected(int position) {
+
+			switch (position) {
+			case 0:
+				viewPager.setCurrentItem(0);
+				tv_random.setTextColor(getResources().getColor(R.color.white));
+				tv_approve.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_popularity.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_random.setTextSize(19);
+				tv_approve.setTextSize(18);
+				tv_popularity.setTextSize(18);
+				break;
+
+			case 1:
+				viewPager.setCurrentItem(1);
+				tv_random.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_approve.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_popularity.setTextColor(getResources().getColor(R.color.white));
+				tv_random.setTextSize(18);
+				tv_approve.setTextSize(18);
+				tv_popularity.setTextSize(19);
+				break;
+			case 2:
+				viewPager.setCurrentItem(2);
+				tv_approve.setTextColor(getResources().getColor(R.color.white));
+				tv_random.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_popularity.setTextColor(getResources().getColor(R.color.title_text_normal));
+				tv_random.setTextSize(18);
+				tv_approve.setTextSize(19);
+				tv_popularity.setTextSize(18);
+				break;
+			}
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
+	};
+	
+	
+	private class ClickListener implements OnClickListener{
+
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			
+			case R.id.rel_random:
+				viewPager.setCurrentItem(0);
+				break;
+			case R.id.rel_popularity:
+				viewPager.setCurrentItem(1);
+				
+				break;
+			case R.id.rel_approve:
+				viewPager.setCurrentItem(2);
+				break;
+			case R.id.title_right_btn:
+				startActivity(new Intent(getActivity(), PlayActivity.class));
+				break;
+			}
+		}
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(data != null){
+		int position = data.getIntExtra("position", 0);
+		MusicUserInfoEntity info = (MusicUserInfoEntity) data.getSerializableExtra("MusicUserInfoEntity");
+			switch (requestCode) {
+			case 0:
+				if(randomFragment.isVisible()){
+					MusicUserAdapter adapter = randomFragment.getAdapter();
+					List<MusicUserInfoEntity> list = adapter.getList();
+					list.set(position, info);
+					randomFragment.setList(list);
+				}
+				break;
+			case 1:
+				if(popularityFragment.isVisible()){
+					MusicUserAdapter adapter = popularityFragment.getAdapter();
+					List<MusicUserInfoEntity> list = adapter.getList();
+					list.set(position, info);
+					popularityFragment.setList(list);
+				}
+				break;
+			case 2:
+				if(approveFragment.isVisible()){
+					MusicUserAdapter adapter = approveFragment.getAdapter();
+					List<MusicUserInfoEntity> list = adapter.getList();
+					list.set(position, info);
+					approveFragment.setList(list);
+				}
+			break;
+			}
+		}
+		
+	}
+	
+	public class MineBroadcastReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if(intent != null){
+				if(intent.getBooleanExtra("isLogin", false)){
+					randomFragment.loading();
+					popularityFragment.loading();
+					approveFragment.loading();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);  
+	}
+	
+	
+	
+}

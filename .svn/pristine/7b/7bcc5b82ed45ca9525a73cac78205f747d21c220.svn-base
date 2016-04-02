@@ -1,0 +1,341 @@
+package com.xiaoxu.music.community.fragment;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMConversation.EMConversationType;
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.MainTabActivity;
+import com.xiaoxu.music.community.activity.PlayActivity;
+import com.xiaoxu.music.community.activity.StartActivity;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.UserEntity;
+import com.xiaoxu.music.community.entity.UserInfoEntity;
+import com.xiaoxu.music.community.im.activity.ChatAllHistoryActivity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.UserInfoTask;
+import com.xiaoxu.music.community.util.AccountInfoUtils;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView;
+
+public class MineFragment extends BaseNewFragment implements OnClickListener{
+	
+	private Button is_login;
+	private Button btn_login;
+	private ImageView head_bg;
+	private CircleImageView iv_head;
+	private ImageView iv_sex;
+	private TextView tv_name,tv_summary, tv_works, tv_attentions, tv_fans;
+	private RelativeLayout layout_edit, layout_works, layout_posts, rel_mine_song, layout_collects,
+						   layout_downloads, layout_setting;
+	private ImageButton btn_play;
+	
+	private UserInfoEntity user_info;
+	private MineBroadcastReceiver receiver;
+	private RelativeLayout rel_fans;
+	private RelativeLayout rel_infrom;
+	private RelativeLayout rel_attention;
+	private RelativeLayout rel_mine_message;
+	
+	// 未读消息textview
+	private TextView unreadLabel; 
+	
+	private final  String mPageName = "MineFragment";
+	private String Login_Tag = "com.xiaoxu.music.community.activity.MainTabActivity";
+	
+	@Override
+	public int setLayoutId() {
+		
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_mine;
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+	
+	@Override
+	public void setupView(View view) {
+		
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_head_bg_blue);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_head_bg_blue);// 加载失败图片
+		getTextView(view, R.id.title_center_content).setText(getString(R.string.tab_header_mine));
+		btn_play = getImageButton(view, R.id.title_right_btn);
+		initAnimation(btn_play);
+		btn_play.setOnClickListener(this);
+		// View-Init
+		tv_name = getTextView(view, R.id.mine_tv_username);
+		head_bg = (ImageView) getImageView(view, R.id.head_bg);
+		iv_head = (CircleImageView) getImageView(view, R.id.mine_imv_head);
+		iv_sex = getImageView(view, R.id.mine_imv_sex);
+		tv_summary = getTextView(view, R.id.mine_tv_summary);
+		btn_login = getButton(view, R.id.btn_login);
+		is_login = getButton(view, R.id.is_login);
+		
+		tv_works = getTextView(view, R.id.tv_works);
+		tv_attentions = getTextView(view, R.id.tv_attentions);
+		tv_fans = getTextView(view, R.id.tv_fans);
+		unreadLabel = getTextView(view,R.id.unread_msg_number);
+		unreadLabel.setVisibility(View.GONE);
+		
+		// onClick-Item
+		rel_attention = getRelativeLayout(view, R.id.rel_attention);
+		rel_fans = getRelativeLayout(view, R.id.rel_fans);
+		rel_infrom = getRelativeLayout(view, R.id.rel_inform);
+		layout_edit = getRelativeLayout(view, R.id.mine_layout_edit);
+		
+		layout_works = getRelativeLayout(view, R.id.mine_layout_works);
+		layout_posts = getRelativeLayout(view, R.id.mine_layout_posts);
+		rel_mine_song = getRelativeLayout(view, R.id.rel_mine_song);
+		layout_collects = getRelativeLayout(view, R.id.mine_layout_collects);
+		layout_downloads = getRelativeLayout(view, R.id.mine_layout_downloads);
+		layout_setting = getRelativeLayout(view, R.id.mine_layout_setting);
+		rel_mine_message = getRelativeLayout(view, R.id.rel_mine_message);
+		
+		initListener();
+		
+		// 注册广播 (action:修改用户信息)
+		receiver = new MineBroadcastReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Constant.ACTION_MINE_UPDATE_USERINFO);
+		context.registerReceiver(receiver, filter);
+	}
+	
+	
+	/*
+	 * 初始化监听
+	 */
+	private void initListener() {
+		
+		rel_mine_message.setOnClickListener(this);
+		layout_edit.setOnClickListener(this);
+		layout_works.setOnClickListener(this);
+		layout_posts.setOnClickListener(this);
+		rel_mine_song.setOnClickListener(this);
+		layout_collects.setOnClickListener(this);
+		layout_downloads.setOnClickListener(this);
+		layout_setting.setOnClickListener(this);
+		rel_attention.setOnClickListener(this);
+		rel_fans.setOnClickListener(this);
+		rel_infrom.setOnClickListener(this);
+		
+	}
+	
+	/**
+	 * 刷新未读消息数
+	 */
+	public void updateUnreadLabel() {
+		int count = getUnreadMsgCountTotal();
+		if (count > 0) {
+			unreadLabel.setText(String.valueOf(count));
+			unreadLabel.setVisibility(View.VISIBLE);
+		} else {
+			unreadLabel.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	/**
+	 * 获取未读消息数
+	 * @return
+	 */
+	public int getUnreadMsgCountTotal() {
+		int unreadMsgCountTotal = 0;
+		int chatroomUnreadMsgCount = 0;
+		
+		//未读消息数量
+		unreadMsgCountTotal = EMChatManager.getInstance().getUnreadMsgsCount();
+		for (EMConversation conversation : EMChatManager.getInstance()
+				.getAllConversations().values()) {
+			if (conversation.getType() == EMConversationType.ChatRoom)
+				chatroomUnreadMsgCount = chatroomUnreadMsgCount + conversation.getUnreadMsgCount();
+		}
+		return unreadMsgCountTotal - chatroomUnreadMsgCount;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(activity);//友盟统计
+		if (!((MainTabActivity)getActivity()).isConflict) {
+			updateUnreadLabel();
+		}
+		if(AccountInfoUtils.getInstance(context).isLogin()){
+			UserInfoTask task = new UserInfoTask(context, callback);
+			task.excute();
+		}
+	}
+
+	@Override
+	public void setModel() {
+		if(!AccountInfoUtils.getInstance(context).isLogin()){	//判断是否登录
+			tv_name.setVisibility(View.GONE);
+			btn_login.setVisibility(View.VISIBLE);
+			is_login.setVisibility(View.GONE);
+			btn_login.setOnClickListener(this);
+			iv_sex.setVisibility(View.GONE);
+			tv_summary.setVisibility(View.GONE);
+			head_bg.setVisibility(View.GONE);
+			iv_head.setVisibility(View.GONE);
+			tv_works.setText("0");
+			tv_fans.setText("0");
+			tv_attentions.setText("0");
+			return;
+		}else{
+			tv_name.setVisibility(View.VISIBLE);
+			iv_sex.setVisibility(View.VISIBLE);
+			tv_summary.setVisibility(View.VISIBLE);
+			btn_login.setVisibility(View.GONE);
+//			is_login.setVisibility(View.VISIBLE);
+			iv_head.setVisibility(View.VISIBLE);
+			head_bg.setVisibility(View.VISIBLE);
+		}
+		user_info = AccountInfoUtils.getInstance(context).getUserInfo();
+		if(user_info==null){
+			UserInfoTask task = new UserInfoTask(context, callback);
+			task.excute();
+			return;
+		}
+		updateUI();
+	}
+	
+	BaseRequestCallBack callback = new BaseRequestCallBack(UserEntity.class) {
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			if(code != Constant.SUCCESS_REQUEST)
+				return;
+			UserEntity user_entity = (UserEntity) obj;
+			user_info = user_entity.getUser();
+			updateUI();
+		}
+
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+			
+		}
+	};
+	
+	public void updateUI(){
+		if(user_info==null){
+			return;
+		}
+		String name = user_info.getUser_nick();
+		String summary = user_info.getUser_summary();
+		String c_works = user_info.getC_music();
+		String c_fans = user_info.getC_fans();
+		String c_attention = user_info.getC_attention();
+		if(!TextUtils.isEmpty(c_works)){
+			tv_works.setText(c_works);
+		}
+		if(!TextUtils.isEmpty(c_fans)){
+			tv_fans.setText(c_fans);
+		}
+		if(!TextUtils.isEmpty(c_attention)){
+			tv_attentions.setText(c_attention);
+		}
+		int sex = Integer.parseInt(user_info.getUser_sex());
+		tv_name.setText(name+"");//昵称
+		if(!TextUtils.isEmpty(summary))//简介
+			tv_summary.setText("简介："+summary.replace("简介：", ""));
+		switch (sex) { //性别
+			case 0: iv_sex.setImageResource(R.drawable.sex_martian); break;
+			case 1: iv_sex.setImageResource(R.drawable.sex_man); break;
+			case 2: iv_sex.setImageResource(R.drawable.sex_woman); break;
+			default: break;
+		}
+		bitmapUtils.display(iv_head, StringUtil.replaceImagePath(user_info.getUser_img(), 100));
+		
+	}
+	
+	@Override
+	public void onClick(View v) {
+		
+		switch (v.getId()) {
+		
+		// 未登录，跳转到登录
+		case R.id.title_right_btn:
+			startActivity(new Intent(context, PlayActivity.class));
+			break;
+		case R.id.btn_login:
+			
+			if(!AccountInfoUtils.getInstance(context).isLogin()){
+				Intent intent = new Intent(context, StartActivity.class);
+				intent.putExtra(StartActivity.LOGIN_KEY, Login_Tag);
+				startActivityForResult(intent, 1);
+				return;
+			}
+			
+			break;
+		case R.id.rel_mine_message:
+			startActivity(new Intent(context, ChatAllHistoryActivity.class));
+			break;
+		default:
+			
+			try {
+				String tag = (String) v.getTag();
+				if(TextUtils.isEmpty(tag))
+					return;
+				startActivity(new Intent(getActivity(), Class.forName(tag)));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		
+	}
+	
+	public class MineBroadcastReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+			if(intent != null){
+				
+				if(intent.getBooleanExtra("isLogin", false)){
+					setModel();
+				}
+				
+				//我的关注条数
+				if(intent.getBooleanExtra("isAttention", false)){
+					UserInfoTask task = new UserInfoTask(context, callback);
+					task.excute();
+				}
+				//发布音乐条数
+				if(intent.getBooleanExtra("isrelese", false)){
+					
+					UserInfoTask task = new UserInfoTask(context, callback);
+					task.excute();
+				}
+				
+			}
+		}
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(receiver);  
+	}
+}

@@ -1,0 +1,268 @@
+package com.xiaoxu.music.community.activity;
+
+import java.util.List;
+
+import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseNewActivity;
+import com.xiaoxu.music.community.HandlerHelp;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.adapter.CircleCategoryAdapter2;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.dao.CacheDB;
+import com.xiaoxu.music.community.dao.CacheData;
+import com.xiaoxu.music.community.entity.CategoryEntity;
+import com.xiaoxu.music.community.entity.CategorysInfoEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.CircleSecondClassTask;
+import com.xiaoxu.music.community.parser.ParseUtil;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.TimeUtil;
+import com.xiaoxu.music.community.view.xlistview.XListView;
+import com.xiaoxu.music.community.view.xlistview.XListView.OnXListViewListener;
+
+public class CircleCategoryActivity extends BaseNewActivity implements OnClickListener, OnXListViewListener {
+	
+	private ImageButton btn_back,btn_play;
+	private TextView title;
+	private XListView listview;
+	private String latelyRefreshTime; //最近刷新时间
+	
+	private CircleSecondClassTask task;
+	private CategoryEntity entity;
+	private List<CategorysInfoEntity> list,oldlist;
+	private CircleCategoryAdapter2 adapter;
+	
+	private Intent intent;
+	private int pageNum = 1;
+	private CategorysInfoEntity category;
+	
+	//缓存
+	private CacheDB db;
+	private String cache_name;
+	private CacheData cacheinfo;
+	private final String mPageName = "CircleCategoryActivity";
+	
+	@Override
+	public void setContent() {
+		// TODO Auto-generated method stub
+		setContentView(R.layout.activity_circle_category);
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(this);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		db = new CacheDB(context);
+		intent = getIntent();
+		category = (CategorysInfoEntity) intent.getSerializableExtra("category");
+		cache_name = category.getCategory_name();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(this);//友盟统计
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(this);
+		if(task!=null){
+			task.cancelTask();
+			loadingCancle(rotateLoading);
+		}
+	}
+	
+	@Override
+	public void setupView() {
+		// TODO Auto-generated method stub
+		rotateLoading = getRotateLoading(R.id.loading);
+		btn_back = getImageButton(R.id.title_left_btn);
+		btn_play = getImageButton(R.id.title_right_btn);
+		initAnimation(btn_play);
+		title = getTextView(R.id.title_center_content);
+		title.setText(category.getCategory_name());
+		
+		listview = (XListView) findViewById(R.id.listview_circle);
+		listview.setXListViewListener(this);
+		listview.setFooterReady(true);
+		listview.setPullLoadEnable(XListView.FOOTER_HIDE);
+		
+		adapter = new CircleCategoryAdapter2(context, bitmapUtils);
+		listview.setAdapter(adapter);
+		btn_back.setOnClickListener(this);
+		btn_play.setOnClickListener(this);
+	}
+	
+	@Override
+	public void setModel() {
+		// TODO Auto-generated method stub
+		pageNum = 1;
+		if(db == null){
+			db = new CacheDB(context);
+		}
+		new Async().execute();
+	}
+	
+	class Async extends HandlerHelp {
+		
+		@Override
+		public void doTask() {
+			// TODO Auto-generated method stub
+			cacheinfo = db.getCacheDataByName(cache_name);
+		}
+		
+		@Override
+		public void handler() {
+			// TODO Auto-generated method stub
+			if(cacheinfo!=null && TimeUtil.datePk(TimeUtil.getCurrentTime(), cacheinfo.getCache_time())){
+				String result = cacheinfo.getCache_data();
+				CategoryEntity entity = (CategoryEntity) ParseUtil.parseResultObj(result, CategoryEntity.class);
+				List<CategorysInfoEntity> list_cache = entity.getCategory_list();
+				if (list_cache != null && list_cache.size() > 0) {
+					list = list_cache;
+					updateUI();
+				}else{
+					task();
+				}
+			} else {
+				task();
+			}
+		}
+	}
+	
+	public void task() {
+		if(haveNetwork()){
+			loadingStart(rotateLoading);
+			task = new CircleSecondClassTask(context, category.getCategory_id(), pageNum, callback);
+			task.excute();
+		}else{
+			if(adapter != null){
+				adapter.setList(null);
+				adapter.notifyDataSetChanged();
+				pageNum = 1;
+				showNoNet(this);
+			}
+			loadingCancle(rotateLoading);
+			listview.stopRefresh();
+			listview.stopLoadMore();
+			listview.setPullLoadEnable(XListView.FOOTER_HIDE);
+		}
+	}
+	
+	BaseRequestCallBack callback = new BaseRequestCallBack(CategoryEntity.class) {
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			// TODO Auto-generated method stub
+			loadingCancle(rotateLoading);
+			listview.stopRefresh();
+			listview.stopLoadMore();
+			if(code!=Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			//缓存
+			db.cacheSavaOrUpdate(cache_name, result, CacheDB.time_circle);
+			entity = (CategoryEntity) obj;
+			list = entity.getCategory_list();
+			if(list!=null&&list.size()>=10){
+				listview.setPullLoadEnable(XListView.FOOTER_SHOW);
+			}else{
+				listview.setPullLoadEnable(XListView.FOOTER_HIDE);
+			}
+			updateUI();
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+			// TODO Auto-generated method stub
+			loadingCancle(rotateLoading);
+			listview.stopRefresh();
+			listview.stopLoadMore();
+		}
+	};
+	
+	public void updateUI() {
+		if (pageNum == 1) {
+			adapter.setList(list);
+			pageNum = 2;
+		} else if (pageNum >= 2) {
+			oldlist = adapter.getList();
+			if (oldlist != null && oldlist.size() > 0) {
+				for (int i = 0; i < list.size(); i++) { // 新数据
+					for (int j = oldlist.size() - 1; j >= 0; j--) { // 旧数据
+						int old_id = Integer.parseInt(oldlist.get(j).getCategory_id());
+						int new_id = Integer.parseInt(list.get(i).getCategory_id());
+						if (old_id == new_id) {
+							oldlist.remove(j);
+							break;
+						}
+					}
+				}
+				oldlist.addAll(list);
+			}
+			adapter.setList(oldlist);
+			pageNum++;
+		}
+		adapter.notifyDataSetChanged();
+		latelyRefreshTime = TimeUtil.getSystemTimer(context);
+	}
+	
+	@Override
+	public void onRefresh() {
+		// TODO Auto-generated method stub
+		listview.setPullLoadEnable(XListView.FOOTER_HIDE);
+	    listview.setRefreshTime(latelyRefreshTime);
+		pageNum = 1;
+		task();
+	}
+	
+	@Override
+	public void onLoadMore() {
+		// TODO Auto-generated method stub
+		task();
+	}
+	
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.title_left_btn:
+			finish();
+			break;
+		case R.id.title_right_btn:
+			startActivity(new Intent(context, PlayActivity.class));
+			break;
+		case R.id.no_network:
+			hintNoNet();
+			onRefresh();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		if (listview != null) {
+			listview.stopRefresh();
+			listview.stopLoadMore();
+		}
+		if (task != null) {
+			task.cancelTask();
+		}
+	}
+
+
+}

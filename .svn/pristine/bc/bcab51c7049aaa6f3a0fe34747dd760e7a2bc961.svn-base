@@ -1,0 +1,103 @@
+package com.xiaoxu.music.community.im.applib.utils;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+
+import com.easemob.chat.EMMessage;
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadCallBack;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadFrom;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.UserInfo;
+import com.xiaoxu.music.community.entity.UserInfoEntity;
+import com.xiaoxu.music.community.im.applib.db.UserDao;
+import com.xiaoxu.music.community.util.AccountInfoUtils;
+
+public class UserUtils {
+	
+	private static BitmapUtils bitmapUtils;
+
+	private static void setBitmapUtils(Context context){
+		
+		bitmapUtils = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		bitmapUtils.configDefaultBitmapConfig(Config.RGB_565);//设置图片压缩类型
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_wait_img);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_wait_img);// 加载失败图片
+		
+	}
+	
+	/**
+	 * 设置自己头像
+	 * @param username
+	 */
+	public static void setUserAvatar(final Context context, String username,ImageView imageView) {
+		
+		setBitmapUtils(context);
+		UserInfoEntity userEntity = AccountInfoUtils.getInstance(context).getUserInfo();
+		if (userEntity != null) {
+			if(userEntity.getImEaseMob_username().equals(username)){
+				bitmapUtils.display(imageView, userEntity.getUser_img());
+			}else{
+				final Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+				String avatar = new UserDao(context).getStrangerUser(username).getAvatar();
+				bitmapUtils.display(imageView, avatar, new BitmapLoadCallBack<View>() {
+
+					@Override
+					public void onLoadCompleted(View view, String uri,Bitmap bitmap, 
+							BitmapDisplayConfig config,BitmapLoadFrom from) {
+						ImageView iv = (ImageView) view;
+						iv.setImageBitmap(bitmap);
+						iv.setAnimation(animation);
+					}
+
+					@Override
+					public void onLoadFailed(View view, String uri,Drawable drawable) {
+						ImageView iv = (ImageView) view;
+						iv.setImageDrawable(drawable);
+						iv.setAnimation(animation);
+					}
+				});
+			}
+		}
+	}
+	
+	/**
+	 * 设置好友头像
+	 * 
+	 * @param username
+	 */
+	public static void setUserAvatar(final Context context, EMMessage message,ImageView imageView) {
+
+			setBitmapUtils(context);
+			String avatar = message.getStringAttribute("user_img", "");
+			bitmapUtils.display(imageView, avatar);
+	}
+	
+
+	public static void SaveUserInfo(Context context, UserInfo users) {
+
+		UserInfo user = new UserInfo();
+		if (!users.getUsername().equals("")) {
+			user.setUsername(users.getUsername());
+		}
+		if (!users.getUsernick().equals("")) {
+			user.setUsernick(users.getUsernick());
+		}
+		if(!users.getAvatar().equals("")){
+			user.setAvatar(users.getAvatar());
+		}else{
+			user.setAvatar("");
+		}
+		user.setLastmsg(users.getLastmsg());
+		user.setTime(System.currentTimeMillis());
+		UserDao dao = new UserDao(context);
+		dao.saveStranger(user);
+	}
+}

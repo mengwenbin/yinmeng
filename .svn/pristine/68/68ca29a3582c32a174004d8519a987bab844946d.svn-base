@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rel_video"
+        android:layout_width="170dp"
+        android:layout_height="165dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/item_bg" >
+
+        <RelativeLayout
+            android:id="@+id/rel_top"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="125dp" >
+            
+            
+            <com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="119dp"
+                android:background="@color/white" />
+
+            <ImageView
+                android:id="@+id/play_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:padding="1dp"
+                android:src="@drawable/nr_pauseicon" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/video_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel_top"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textColor="@color/cyan11"
+            android:singleLine="true"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

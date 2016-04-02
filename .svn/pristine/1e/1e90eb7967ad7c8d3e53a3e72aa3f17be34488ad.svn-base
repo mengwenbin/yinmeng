@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">音萌</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="company">北京音萌信息科技有限公司</string>
+    <string name="weixin">微信</string>
+    <string name="weibo">微博</string>
+    <string name="official_website">微博</string>
+    <string name="website">http://www.inmoe.cn</string>
+    
+    
+    <string name="exit_app">再按一次返回桌面</string>
+    <string name="no_network">无网络</string>
+    <string name="not_login">未登录</string>
+    <string name="please_login">请登录</string>
+    <string name="loading_please_wait">请稍候...</string>
+    <string name="loading_login">登录中...</string>
+    
+    <string name="start_login_title">登录</string>
+    <string name="start_regist_title">注册</string>
+    <string name="start_please_phone">请输入手机号或帐号</string>
+	<string name="start_please_pwd">请输入密码</string>
+	<string name="start_btn_login">登录</string>
+	<string name="start_forget_pwd">忘记密码 ?</string>
+	
+	<string name="start_regist_phone">+86</string>
+	<string name="start_regist_code">请输入验证码</string>
+	<string name="start_regist_getcode">获取验证码</string>
+	<string name="start_please_pwd2">再次输入密码</string>
+	<string name="start_btn_regist">注册</string>
+	<string name="start_check_agree_lawitem">我已阅读并同意</string>
+	<string name="start_text_law_item">使用条款和隐私政策</string>
+	
+	<string name="start_verificationCode_isSend">验证码已发送</string>
+	<string name="start_verificationCode_isRight">验证码正确</string>
+	<string name="start_verificationCode_isError">验证码错误</string>
+	<string name="start_get_country_list_success">获取国家列表成功</string>
+	
+	<string name="start_title_hint">请输入你注册过的手机号，收取验证码</string>
+	<string name="start_btn_resetpwd">完成</string>
+	
+	<string name="start_username_can_not_be_empty">帐号不能为空</string>
+	<string name="start_phone_number_can_not_be_empty">手机号不能为空</string>
+	<string name="start_verification_code_can_not_be_empty">验证码不能为空</string>
+	<string name="start_password_can_not_be_empty">密码不能为空</string>
+	<string name="start_two_passwords_differ">两次输入的密码不一致</string>
+	<string name="start_please_read_the_terms">请确认已阅读使用条款和隐私政策</string>
+	
+	<string name="reset_password">重置密码</string>
+	
+	<string name="original">原创</string>
+	<string name="cover_sing">翻唱</string>
+    
+    <!-- 跳转到 Login -->
+    <string name="From_Activity">activity</string>
+    <string name="Login_CollectActivity"></string>
+    
+    <!-- Menu left&&right -->
+	<string name="right_tag">RIGHT</string>
+    <string name="left_tag">LEFT</string>
+    
+    <!-- MainTab  FootBar -->
+    <string name="tab_footbar_home">首页</string>
+    <string name="tab_footbar_musicman">萌主</string>
+    <string name="tab_footbar_upload">上传</string>
+    <string name="tab_footbar_circle">圈儿</string>
+    <string name="tab_footbar_mine">我的</string>
+    <string name="tab_header_mine">我</string>
+    
+    <!-- Fragment Mine -->
+    <string name="mine_start_item_works">我的作品</string>
+    <string name="mine_start_item_posts">我的帖子</string>
+    <string name="mine_start_item_songs">我的歌单</string>
+    <string name="mine_start_item_message">我的消息</string>
+    <string name="mine_start_item_praise">我赞过的</string>
+    <string name="mine_start_item_collects">我的收藏</string>
+    <string name="mine_start_item_downloads">我的下载</string>
+    <string name="mine_start_item_setting">系统设置</string>
+    <string name="system_inform">系统通知</string>
+    <string name="mine_start_works">作品</string>
+    <string name="mine_start_attentions">关注</string>
+    <string name="mine_start_fans">粉丝</string>
+    <string name="mine_start_edit">编辑资料</string>
+    
+    <string name="music_user_letter">发私信</string>
+    
+    <!-- 编辑 -->
+    <string name="edituser_title">资料编辑</string>
+    <string name="edituser_head">头像</string>
+    <string name="edituser_nick">昵称</string>
+    <string name="edituser_birthday">生日</string>
+    <string name="edituser_life">本命</string>
+    <string name="edituser_mailbox">邮箱</string>
+    <string name="edituser_wechat">微信</string>
+    <string name="edituser_wish">心愿</string>
+    <string name="edituser_twitter_nick">微博昵称</string>
+    <string name="edituser_sex">性别</string>
+    <string name="edituser_local">所在地</string>
+    <string name="edituser_summary">个性签名 :</string>
+    <string name="edituser_attestation">申请认证</string>	
+    
+    <string name="sex_man">男</string>	
+    <string name="sex_woman">女</string>
+    <string name="sex_martian">火星人</string>
+    
+    <string name="sava">保存</string>
+    <string name="modify_nick">修改昵称</string>
+    <string name="modify_local">修改所在地</string>
+    <string name="modify_summary">修改简介</string>
+    <string name="modify_wish">修改心愿</string>
+    <string name="modify_life">修改本命</string>
+    <string name="modify_twitter">修改微博</string>
+    <string name="modify_qq">修改QQ</string>
+    <string name="modify_wechat">修改微信</string>
+    <string name="modify_mailbox">修改邮箱</string>
+    
+    <!-- system setting -->
+    <string name="setting">设置</string>
+    
+    <string name="modify_pwd">修改密码</string>
+    <string name="only_wifi">仅在Wi-Fi</string>
+    <string name="message_notification">消息通知</string>
+    <string name="no_wifi">当前为2G/3G/4G网络， 继续播放将消耗手机流量</string>
+    <string name="continue_play">继续播放</string>
+    <string name="stop_play">停止播放</string>
+    
+    <string name="spitslot_app">我要吐槽</string>
+    <string name="about_app">关于我们</string>
+    <string name="download_position">离线下载位置</string>
+    <string name="attention_app">关注我们</string>
+    <string name="send">发送</string>
+    
+    <string name="share">分享</string>
+    <string name="version_change">版本更新</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="exit_current_accounts">退出当前帐号</string>
+    
+    
+    <!-- 修改 -->
+    <string name="update_pwd">修改密码</string>
+    <string name="please_old_pwd">请输入旧密码</string>
+    <string name="please_new_pwd">请输入新密码</string>
+    <string name="please_new_pwd_too">再次输入新密码</string>
+    
+    
+    <!-- MediaPlay -->
+    <string name="play_sort_loop">循环播放</string>
+	<string name="play_sort_order">顺序播放</string>
+	<string name="play_sort_random">随机播放</string>
+	<string name="play_sort_one">单曲循环</string>
+    
+    <string name="downloaded">已下载该歌曲</string>
+    <string name="add_download">所选歌曲已添加下载</string>
+	<string name="just_download">下载完成</string>
+	
+	<!-- Blogs -->
+	<string name="intro">简介</string>
+	<string name="blog_detail">贴子详情</string>
+	<string name="new_comment">最新评论</string>
+	
+	
+	<string name="zhuanti_tuijian">专题推荐</string>
+	<string name="mengzhu_tuijian">萌主推荐</string>
+	<string name="yuanchuang_tuijian">原创推荐</string>
+	<string name="renqi_fanchang">人气翻唱</string>
+	<string name="niuren_video">牛人视频</string>
+	<string name="huodong_zhanshi">活动展示</string>
+	
+	<string name="main_author">主创</string>
+	<string name="lyric">歌词</string>
+	<string name="comment">评论</string>
+	<string name="uplaod_localmusic">上传歌曲列表</string>
+	<string name="music_writer">歌曲作者信息</string>
+	<string name="music_name">歌曲名称</string>
+	
+	<string name="song_menu_new">新建歌单</string>
+	<string name="song_menu_add">添加到歌单</string>
+	<string name="song_menu_hint">请输入歌单名称</string>
+	<string name="song_menu_confirm">新建</string>
+	<string name="song_menu_cancel">取消</string>
+	
+	<string name="add_tag">添加标签:</string>
+	
+	<string name="mine_invitation">我的帖子</string>
+	
+	<string name="recomment_music_user">萌主推荐</string>
+	<string name="recomment_ad">活动展示</string>
+	
+	<string name="please_check_network">请检查网络设置</string>
+	<string name="click_again_load">重新加载</string>
+	
+	
+	
+	
+	<string name="text_ack_msg">已读</string>
+    <string name="text_delivered_msg">送达</string>
+    <string name="back">返回</string>
+    <string name="save">保存</string>
+    <string name="button_pushtotalk">按住说话</string>
+    <string name="button_send">发送</string>
+    <string name="attach_smile">表情</string>
+    <string name="attach_picture">图片</string>
+    <string name="attach_take_pic">拍照</string>
+    <string name="attach_location">位置</string>
+    <string name="move_up_to_cancel">手指上滑，取消发送</string>
+    <string name="release_to_cancel">松开手指，取消发送</string>
+    <string name="send_fail">发送消息失败,</string>
+    <string name="delete_message">删除消息</string>
+    <string name="delete_conversation_messages">删除会话和消息</string>
+    <string name="delete_conversation">删除会话</string>
+    <string name="copy_message">复制消息</string>
+    <string name="delete_voice">删除语音</string>
+    <string name="delete">删除</string>
+    <string name="resend">重发</string>
+    <string name="confirm_resend">确认重发该信息？</string>
+    <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="network_unavailable">网络连接不可用，请检查网络</string>
+    <string name="copy">复制</string>
+    <string name="forward">转发</string>
+    <string name="unable_to_get_loaction">无法获取到您的位置信息!</string>
+    <string name="button_uploadlog">上传运行日志</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="prompt">提示</string>
+    <string name="clear_records">清空记录</string>
+    <string name="clear_all_records">是否清空所有聊天记录？</string>
+    <string name="picture">[图片]</string>
+    <string name="file">[文件]</string>
+    <string name="attach_file">文件</string>
+    <string name="File_does_not_exist">文件不存在</string>
+    <string name="The_file_is_not_greater_than_10_m">文件不能大于10M</string>
+    <string name="Have_downloaded">已下载</string>
+    <string name="Did_not_download">未下载</string>
+    <string name="button_cancel">取消</string>
+    <string name="button_save">保存</string>
+    <string name="buttonsearch">搜索</string>
+    <string name="location_message">位置信息</string>
+    <string name="search_header">搜</string>
+    <string name="network_isnot_available">网络不可用</string>
+    <string name="recoding_fail">录音失败，请重试！</string>
+    <string name="confirm_forward_to">确定转发到：%1$s ?</string>
+    <string name="exit_group">退出</string>
+    <string name="downwaiting">正在下载文件请稍后</string>
+    <string name="Failed_to_download_file">下载文件失败:</string>
+    <string name="connect_conflict">同一帐号已在其他设备登录</string>
+    <string name="em_user_remove">此用户已被移除</string>
+    <string name="set">设置</string>
+    <string name="notify">新消息提醒</string>
+    <string name="newnotify">接收新消息通知</string>
+    <string name="voice">声音</string>
+    <string name="shake">震动</string>
+    <string name="chatset">聊天设置</string>
+    <string name="yangshengqi">使用扬声器播放语音</string>
+    <string name="book_black">通讯录黑名单</string>
+    <string name="session">会话</string>
+    <string name="address_book">通讯录</string>
+    <string name="now_refresh_list">正在刷新联系人</string>
+    <string name="save_new_nickname">保存</string>
+    <string name="add_friend">添加好友</string>
+    <string name="search">搜索</string>
+    <string name="black_item">黑名单</string>
+    <string name="diagnose">诊断</string>
+    <string name="Not_Set">未设置</string>
+    <string name="Upload_the_log">上传日志中</string>
+    <string name="blacklist">黑名单列表</string>
+    <string name="Empty_the_chat_record">清空聊天记录</string>
+    <string name="Shielding_of_the_message">屏蔽群消息</string>
+    <string name="Select_the_contact">选择联系人</string>
+    <string name="Group_chat_information">群聊资料</string>
+    <string name="unable_to_connect">不能连接到服务器</string>
+    
+    <string name="not_add_myself">不能添加自己</string>
+    <string name="This_user_is_already_your_friend">此用户已是你的好友</string>
+    <string name="Add_a_friend">加个好友呗</string>
+    <string name="send_successful">发送请求成功,等待对方验证</string>
+    <string name="Request_add_buddy_failure">请求添加好友失败:</string>
+    <string name="Network_error">网络出错</string>
+    <string name="please_check">key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置</string>
+    <string name="expression">[表情]</string>
+    <string name="Removed_from_the_failure">移出失败</string>
+    <string name="Has_been_cancelled">已取消</string>
+    <string name="not_connect_to_server">尚未连接至服务器，请稍后重试</string>
+    <string name="sd_card_does_not_exist">SD卡不存在，不能拍照</string>
+    <string name="cant_find_pictures">找不到图片</string>
+    <string name="Whether_to_empty_all_chats">是否清空所有聊天记录</string>
+    <string name="Send_voice_need_sdcard_support">发送语音需要sdcard支持</string>
+    <string name="Recording_without_permission">无录音权限</string>
+    <string name="The_recording_time_is_too_short">录音时间太短</string>
+    <string name="send_failure_please">发送失败，请检测服务器是否连接</string>
+    <string name="Move_into_blacklist_success">移入黑名单成功</string>
+    <string name="Move_into_blacklist_failure">移入黑名单失败</string>
+    <string name="Cant_chat_with_yourself">不能和自己聊天</string>
+    <string name="Delete_failed">删除失败:</string>
+    <string name="get_failed_please_check">获取失败,请检查网络或稍后再试</string>
+    <string name="people">人)</string>
+    <string name="group_of_shielding">群屏蔽失败，请检查网络或稍后重试</string>
+    <string name="sure_to_empty_this">确定清空此群的聊天记录吗？</string>
+    <string name="The_delete_button_is_clicked">删除按钮被点击</string>
+    <string name="Add_a_button_was_clicked">添加按钮被点击</string>
+    <string name="not_delete_myself">不能删除自己</string>
+    <string name="User_name_cannot_be_empty">用户名不能为空！</string>
+    <string name="Password_cannot_be_empty">密码不能为空！</string>
+    <string name="login_failure_failed">IM:登录失败</string>
+    <string name="receive_the_passthrough">收到透传：action：</string>
+    <string name="have_you_removed">已把你从他好友列表里移除</string>
+    <string name="can_not_connect_chat_server_connection">连接不到聊天服务器</string>
+    <string name="the_current_network">当前网络不可用，请检查网络设置</string>
+    <string name="Logoff_notification">下线通知</string>
+    <string name="Remove_the_notification">移除通知</string>
+    <string name="network_anomalies">网络异常，请检查网络！</string>
+    <string name="User_already_exists">用户已存在！</string>
+    <string name="registration_failed_without_permission">注册失败，无权限！</string>
+    <string name="Registration_failed">注册失败:</string>
+    <string name="Are_logged_out">正在退出登录..</string>
+    <string name="Download_the_pictures">下载图片: 0%</string>
+    <string name="Download_the_pictures_new">下载图片:</string>
+    <string name="Into_the_blacklist">移入到黑名单？</string>
+    <string name="Has_agreed_to_your_friend_request">已同意你的好友请求</string>
+    <string name="Request_to_add_you_as_a_friend">请求加你为好友</string>
+    <string name="direct_call">Direct</string>
+    <string name="relay_call">Relay</string>
+    <string name="Agree_with_failure">同意失败:</string>
+    <string name="Is_download_voice_click_later">正在下载语音，稍后点击</string>
+    <string name="Send_the_following_pictures">发送以下图片？</string>
+    <string name="search_new">搜</string>
+    <string name="Making_sure_your_location">正在确定你的位置...</string>
+    
+    <string name="Delete_the_contact">删除联系人</string>
+    <string name="Move_into_the_blacklist_new">移入到黑名单</string>
+    <string name="Sync_Groups_From_Server">从服务器下载群聊信息</string>
+    
+    <string name="not_download">未下载:</string>
+    <string name="update_contact_list">更新联系人列表</string>
+    <string name="update_black_list">更新黑名单</string>
+    <string name="update_groups">更新群聊</string>
+    <string name="Application_and_notify">新的朋友</string>
+    
+    <string name="update_contact_list_failed">更新联系人列表失败</string>
+    
+    <string name= "no_more_messages">没有更多的消息了</string>
+    <string name="group_search_failed">搜索失败</string>
+    <string name="error_send_invalid_content">你发送了不合法的消息内容</string>
+    <string name="failed_to_load_data">加载数据失败，请检查网络或稍后重试</string>
+    <string name="searching">正在搜索..</string>
+    <string name="hanging_up">正在挂断..</string>
+    <string name="illegal_user_name">用户名不合法</string>
+</resources>

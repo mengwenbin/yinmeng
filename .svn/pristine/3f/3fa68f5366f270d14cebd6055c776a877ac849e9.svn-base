@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+    
+    <include 
+        android:id="@+id/include"
+        layout="@layout/title_layout" />
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="30dp">
+   	    
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/start_title_hint"
+            android:layout_alignParentBottom="true"
+            android:textColor="#ADADAD"
+            android:layout_marginBottom="5dp"
+            />
+   	    
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+   	    
+        <TextView android:id="@+id/image_phone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/login_phone"
+            android:layout_marginLeft="30dp"
+            android:text="@string/start_regist_phone"
+            android:textColor="@color/main_color"
+            android:layout_alignParentBottom="true"/>
+        
+        <View android:id="@+id/image_line"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/line_color"
+            android:layout_alignBottom="@+id/image_phone"
+            android:layout_toRightOf="@+id/image_phone"
+            android:layout_marginBottom="5dp" />
+
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/regist_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp" 
+            android:hint="@string/start_please_phone"
+            android:maxLength="11"
+            android:inputType="number"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/image_line"
+            android:layout_marginRight="20dp"
+            android:background="@color/white"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+   	    
+        <EditText
+            android:id="@+id/regist_code"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp" 
+            android:maxLength="6"
+            android:hint="@string/start_regist_code"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:background="#fff"
+            />
+        
+        <Button
+            android:id="@+id/regist_get_code"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:text="@string/start_regist_getcode"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/btn_style_regist_get_verification_code"/>
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/regist_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:hint="@string/start_please_pwd"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:background="@color/white"
+            android:inputType="textPassword"
+            android:layout_marginRight="20dp"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/regist_pwd_affirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:inputType="textPassword"
+            android:hint="@string/start_please_pwd2"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:background="#fff"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="wrap_content">
+   	    
+        <Button
+    		android:id="@+id/regist_btn"
+            android:layout_width="wrap_content"
+   	    	android:layout_height="40dp"
+   	    	android:textColor="@color/white"
+   	    	android:text="@string/start_btn_resetpwd"
+   	    	android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerHorizontal="true"
+   	    	android:background="@drawable/btn_style_login_or_regist"
+   	    	android:layout_marginTop="20dp"/>
+        
+    </RelativeLayout>
+    
+</LinearLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color" >
+    
+    <RelativeLayout 	
+        android:id="@+id/layout_songmenu_info"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/white" >
+        
+        <com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView
+            android:id="@+id/songmenu_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/test_default_wait_img" />
+        
+         <TextView
+	        android:id="@+id/songmenu_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/songmenu_img"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="10dp"
+	        android:maxLines="3"/>
+         
+          <ImageButton
+             android:id="@+id/btn_collect"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:src="@drawable/btn_collect_small_normal"
+             android:layout_alignParentRight="true"
+             android:layout_alignParentBottom="true"
+             android:layout_marginBottom="6dp"
+             android:layout_marginRight="18dp"
+             android:background="@null"/>
+          
+          <View 
+             android:layout_width="match_parent"
+             android:layout_height="1px"
+             android:background="@color/line_color"
+             android:layout_alignParentBottom="true"/>
+             
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/layout_songmenu_author"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:layout_below="@id/layout_songmenu_info">
+          
+        <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+	        android:id="@+id/author_head"
+	        android:layout_width="30dp"
+	        android:layout_height="30dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/test_default_head_bg_blue"/>
+        
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/author_head"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
+        
+        <ImageView 
+            android:id="@+id/author_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/sex_man"
+            android:layout_toRightOf="@+id/author_name"
+            android:layout_marginLeft="5dp"/>
+        
+        <ImageButton 
+            android:id="@+id/btn_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_attention_normal"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@null"/>
+			        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/layout_songs_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/layout_songmenu_author">
+        
+        <ImageButton 
+            android:id="@+id/btn_playall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_play_all"
+            android:layout_marginLeft="5dp"/>
+        
+        <TextView
+            android:id="@+id/songs_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放全部（共0首）"
+            android:layout_toRightOf="@+id/btn_playall"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:layout_centerVertical="true"/>
+        
+    </RelativeLayout>
+    
+
+</RelativeLayout>

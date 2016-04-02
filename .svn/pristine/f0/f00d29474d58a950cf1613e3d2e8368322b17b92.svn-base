@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        android:id="@+id/setting_title"
+        layout="@layout/title_layout_main" />
+
+    <com.xiaoxu.music.community.view.MyScrollView
+        android:id="@+id/mine_srcoll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/setting_title"
+        android:background="@color/fm_mine_bg"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_head"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/edituser_item_margin_top"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_head"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:id="@+id/btn_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+                    android:id="@+id/modify_head"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:src="@drawable/test_default_head_bg_blue" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_nick"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_nick"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_nick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_sex"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_sex"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <ImageView
+                    android:id="@+id/modify_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:src="@drawable/sex_martian" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_local"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_local"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_summary"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/edituser_item_margin_top"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:id="@+id/textview_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_summary"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+                <TextView
+                    android:id="@+id/modify_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_below="@id/textview_summary"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:layout_marginTop="@dimen/edituser_item_margin_top"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_birthday"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_wish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_wish"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_wish"
+                    android:singleLine="true"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_life"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_life"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_life"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_twitter"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:layout_marginTop="@dimen/edituser_item_margin_top"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_twitter_nick"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_qq"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="QQ"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_qq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_wechat"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_wechat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/edituser_line_margin_left"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_mailbox"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="@string/edituser_mailbox"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <TextView
+                    android:id="@+id/modify_mailbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_value_margin_right"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_value_textsize" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edituser_layout_attestation"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edituser_height_item"
+                android:layout_marginTop="@dimen/edituser_item_margin_top"
+                android:layout_marginBottom="20dp"
+                android:background="@color/white"
+                android:onClick="onEditClick" >
+
+                <TextView
+                    android:id="@+id/apply_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/edituser_key_margin_left"
+                    android:gravity="center"
+                    android:text="申请认证"
+                    android:textColor="@color/act_set_text_color"
+                    android:textSize="@dimen/edituser_key_textsize" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/edituser_btnRight_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.xiaoxu.music.community.view.MyScrollView>
+
+</RelativeLayout>

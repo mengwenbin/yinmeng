@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- android:iconifiedByDefault表示搜索图标是否在输入框内。true效果更加
+		 android:imeOptions设置IME options，即输入法的回车键的功能，可以是搜索、下一个、发送、完成等等。这里actionSearch表示搜索
+		 android:inputType输入框文本类型，可控制输入法键盘样式，如numberPassword即为数字密码样式
+		 android:queryHint输入框默认文本
+    -->
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/main_color">
+        
+        <TextView
+            android:id="@+id/title_right_btn"
+	     	android:layout_width="40dp"
+	     	android:layout_height="35dp"
+	     	android:layout_alignParentRight="true"
+	     	android:layout_centerVertical="true"
+	     	android:layout_marginRight="@dimen/title_margin_right"
+	     	android:textColor="@color/white"
+	     	android:textSize="17sp"
+	     	android:gravity="center"
+	     	android:text="取消" />
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingRight="5dp"
+            android:drawableLeft="@drawable/collect_success"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/title_right_btn"
+            android:background="@drawable/bg_shape_search"
+            android:textColor="@color/white"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textSize="14sp"
+            />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

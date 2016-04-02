@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+    
+    <include layout="@layout/title_layout_main"
+        android:id="@+id/layout_title"
+        />
+    
+    <View 
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_color2"
+        android:layout_below="@+id/layout_title" />
+	
+    <LinearLayout
+        android:id="@+id/layout_indicator_song"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:layout_below="@+id/line">
+
+        <RelativeLayout
+            android:id="@+id/layout_indicator_original"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_shape_original_press" >
+
+            <TextView
+                android:id="@+id/tv_indicator_original"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="原创"
+                android:textColor="@color/white"
+                android:textSize="@dimen/edituser_value_textsize" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_indicator_cover"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_shape_cover_normal" >
+
+            <TextView
+                android:id="@+id/tv_indicator_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="翻唱"
+                android:textColor="@color/cyan8"
+                android:textSize="@dimen/edituser_value_textsize" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_indicator_sort"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/layout_indicator_song"
+        android:layout_marginTop="10dp"
+        android:background="@color/sort_list_indicator_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" >
+
+        <RelativeLayout
+            android:id="@+id/indicator_sort_new"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/btn_indicator_new"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="最新"
+                android:textColor="@color/sort_list_indicator_tv"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/indicator_new"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/main_color" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/indicator_sort_hot"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/btn_indicator_hot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="热门"
+                android:textColor="@color/sort_list_indicator_tv"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/indicator_hot"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/main_color"
+                android:visibility="gone"
+                android:layout_marginBottom="2dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/indicator_sort_popular"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/btn_indicator_popular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="人气"
+                android:textColor="@color/sort_list_indicator_tv"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/indicator_popular"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/main_color"
+                android:visibility="gone"
+                android:layout_marginBottom="2dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/indicator_sort_publicity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/btn_indicator_publicity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:text="传播"
+                android:textColor="@color/sort_list_indicator_tv"
+                android:textSize="16sp" />
+
+            <View
+                android:id="@+id/indicator_publicity"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/main_color"
+                android:visibility="gone"
+                android:layout_marginBottom="2dp" />
+        </RelativeLayout>
+        
+    </LinearLayout>
+    
+    <com.xiaoxu.music.community.view.CustomViewPager
+        android:id="@+id/viewpager_song"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_indicator_sort" />
+
+</RelativeLayout>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color" >
+
+    <RelativeLayout
+        android:id="@+id/rel_title"
+        android:layout_width="wrap_content"
+        android:layout_height="140dp"
+        android:background="@color/white" >
+
+        <RelativeLayout
+            android:id="@+id/rel_icon"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp" >
+
+            <com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView
+                android:id="@+id/song_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/test_default_wait_img" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="6dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/song_details" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:background="@drawable/person_time_bg" >
+
+                <ImageView
+                    android:id="@+id/player_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="2dp"
+                    android:src="@drawable/player_icon" />
+
+                <TextView
+                    android:id="@+id/tv_play_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/player_iv"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/mine_userinfo_item_text_size" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/songmenu_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/rel_icon"
+            android:text="古风-仙与侠"
+            android:textColor="@color/black"
+            android:textSize="@dimen/edituser_key_textsize" />
+
+        <RelativeLayout
+            android:id="@+id/rel_user"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@id/songmenu_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/rel_icon" >
+
+            <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+                android:id="@+id/author_head"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/author_head"
+                android:textColor="@color/cyan8"
+                android:textSize="@dimen/edituser_value_textsize" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/author_name"
+                android:src="@drawable/next_icon" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_color" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/rel_operation"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:layout_below="@+id/rel_title">
+        
+        <ImageButton 
+            android:id="@+id/share_songmenu"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/share_minesonglist"
+            android:layout_centerVertical="true"/>
+        
+        <View 
+            android:id="@+id/line_center"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/line_color"
+            android:layout_toLeftOf="@+id/share_songmenu"/>
+        
+        <ImageButton 
+            android:id="@+id/collect_songmenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_collect_middle_normal"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/line_center"
+            android:layout_centerVertical="true" />
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/rel_operation"
+        android:layout_marginTop="5dp"
+        android:background="@color/white" >
+
+        <ImageButton
+            android:id="@+id/btn_playall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/btn_play_all" />
+
+        <TextView
+            android:id="@+id/songs_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/btn_playall"
+            android:text="播放全部（共0首）"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/eidt_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/edit_menu"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_color" />
+    </RelativeLayout>
+
+</RelativeLayout>

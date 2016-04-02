@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="离线下载位置"
+        android:textColor="@color/main_color"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/main_color" />
+
+    <TextView
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="请选择离线下载的位置"
+        android:textSize="@dimen/edituser_value_textsize" />
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select"
+        android:layout_marginTop="10dp" >
+
+        <CheckBox
+            android:id="@+id/built_in_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_checked"
+            android:button="@null" />
+
+        <TextView
+            android:id="@+id/built_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/built_in_box"
+            android:text="内置SD卡"
+            android:textSize="@dimen/edituser_value_textsize" />
+
+        <TextView
+            android:id="@+id/built_inpath"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/built_in"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/built_in_box"
+            android:text="内置SD卡"
+            android:textColor="@color/line_color"
+            android:textSize="10sp" />
+        
+        <TextView 
+            android:id="@+id/built_insurplus_size"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/built_in_box"
+            android:layout_below="@id/built_inpath"
+            android:textColor="@color/line_color"
+            android:text="共23.0G"/>
+
+        <CheckBox
+            android:id="@+id/built_out_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/built_in_box"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_checked"
+            android:button="@null" />
+        <TextView
+            android:id="@+id/built_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@id/built_out_box"
+            android:layout_below="@id/built_in_box"
+            android:text="外置SD卡"
+            android:textSize="@dimen/edituser_value_textsize" />
+
+        <TextView
+            android:id="@+id/built_outpath"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/built_out"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/built_out_box"
+            android:text="外置SD卡"
+            android:textSize="10sp" />
+        <TextView 
+            android:id="@+id/built_outsurplus_size"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/built_out_box"
+            android:layout_below="@id/built_outpath"
+            android:textColor="@color/line_color"
+            android:text="共23.0G"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/rel"
+        android:layout_marginTop="5dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/line_color" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@color/line_color" />
+
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignRight="@id/line"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_cancel_bj"
+            android:gravity="center"
+            android:text="取消"
+             />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/btn_blue_selector"
+            android:layout_alignLeft="@id/line"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+</RelativeLayout>

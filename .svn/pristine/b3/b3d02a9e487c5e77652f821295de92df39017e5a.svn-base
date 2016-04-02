@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rel_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.xiaoxu.music.community.view.MyViewPager
+                    android:id="@+id/view_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp" />
+
+                <TextView
+                    android:id="@+id/load_ad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/click_again_load"
+                    android:textColor="@color/cyan8"
+                    android:textSize="@dimen/edituser_key_textsize"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="165dp"
+                android:background="@color/white" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_topmz"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" >
+
+                    <ImageView
+                        android:id="@+id/mz_iv"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/mz_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/mz_iv"
+                        android:text="@string/mengzhu_tuijian"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/image_mz"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/next_icon" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mz_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_below="@id/rel_topmz"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+
+                <TextView
+                    android:id="@+id/load_mz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/rel_topmz"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/click_again_load"
+                    android:textColor="@color/cyan8"
+                    android:textSize="@dimen/edituser_key_textsize"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/white" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_zt"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" >
+
+                    <ImageView
+                        android:id="@+id/zt_iv"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/zt_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/zt_iv"
+                        android:text="@string/zhuanti_tuijian"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/image_zt"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/next_icon" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/zt_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_below="@id/rel_zt"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp" />
+
+                <TextView
+                    android:id="@+id/load_zt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/rel_zt"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/click_again_load"
+                    android:textColor="@color/cyan8"
+                    android:textSize="@dimen/edituser_key_textsize"
+                    android:visibility="gone" />
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:layout_marginTop="3dp"
+                android:background="@color/white" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_topyc"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" >
+
+                    <ImageView
+                        android:id="@+id/yc_iv"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/yc_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/yc_iv"
+                        android:text="@string/yuanchuang_tuijian"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/image_yc"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/next_icon" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/yc_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_below="@id/rel_topyc"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp" />
+
+                <TextView
+                    android:id="@+id/load_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/rel_topyc"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/click_again_load"
+                    android:textColor="@color/cyan8"
+                    android:textSize="@dimen/edituser_key_textsize"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:background="@color/white" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_toprq"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" >
+
+                    <ImageView
+                        android:id="@+id/rq_iv"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/rq_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/rq_iv"
+                        android:text="@string/renqi_fanchang"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/image_rq"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/next_icon" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rq_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_below="@id/rel_toprq"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp" />
+
+                <TextView
+                    android:id="@+id/load_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/rel_toprq"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/click_again_load"
+                    android:textColor="@color/cyan8"
+                    android:textSize="@dimen/edituser_key_textsize"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@color/white" >
+
+                <RelativeLayout
+                    android:id="@+id/rel_topnr"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" >
+
+                    <ImageView
+                        android:id="@+id/nr_iv"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/nr_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@id/nr_iv"
+                        android:text="@string/niuren_video"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/image_nr"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14dp"
+                        android:src="@drawable/next_icon" />
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/nr_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="175dp"
+                    android:layout_below="@id/rel_topnr"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/rel_more"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@drawable/more_recommend" />
+
+            <RelativeLayout
+                android:id="@+id/rel_tophd"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@color/white" >
+
+                <ImageView
+                    android:id="@+id/hd_iv"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/play_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_toRightOf="@id/hd_iv"
+                    android:text="@string/huodong_zhanshi"
+                    android:textColor="@color/black"
+                    android:textSize="17sp" />
+
+                <ImageView
+                    android:id="@+id/image_hd"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/next_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_ad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/ad_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="145dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        app:loading_width="5dp" />
+
+</RelativeLayout>

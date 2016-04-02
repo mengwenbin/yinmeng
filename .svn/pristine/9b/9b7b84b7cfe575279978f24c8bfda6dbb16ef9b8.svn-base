@@ -1,0 +1,331 @@
+package com.xiaoxu.music.community.adapter;
+
+import java.util.List;
+
+import com.lidroid.xutils.BitmapUtils;
+import com.umeng.socialize.utils.Log;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.CircleBlogDetailActivity;
+import com.xiaoxu.music.community.activity.ImageActivity;
+import com.xiaoxu.music.community.activity.MusicUserDetailActivity;
+import com.xiaoxu.music.community.entity.BlogAuthorEntity;
+import com.xiaoxu.music.community.entity.BlogsInfoEntity;
+import com.xiaoxu.music.community.entity.ImageEntity;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.util.TimeUtil;
+import com.xiaoxu.music.community.view.CustomListView;
+import com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView;
+import com.xiaoxu.music.community.view.xlistview.XListView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap.Config;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+public class CircleBlogDetailAdapter extends BaseAdapter {
+	
+	public final int VIEWHOLDER_CATEGORY = 0;
+	public final int VIEWHOLDER_POSTS = 1;
+	
+	private Context context;
+	private CircleBlogDetailActivity act;
+	private List<BlogsInfoEntity> list;
+	private BitmapUtils bitUtil;
+	
+	public CircleBlogDetailAdapter(CircleBlogDetailActivity act, List<BlogsInfoEntity> list,
+			BitmapUtils bitUtil) {
+		super();
+		this.context = act;
+		this.act = act;
+		this.list = list;
+		this.bitUtil = bitUtil;
+		this.bitUtil.configDefaultBitmapConfig(Config.RGB_565);//设置图片压缩类型
+		this.bitUtil.configDefaultLoadingImage(R.drawable.test_default_wait_img);// 默认背景图片
+		this.bitUtil.configDefaultLoadFailedImage(R.drawable.test_default_wait_img);
+	}
+	
+	public List<BlogsInfoEntity> getList() {
+		return list;
+	}
+
+	public void setList(List<BlogsInfoEntity> list) {
+		this.list = list;
+	}
+	
+	@Override
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return list != null ? list.size() : 0;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		// TODO Auto-generated method stub
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		// TODO Auto-generated method stub
+		return position;
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+		// TODO Auto-generated method stub
+		if (position == 0) {
+			return VIEWHOLDER_CATEGORY;
+		} else {
+			return VIEWHOLDER_POSTS;
+		}
+	}
+
+	@Override
+	public int getViewTypeCount() {
+		// TODO Auto-generated method stub
+		return 2;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		// TODO Auto-generated method stub
+		ViewholderPostDetail holderPost = null;
+		ViewHolderAnswerPost holderAnswer = null;
+		int type = getItemViewType(position);
+		if (convertView == null) {
+			switch (type) {
+			case VIEWHOLDER_CATEGORY:
+				convertView = LayoutInflater.from(context).inflate(R.layout.adapter_blog_detail_topinfo, null);
+				holderPost = new ViewholderPostDetail(convertView);
+				convertView.setTag(holderPost);
+				break;
+			case VIEWHOLDER_POSTS:
+				convertView = LayoutInflater.from(context).inflate(R.layout.adapter_blog_detail_reply_blogs, null);
+				holderAnswer = new ViewHolderAnswerPost(convertView);
+				convertView.setTag(holderAnswer);
+				break;
+			default:
+				break;
+			}
+		} else {
+			switch (type) {
+				case VIEWHOLDER_CATEGORY: holderPost = (ViewholderPostDetail) convertView.getTag(); break;
+				case VIEWHOLDER_POSTS: holderAnswer = (ViewHolderAnswerPost) convertView.getTag(); break;
+				default: break;
+			}
+		}
+		switch (type) {
+		case VIEWHOLDER_CATEGORY:// 帖子详情
+			// user
+			holderPost.image_author.setOnClickListener(new Click(position));
+			holderPost.tv_author_name.setOnClickListener(new Click(position));
+			holderPost.image_sex.setOnClickListener(new Click(position));
+			
+			BlogAuthorEntity user = list.get(position).getAuthor_info();
+			bitUtil.display(holderPost.image_author,StringUtil.replaceImagePath(user.getUser_img(), 100));
+			holderPost.tv_author_name.setText(list.get(position).getAuthor_info().getUser_nick());
+			int sex = Integer.parseInt(list.get(position).getAuthor_info().getUser_sex());
+			switch (sex) {
+				case 0: holderPost.image_sex.setImageResource(R.drawable.sex_martian); break;
+				case 1: holderPost.image_sex.setImageResource(R.drawable.sex_man);break;
+				case 2: holderPost.image_sex.setImageResource(R.drawable.sex_woman);break;
+				default:break;
+			}
+			String release_time = TimeUtil.getStandardDate(list.get(position).getTime_create());
+			holderPost.tv_release_time.setText(release_time);
+			holderPost.tv_post_body.setText(list.get(position).getBlog_message());
+			
+			List<ImageEntity> list_images = list.get(position).getImg_attachment();
+			holderPost.layout_image.setGravity(Gravity.CENTER_HORIZONTAL);
+			holderPost.layout_image.removeAllViews();
+			for (int i = 0; i < list_images.size(); i++) {
+				ImageEntity img = list_images.get(i);
+				ImageView view = new ImageView(context);
+				view.setAdjustViewBounds(true);//根据图片大小，调整ImageView的边框
+				view.setPadding(0, 5, 0, 0);
+				view.setOnClickListener(new Onclick(i, list.get(position)));
+				bitUtil.display(view, StringUtil.replaceImagePath(img.getAttachment(),720));
+				holderPost.layout_image.addView(view);
+			}
+			break;
+		case VIEWHOLDER_POSTS:// 帖子列表
+			// user
+			holderAnswer.image_author.setOnClickListener(new Click(position));
+			holderAnswer.tv_author_name.setOnClickListener(new Click(position));
+			holderAnswer.image_sex.setOnClickListener(new Click(position));
+			holderAnswer.tv_post_body.setOnClickListener(new Click(position, 1));
+			
+			BlogAuthorEntity user2 = list.get(position).getAuthor_info();
+			bitUtil.display(holderAnswer.image_author,StringUtil.replaceImagePath(user2.getUser_img(),100));
+			holderAnswer.tv_author_name.setText(list.get(position).getAuthor_info().getUser_nick());
+			int sex2 = Integer.parseInt(list.get(position).getAuthor_info().getUser_sex());
+			switch (sex2) {
+				case 0: holderAnswer.image_sex.setImageResource(R.drawable.sex_martian); break;
+				case 1: holderAnswer.image_sex.setImageResource(R.drawable.sex_man); break;
+				case 2: holderAnswer.image_sex.setImageResource(R.drawable.sex_woman); break;
+				default: break;
+			}
+			String release_time2 = TimeUtil.getStandardDate(list.get(position).getTime_create());
+			holderAnswer.tv_release_time.setText(release_time2);
+			holderAnswer.tv_post_body.setText(list.get(position).getBlog_message());
+			
+			holderAnswer.line.setVisibility(View.GONE);
+			if(list.get(position).getList_reply2()!=null&&list.get(position).getList_reply2().size()>0){
+				holderAnswer.line.setVisibility(View.VISIBLE);
+			}
+			holderAnswer.list_child.setAdapter(new CircleBlogDetailChildAdapter(context, act, list.get(position).getList_reply2(),list.get(position).getTid()));
+			holderAnswer.tv_more_reply.setVisibility(View.GONE);
+			if(list.get(position).getList_reply2()!=null&&list.get(position).getList_reply2().size()>3){
+				holderAnswer.tv_more_reply.setVisibility(View.VISIBLE);
+				holderAnswer.tv_more_reply.setOnClickListener(new ClickMore(holderAnswer,position));
+				holderAnswer.tv_more_reply.setText("更多"+(list.get(position).getList_reply2().size()-3)+"条回复...");
+			}
+			break;        
+		default:
+			break;
+		}
+		return convertView;
+	}
+	
+	private class ViewholderPostDetail {
+		CircleImageView image_author;
+		TextView tv_author_name, tv_release_time, tv_post_body;
+		ImageView image_sex;
+		LinearLayout layout_image;
+		public ViewholderPostDetail(View convertView) {
+			super();
+			image_author = (CircleImageView) convertView.findViewById(R.id.post_author_head);
+			tv_author_name = (TextView) convertView.findViewById(R.id.post_author_name);
+			image_sex = (ImageView) convertView.findViewById(R.id.post_author_sex);
+			tv_release_time = (TextView) convertView.findViewById(R.id.post_release_time);
+			tv_post_body = (TextView) convertView.findViewById(R.id.post_body);
+			layout_image = (LinearLayout) convertView.findViewById(R.id.layout_images);
+		}
+	}
+
+	private class ViewHolderAnswerPost {
+		CircleImageView image_author;
+		TextView tv_author_name, tv_release_time, tv_post_body,tv_more_reply;
+		ImageView image_sex;
+		CustomListView list_child;
+		View line;
+		public ViewHolderAnswerPost(View convertView) {
+			super();
+			image_author = (CircleImageView) convertView.findViewById(R.id.post_author_head);
+			tv_author_name = (TextView) convertView.findViewById(R.id.post_author_name);
+			image_sex = (ImageView) convertView.findViewById(R.id.post_author_sex);
+			tv_release_time = (TextView) convertView.findViewById(R.id.post_release_time);
+			tv_post_body = (TextView) convertView.findViewById(R.id.post_body);
+			list_child = (CustomListView) convertView.findViewById(R.id.listview_child);
+			tv_more_reply = (TextView) convertView.findViewById(R.id.more_reply);
+			line = convertView.findViewById(R.id.below_line);
+		}
+	}
+	
+	//显示更多回复（判断）
+	private int currentMore = -1;
+	private int oldPosition = -1;
+	private boolean isMore;
+	private ViewHolderAnswerPost oldHolder;
+	private CircleBlogDetailChildAdapter oldChildAdapter;
+	
+	class ClickMore implements OnClickListener {
+		
+		private int position;
+		private ViewHolderAnswerPost holder;
+		private CircleBlogDetailChildAdapter adapter;
+		
+		public ClickMore(ViewHolderAnswerPost holder,int position) {
+			super();
+			this.position = position;
+			this.holder = holder;
+			this.adapter = (CircleBlogDetailChildAdapter)holder.list_child.getAdapter();
+		}
+		
+		@Override
+		public void onClick(View v) {
+			if(position == currentMore&&isMore){
+				currentMore = -1;
+				isMore = false;
+				oldHolder = null;
+				oldChildAdapter = null;
+				holder.tv_more_reply.setText("更多"+(list.get(position).getList_reply2().size()-3)+"条回复...");
+			}else{
+				if(oldHolder!=null){//让上一个显示更多回复的item收回更多回复
+					if(oldPosition>=0){
+						oldHolder.tv_more_reply.setText("更多"+(list.get(oldPosition).getList_reply2().size()-3)+"条回复...");
+					}else{
+						oldHolder.tv_more_reply.setText("显示更多回复...");
+					}
+					oldChildAdapter = (CircleBlogDetailChildAdapter)oldHolder.list_child.getAdapter();
+					oldChildAdapter.setMore(false);
+				}
+				holder.tv_more_reply.setText("收回更多回复");
+				currentMore = position;
+				isMore = true;
+				oldChildAdapter = adapter;
+				oldHolder = holder;
+				oldPosition = position;
+			}
+			adapter.setMore(isMore);
+		}
+	}
+	
+	//音乐人详情
+	class Click implements OnClickListener {
+		private int position;
+		private int type = 0;
+		public Click(int position) {
+			super();
+			this.position = position;
+		}
+		
+		public Click(int position, int type) {
+			super();
+			this.position = position;
+			this.type = type;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			if(type==0){
+				Intent intent = new Intent(context, MusicUserDetailActivity.class);
+				intent.putExtra("user_id", list.get(position).getUser_id());
+				context.startActivity(intent);
+			}else{
+				act.replyComment(list.get(position).getTid(),list.get(position).getTid(),list.get(position).getBlog_author(),list.get(position).getUser_id());
+			}
+		}
+	}
+	
+	//图片监听
+	class Onclick implements OnClickListener {
+		private int position;
+		private BlogsInfoEntity entity;
+		public Onclick(int position, BlogsInfoEntity entity) {
+			super();
+			this.position = position;
+			this.entity = entity;
+		}
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent in = new Intent(context, ImageActivity.class);
+			in.putExtra("entity", entity);
+			in.putExtra("position", position);
+			context.startActivity(in);
+		}
+	}
+
+}

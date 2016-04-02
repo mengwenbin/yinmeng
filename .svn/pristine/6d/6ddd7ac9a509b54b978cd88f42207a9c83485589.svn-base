@@ -1,0 +1,692 @@
+package com.xiaoxu.music.community.adapter;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.xiaoxu.music.community.BaseNewAdapter;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.YmApplication;
+import com.xiaoxu.music.community.activity.EditMineSongActivity;
+import com.xiaoxu.music.community.activity.EditSongInfoActivity;
+import com.xiaoxu.music.community.activity.MusicUserDetailActivity;
+import com.xiaoxu.music.community.activity.SongMenuSummaryActivity;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.SongInfoEntity;
+import com.xiaoxu.music.community.entity.SongMenuInfoEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.CollectSongMenuTask;
+import com.xiaoxu.music.community.model.task.MineSongTask;
+import com.xiaoxu.music.community.parser.ParseUtil;
+import com.xiaoxu.music.community.service.DownLoadService;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.NetUtils;
+import com.xiaoxu.music.community.util.SharedPreUtils;
+import com.xiaoxu.music.community.util.StringUtil;
+import com.xiaoxu.music.community.view.AddSongMenuPop;
+import com.xiaoxu.music.community.view.CustomOnlyWifiDialog;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+public class SongDetailsAdapter extends BaseNewAdapter {
+
+	private int pageNum;
+	private boolean state = false;
+	public static int current = -1;
+	private String musiclist_id;
+	private String list_size;
+	private YmApplication app;
+	private LayoutInflater inflater;
+	private BitmapUtils bitmapUtils;
+	private BitmapUtils bitmaputils;
+	private SongMenuInfoEntity songmenu;
+	private ArrayList<SongInfoEntity> list;
+	
+	private int pos = -1;
+	private AddSongMenuPop addsong;
+	public final int SONG_MENU = 0;
+	public final int MUSIC_LIST = 1;
+	private OnChangeListSize changeListSize;
+	
+	public SongDetailsAdapter(Context context,Activity activity,YmApplication app,
+			String musiclist_id,int pageNum,BitmapUtils bitmapUtils) {
+		super(context, activity);
+		this.app = app;
+		this.pageNum = pageNum;
+		this.bitmapUtils = bitmapUtils;
+		this.musiclist_id = musiclist_id;
+		inflater = LayoutInflater.from(context);
+		app.getCurrentMusic();
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_wait_img);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_wait_img);// 加载失败图片
+		
+		bitmaputils = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		bitmaputils.configDefaultLoadingImage(R.drawable.default_head);
+		bitmaputils.configDefaultLoadFailedImage(R.drawable.test_default_head_bg_blue);
+	}
+
+	public void setChangeListSize(OnChangeListSize changeListSize) { 
+		this.changeListSize = changeListSize;
+	}
+
+	public String getList_size() {
+		return list_size;
+	}
+
+	public void setList_size(String list_size) {
+		this.list_size = list_size;
+	}
+
+	public SongMenuInfoEntity getSongmenu() {
+		return songmenu;
+	}
+
+	public void setSongmenu(SongMenuInfoEntity songmenu) {
+		this.songmenu = songmenu;
+	}
+
+	public ArrayList<SongInfoEntity> getList() {
+		return list;
+	}
+
+	public void setList(ArrayList<SongInfoEntity> list) {
+		this.list = list;
+	}
+	@Override
+	public int getCount() {
+		return list != null ? list.size() : 0;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+	
+	@Override
+	public int getItemViewType(int position) {
+		if(position == 0){
+			return SONG_MENU;
+		}else{
+			return MUSIC_LIST;
+		}
+	}
+	
+	@Override
+	public int getViewTypeCount() {
+		return 2;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		ViewHolder viewHolder = null;
+		int type = getItemViewType(position);
+		if(convertView == null){
+			viewHolder = new ViewHolder();
+			switch (type) {
+			case SONG_MENU:
+				convertView = inflater.inflate(R.layout.adapter_songmenutitle, null);
+				viewHolder.down_iv = (ImageView) convertView.findViewById(R.id.down_iv);
+				viewHolder.share_iv = (ImageView) convertView.findViewById(R.id.share_iv);
+				viewHolder.collect_iv = (ImageView) convertView.findViewById(R.id.collect_iv);
+				viewHolder.edit_iv = (ImageView) convertView.findViewById(R.id.edit_iv);
+				viewHolder.song_cover = (ImageView) convertView.findViewById(R.id.song_cover);
+				viewHolder.author_head = (ImageView) convertView.findViewById(R.id.author_head);
+				viewHolder.song_type = (TextView) convertView.findViewById(R.id.song_type);
+				viewHolder.user_name = (TextView) convertView.findViewById(R.id.user_name);
+				viewHolder.rel_user = (RelativeLayout) convertView.findViewById(R.id.rel_user);
+				viewHolder.songs_num = (TextView) convertView.findViewById(R.id.songs_num);
+				viewHolder.edit_music = (ImageView) convertView.findViewById(R.id.eidt_music);
+				viewHolder.btn_playall = (ImageButton) convertView.findViewById(R.id.btn_playall);
+				break;
+			case MUSIC_LIST:
+				convertView = inflater.inflate(R.layout.adapter_songmenubottom, null);
+				
+				viewHolder.music_name = (TextView) convertView.findViewById(R.id.music_name);
+				viewHolder.music_author= (TextView) convertView.findViewById(R.id.music_author);
+				viewHolder.right_btn = (ImageView) convertView.findViewById(R.id.right_btn);
+				viewHolder.play_view = convertView.findViewById(R.id.play_view);
+				viewHolder.view = convertView.findViewById(R.id.view);
+				viewHolder.rel_right = (RelativeLayout) convertView.findViewById(R.id.rel_right);
+				
+				viewHolder.layout_item = (LinearLayout) convertView.findViewById(R.id.layout_item);
+				viewHolder.collect_image = (ImageView) convertView.findViewById(R.id.collect_iv);
+				viewHolder.share_image = (ImageView) convertView.findViewById(R.id.share_iv);
+				viewHolder.down_image = (ImageView) convertView.findViewById(R.id.down_iv);
+				viewHolder.addsong_iv = (ImageView) convertView.findViewById(R.id.addsong_iv);
+				viewHolder.delete_iv = (ImageView) convertView.findViewById(R.id.delete_iv);
+				
+				viewHolder.rel_add = (RelativeLayout) convertView.findViewById(R.id.add_song);
+				viewHolder.rel_collect = (RelativeLayout) convertView.findViewById(R.id.rel_collect);
+				viewHolder.rel_share = (RelativeLayout) convertView.findViewById(R.id.rel_share);
+				viewHolder.rel_down = (RelativeLayout) convertView.findViewById(R.id.rel_down);
+				viewHolder.rel_delete = (RelativeLayout) convertView.findViewById(R.id.rel_delete);
+				
+				break;
+			}
+			convertView.setTag(viewHolder);
+		}else{
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+		
+		switch (type) {
+		case SONG_MENU:
+			viewHolder.song_type.setText(songmenu.getMusiclist_name());
+			bitmapUtils.display(viewHolder.song_cover, StringUtil.replaceImagePath(songmenu.getMusiclist_img(), 600));
+			bitmaputils.display(viewHolder.author_head, StringUtil.replaceImagePath(songmenu.getUser().getUser_img(), 300));
+			viewHolder.user_name.setText(songmenu.getUser().getUser_nick()+"");
+			
+			viewHolder.songs_num.setText("播放全部（共"+list_size+"首）");
+			viewHolder.collect_iv.setOnClickListener(new ClickListener(1, viewHolder));
+			viewHolder.share_iv.setOnClickListener(new ClickListener(2,position, viewHolder));
+			viewHolder.down_iv.setOnClickListener(new ClickListener(3,viewHolder));
+			viewHolder.edit_iv.setOnClickListener(new ClickListener(4,viewHolder));
+			if(songmenu.getFavorite().equals("0")){
+				viewHolder.collect_iv.setBackgroundResource(R.drawable.song_collect_normal);
+			}else{
+				viewHolder.collect_iv.setBackgroundResource(R.drawable.song_collect_press);
+			}
+			viewHolder.song_cover.setOnClickListener(new ClickListener(5, viewHolder));
+			viewHolder.rel_user.setOnClickListener(new ClickListener(6, viewHolder));
+			viewHolder.edit_music.setOnClickListener(new ClickListener(7, viewHolder));
+			viewHolder.btn_playall.setOnClickListener(new ClickListener(8, viewHolder));
+			break;
+
+		case MUSIC_LIST:
+			
+			viewHolder.right_btn.setFocusable(true);
+			viewHolder.right_btn.setFocusableInTouchMode(true);
+			viewHolder.right_btn.setBackgroundResource(R.drawable.btn_down);
+			viewHolder.music_name.setText(list.get(position).getMusic_name());
+			viewHolder.music_author.setText(list.get(position).getMusic_singing());
+			if(list.get(position).getFavorite().equals("0")){
+				viewHolder.collect_image.setBackgroundResource(R.drawable.down_collectnormal);
+			}else if(list.get(position).getFavorite().equals("1")){
+				viewHolder.collect_image.setBackgroundResource(R.drawable.down_collect_press);
+			}
+			convertView.setOnClickListener(new ClickListener(9, position, viewHolder));
+			viewHolder.rel_right.setOnClickListener(new ClickListener(10, position, viewHolder));
+			viewHolder.rel_collect.setOnClickListener(new ClickListener(11, position, viewHolder));
+			viewHolder.rel_share.setOnClickListener(new ClickListener(12, position, viewHolder));
+			viewHolder.rel_down.setOnClickListener(new ClickListener(13, position, viewHolder));
+			viewHolder.rel_add.setOnClickListener(new ClickListener(14, position, viewHolder));
+			viewHolder.rel_delete.setOnClickListener(new ClickListener(15, position, viewHolder));
+			
+			viewHolder.music_name.setTextColor(context.getResources().getColor(R.color.music_list_song_name));
+			viewHolder.music_author.setTextColor(context.getResources().getColor(R.color.music_list_song_author));
+			viewHolder.play_view.setVisibility(View.GONE);
+			viewHolder.layout_item.setVisibility(View.GONE);
+			viewHolder.view.setVisibility(View.VISIBLE);
+			if(pos == position){
+				
+				viewHolder.right_btn.setBackgroundResource(R.drawable.btn_up);
+				viewHolder.layout_item.setVisibility(View.VISIBLE);
+				viewHolder.view.setVisibility(View.GONE);
+			}
+			
+			if(position == current){
+				viewHolder.music_name.setTextColor(context.getResources().getColor(R.color.music_list_song_name_pressed));
+				viewHolder.music_author.setTextColor(context.getResources().getColor(R.color.music_list_song_author_pressed));
+				viewHolder.play_view.setVisibility(View.VISIBLE);
+			}
+			
+			break;
+		}
+		return convertView;
+	}
+	
+	class ViewHolder{
+		
+		ImageView down_iv;
+		ImageView edit_iv;
+		ImageView share_iv;
+		ImageView collect_iv;
+		
+		TextView song_type;
+		TextView user_name;
+		ImageView song_cover;
+		ImageView author_head;
+		RelativeLayout rel_user;
+		
+		TextView songs_num;
+		ImageView edit_music;
+		ImageButton btn_playall;
+		
+		View view;
+		View play_view;
+		CheckBox check_box;
+		ImageView right_btn;
+		TextView music_name;
+		TextView music_author;
+		RelativeLayout rel_right;
+		LinearLayout layout_item;
+		
+		ImageView collect_image;
+		ImageView share_image;
+		ImageView down_image;
+		ImageView addsong_iv;
+		ImageView delete_iv;
+		
+		RelativeLayout rel_add;
+		RelativeLayout rel_down;
+		RelativeLayout rel_share;
+		RelativeLayout rel_delete;
+		RelativeLayout rel_collect;
+	}
+	
+	OnCheckedChangeListener check_listener = new OnCheckedChangeListener() {
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			int position = (Integer) buttonView.getTag();
+			if(position>list.size()-1){
+				return;
+			}
+			list.get(position).setChecked(isChecked);
+			notifyDataSetChanged();
+		}
+	};
+	
+	// 取消全选
+		public void setCheckNO() {
+			for (SongInfoEntity entity : list) {
+				entity.setChecked(false);;// 编辑取消状态
+			}
+			notifyDataSetChanged();
+		}
+				
+	// 全选
+	public void setCheckAll() {
+		for (SongInfoEntity entity : list) {
+			entity.setChecked(true);// 编辑取消状态
+		}
+		notifyDataSetChanged();
+	}
+	
+	// 得到要删除音乐
+	public List<SongInfoEntity> getDeleteIDs() {
+		
+		List<SongInfoEntity> delList = new ArrayList<SongInfoEntity>();
+		for (SongInfoEntity entity : list) {
+			if (entity.isChecked()) {
+				delList.add(entity);
+			}
+		}
+		return delList;
+	}
+	
+	public void delete(){
+		
+		List<SongInfoEntity> Item = getDeleteIDs();
+		for (int i = 0; i < Item.size(); i++) {
+			list.remove(Item.get(i));
+		}
+		notifyDataSetChanged();
+		
+	}
+	
+	private class ClickListener implements OnClickListener{
+
+		private int type;
+		private int position;
+		private ViewHolder viewholder;
+		
+		public ClickListener(int type, ViewHolder viewholder) {
+			super();
+			this.type = type;
+			this.viewholder = viewholder;
+		}
+		public ClickListener(int type, int position, ViewHolder viewholder) {
+			super();
+			this.type = type;
+			this.position = position;
+			this.viewholder = viewholder;
+		}
+
+		@Override
+		public void onClick(View v) {
+			switch (type) {
+			
+			/*
+			 * 收藏列表
+			 */
+			case 1:
+				if(haveNetwork()){
+					CollectSongMenuTask task = new CollectSongMenuTask(context, musiclist_id,new CollectCallBack(type,viewholder));
+					task.excute();
+				}else{
+					ActivityUtil.showShortToast(context, "请链接网络");
+				}
+				break;
+
+				/*
+				 * 分享歌单
+				 */
+			case 2:
+				shareSongMenu(songmenu.getMusiclist_name(), songmenu.getMusiclist_img(), songmenu.getUser().getUser_nick());
+				break;
+				
+				/*
+				 * 批量下载
+				 */
+			case 3:
+				
+				break;
+				
+				/*
+				 * 编辑歌单
+				 */
+			case 4:
+				Intent edit_intent = new Intent(context, EditSongInfoActivity.class);
+				edit_intent.putExtra("pageNum", pageNum);
+				edit_intent.putExtra("musiclist_id", musiclist_id);
+				edit_intent.putExtra("musiclist_name", songmenu.getMusiclist_name());
+				edit_intent.putExtra("musiclist_summary", songmenu.getMusiclist_summary());
+				edit_intent.putExtra("musiclist_img", songmenu.getMusiclist_img());
+				activity.startActivityForResult(edit_intent, 2);
+				break;
+				
+				/*
+				 * 歌单简介
+				 */
+			case 5:
+				Intent summary_intent = new Intent(context, SongMenuSummaryActivity.class);
+				summary_intent.putExtra("musiclist_img", songmenu.getMusiclist_img());
+				summary_intent.putExtra("musiclist_name", songmenu.getMusiclist_name());
+				summary_intent.putExtra("musiclist_summary", songmenu.getMusiclist_summary());
+				context.startActivity(summary_intent);
+				break;
+				
+				/*
+				 * 音乐人详情
+				 */
+			case 6:
+				Intent intent = new Intent(context, MusicUserDetailActivity.class);
+				intent.putExtra("user_id", songmenu.getUser_id());
+				context.startActivity(intent);
+				break;
+				
+				/*
+				 * 删除歌单歌曲
+				 */
+			case 7:
+				
+				if(list_size.equals("0")){
+					return;
+				}
+				Intent del_intent = new Intent(context, EditMineSongActivity.class);
+				del_intent.putExtra("musiclist_id", musiclist_id);
+				ArrayList<SongInfoEntity> lists = new ArrayList<SongInfoEntity>();
+				lists.addAll(list);
+				lists.remove(0);
+				del_intent.putExtra("list", lists);
+				activity.startActivityForResult(del_intent, 1);
+				break;
+				
+				/*
+				 * 播放全部
+				 */
+			case 8:
+				canPlay(type);
+				break;
+				
+				/*
+				 * 播放单曲
+				 */
+			case 9:
+				current = position;
+				notifyDataSetChanged();
+				canPlay(type);
+				break;
+				
+				/*
+				 * 显示操作单曲的布局
+				 */
+			case 10:
+				
+				if(!state && position == pos){
+					pos = -1;
+					state = true;
+					viewholder.view.setVisibility(View.GONE);
+					viewholder.layout_item.setVisibility(View.VISIBLE);
+					viewholder.right_btn.setBackgroundResource(R.drawable.btn_down);
+				}else{
+					pos = position;
+					state = false;
+					viewholder.view.setVisibility(View.GONE);
+					viewholder.layout_item.setVisibility(View.VISIBLE);
+					viewholder.right_btn.setBackgroundResource(R.drawable.btn_up);
+				}
+				notifyDataSetChanged();
+				break;
+				
+				/*
+				 * 收藏单曲
+				 */
+			case 11:
+				if(haveNetwork()){
+					CollectSongMenuTask task = new CollectSongMenuTask(context, 
+					musiclist_id,list.get(position).getUser_id(),new CollectCallBack(type,position,viewholder));
+					task.excute();
+				}else{
+					ActivityUtil.showShortToast(context, "请链接网络");
+				}
+				break;
+				
+				/*
+				 * 分享音乐
+				 */
+			case 12:
+				
+				shareMusic(list.get(position));
+				break;
+				
+				/*
+				 * 下载单曲
+				 */
+			case 13:
+				
+				Intent intentservice = new Intent(context, DownLoadService.class);
+				intentservice.putExtra(DownLoadService.KEY_DOWNLOAD, list.get(position));
+				context.startService(intentservice);
+				break;
+				
+				/*
+				 * 添加至歌单
+				 */
+			case 14:
+				
+				addsong = new AddSongMenuPop(activity,list.get(position).getMusic_id(),songmenu.getMusiclist_id());
+				addsong.showAtLocation(viewholder.layout_item, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+				break;
+				
+				/*
+				 * 删除单曲
+				 */
+			case 15:
+				
+				current = -1;
+				if(haveNetwork()){
+				new MineSongTask(context, musiclist_id, list.get(position).getMusic_id(), new DelCallback(position)).excute();
+				}else{
+					ActivityUtil.showShortToast(context, "请链接网络");
+				}
+				break;
+			}
+		}
+		
+	}
+	
+	class CollectCallBack extends BaseRequestCallBack {
+		
+		private int type;
+		private int position;
+		private ViewHolder holder;
+		
+		public CollectCallBack(int type, ViewHolder holder) {
+			super();
+			this.type = type;
+			this.holder = holder;
+		}
+		
+		public CollectCallBack(int type, int position, ViewHolder holder) {
+			super();
+			this.type = type;
+			this.position = position;
+			this.holder = holder;
+		}
+		
+		
+		@Override
+		public void onResult(String result, int code, String alert, Object obj) {
+			
+			if(code != Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			ActivityUtil.showCollectToast(context,alert);
+			if(type == 1){//收藏歌单
+				holder.collect_iv.setImageResource(R.drawable.song_collect_press);
+				songmenu.setFavorite("1");
+			}else if(type == 11){//收藏歌曲
+				holder.collect_image.setImageResource(R.drawable.down_collect_press);
+				list.get(position).setFavorite("1");
+			}
+		}
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+			
+		}
+	}
+	
+	/*
+	 * 删除我的歌曲回调
+	 */
+	class DelCallback extends RequestCallBack<String>{
+		
+		private int position;
+
+		public DelCallback(int position) {
+			super();
+			this.position = position;
+		}
+
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+		}
+
+		@Override
+		public void onSuccess(ResponseInfo<String> arg0) {
+
+			String result = arg0.result;
+			int code = ParseUtil.parseCode(result);
+			if (code != Constant.SUCCESS_REQUEST) {
+				return;
+			}
+			String alert = ParseUtil.parseAlert(result);
+			ActivityUtil.showShortToast(context, alert);
+			list.remove(position);
+			list_size = (Integer.valueOf(list_size)-1)+"";
+			changeListSize.setListSize(list_size);
+			notifyDataSetChanged();
+		}
+	}
+	
+	CustomOnlyWifiDialog dialog_only_wifi;
+	
+	/*
+	 * type = 9:单曲播放  
+	 * type = 8:播放全部
+	 */
+	public void canPlay(int type){
+		int i = NetUtils.getAPNType(context);
+		switch (i) {
+		case -1://No NetWork
+			ActivityUtil.showShortToast(context, context.getString(R.string.please_check_network));
+			break;
+		case 1://WIFI
+			if(type == 9){
+				app.addSingleMusic(list.get(current),musiclist_id);
+				app.playStart(list.get(current));
+			}else if(type == 8){
+				List<SongInfoEntity> lists = new ArrayList<SongInfoEntity>(); 
+				lists.addAll(list);
+				lists.remove(0);
+				app.setSongMenu(lists, 1, pageNum, musiclist_id);
+				app.playStart(0);
+			}
+			break;
+		default://流量WIFI
+			if(!SharedPreUtils.isOnlyWifi(context.getApplicationContext())){
+				if(type == 1){
+					app.addSingleMusic(list.get(current),musiclist_id);
+					app.playStart(list.get(current));
+				}else{
+					List<SongInfoEntity> lists = new ArrayList<SongInfoEntity>(); 
+					lists.addAll(list);
+					lists.remove(0);
+					app.setSongMenu(lists, 1, pageNum, musiclist_id);
+					app.playStart(0);
+				}
+				break;
+			}
+			dialog_only_wifi = CustomOnlyWifiDialog.show(context, new OnlyWifi(type));
+			break;
+		}
+	}
+	
+	
+	public class OnlyWifi implements OnClickListener {
+		int type = 1;
+		public OnlyWifi(int type) {
+			super();
+			this.type = type;
+		}
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.ok:
+				if(type == 1){
+					app.addSingleMusic(list.get(current),musiclist_id);
+					app.playStart(list.get(current));
+				}else{
+					List<SongInfoEntity> lists = new ArrayList<SongInfoEntity>(); 
+					lists.addAll(list);
+					lists.remove(0);
+					app.setSongMenu(lists, 1, pageNum, musiclist_id);
+					app.playStart(0);
+				}
+				SharedPreUtils.setOnlyWifi(context, false);
+				dialog_only_wifi.disMiss(dialog_only_wifi);
+				break;
+			case R.id.cancle:
+				dialog_only_wifi.disMiss(dialog_only_wifi);
+				break;
+			}
+		}
+	}
+	
+	public interface OnChangeListSize{
+		void setListSize(String listsize);
+	}
+}

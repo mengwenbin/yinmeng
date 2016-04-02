@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg_color"  >
+
+    <include
+        android:id="@+id/mine_title"
+        layout="@layout/title_layout_main" />
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mine_title"
+        android:gravity="center_horizontal"
+        android:clipChildren="false"
+        android:layerType="software"
+        android:layout_marginTop="25dp"
+    	android:layout_marginBottom="50dp" >
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/circle_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:clipChildren="false"
+            android:background="@color/main_bg_color" />
+        
+    </LinearLayout>
+    
+    <com.xiaoxu.music.community.view.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true" />
+    
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:loading_width="5dp" />
+    
+    <include layout="@layout/comment_layout_no_network" />
+
+</RelativeLayout>

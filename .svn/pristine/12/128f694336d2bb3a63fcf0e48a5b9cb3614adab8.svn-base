@@ -1,0 +1,190 @@
+package com.xiaoxu.music.community.fragment;
+
+import java.util.List;
+
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.HandlerHelp;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.adapter.MusicLibCategoryAdapter;
+import com.xiaoxu.music.community.adapter.MusicLibCategoryAdapter;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.dao.CacheDB;
+import com.xiaoxu.music.community.dao.CacheData;
+import com.xiaoxu.music.community.entity.SongMenuListEntity;
+import com.xiaoxu.music.community.entity.SongMenuInfoEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.MusicListCategoryTask;
+import com.xiaoxu.music.community.parser.ParseUtil;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.TimeUtil;
+import com.xiaoxu.music.community.view.xlistview.XListView;
+import com.xiaoxu.music.community.view.xlistview.XListView.OnXListViewListener;
+
+public class MusicLibFragment extends BaseNewFragment implements OnClickListener{
+	
+	private RecyclerView listview;
+	private MusicLibCategoryAdapter adapter;
+	private List<SongMenuInfoEntity> list;
+	private SwipeRefreshLayout mSwipeLayout;
+	
+	private MusicListCategoryTask task;
+	private CacheDB db;
+	private CacheData cacheinfo;
+	private String cache_name = "music_library";
+	
+	private final String mPageName = "MusicLibFragment";
+	
+	@Override
+	public int setLayoutId() {
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_music_library;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart( mPageName );//友盟统计
+		MobclickAgent.onResume(activity);//友盟统计
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+	
+	@Override
+	public void setupView(View view) {
+		// TODO Auto-generated method stub
+		db = new CacheDB(context);
+		rotateLoading = getRotateLoading(view, R.id.loading);
+		no_network = getImageButton(view, R.id.no_network);
+		
+		mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+		mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,android.R.color.holo_green_light, 
+				android.R.color.holo_orange_light, android.R.color.holo_red_light);
+		listview = (RecyclerView) view.findViewById(R.id.listview_musiclib);
+		adapter = new MusicLibCategoryAdapter(context, list, bitmapUtils);
+		listview.setAdapter(adapter);
+		listview.setLayoutManager(new StaggeredGridLayoutManager(2,
+				StaggeredGridLayoutManager.VERTICAL));
+		mSwipeLayout.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				task();
+			}
+		});
+	}
+	
+	@Override
+	public void setModel() {
+		// TODO Auto-generated method stub
+		loadingStart(rotateLoading);
+		new Async().execute();
+	}
+	
+	public void loading(){
+		if(list==null){
+			new Async().execute();
+		}
+	}
+	
+	class Async extends HandlerHelp {
+		
+		@Override
+		public void doTask() {
+			// TODO Auto-generated method stub
+			cacheinfo = db.getCacheDataByName(cache_name);
+		}
+		
+		@Override
+		public void handler() {
+			// TODO Auto-generated method stub
+			if(cacheinfo!=null && TimeUtil.datePk(TimeUtil.getCurrentTime(), cacheinfo.getCache_time())){
+				String result = cacheinfo.getCache_data();
+				SongMenuListEntity entity = (SongMenuListEntity) ParseUtil.parseResultObj(result, SongMenuListEntity.class);
+				List<SongMenuInfoEntity> lists = entity.getList_musiclist();
+				if (lists != null && lists.size() > 0) {
+					list = lists;
+				}
+				updateUI();
+			} else {
+				task();
+			}
+		}
+	}
+	
+	public void task(){
+		if(haveNetwork(context)){
+			task = new MusicListCategoryTask(context, callback);
+			task.excute();
+		}else{
+			if(adapter != null){
+				adapter.setList(null);
+				adapter.notifyDataSetChanged();
+				showNoNet(this);
+			}
+			loadingCancle(rotateLoading);
+			mSwipeLayout.setRefreshing(false);
+		}
+	}
+	
+	BaseRequestCallBack callback = new BaseRequestCallBack(SongMenuListEntity.class) {
+		//MusicListEntity.class
+		public void onResult(String result, int code, String alert, Object obj) {
+			// TODO Auto-generated method stub
+			mSwipeLayout.setRefreshing(false);
+			loadingCancle(rotateLoading);
+			if(code!=Constant.SUCCESS_REQUEST){
+				ActivityUtil.showShortToast(context, alert);
+				return;
+			}
+			db.cacheSavaOrUpdate(cache_name, result, CacheDB.time_musiclib);
+			SongMenuListEntity category = (SongMenuListEntity) obj;
+			List<SongMenuInfoEntity> lists = category.getList_musiclist();
+			if(null!=lists && lists.size()>0){ 
+				list = lists;
+				updateUI();
+			}
+		}
+		
+		@Override
+		public void onFailure(HttpException arg0, String arg1) {
+			// TODO Auto-generated method stub
+			loadingCancle(rotateLoading);
+		}
+	};
+	
+	public void updateUI(){
+		if (adapter != null && list != null) {
+			list.add(0, new SongMenuInfoEntity());
+			list.add(new SongMenuInfoEntity());
+			adapter.setList(list);
+			adapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		hintNoNet();
+		task();
+	}
+
+}

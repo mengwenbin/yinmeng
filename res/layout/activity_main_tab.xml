@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_tab"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.xiaoxu.music.community.view.CustomViewPager
+        android:id="@+id/viewpager_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomList" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/bottomList"
+        android:background="@color/tab_line_bg" />
+
+    <LinearLayout
+        android:id="@+id/bottomList"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal" >
+        
+        <RelativeLayout 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/tab_btn_homepage"
+            style="@style/footbar"
+            android:drawableTop="@drawable/tab_homepage_pressed"
+            android:onClick="onTabClick"
+            android:paddingTop="6dp"
+            android:text="@string/tab_footbar_home"
+            android:textColor="@color/tab_text_select" />
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/tab_btn_musicman"
+            style="@style/footbar"
+            android:drawableTop="@drawable/tab_musicman_normal"
+            android:onClick="onTabClick"
+            android:paddingTop="6dp"
+            android:text="@string/tab_footbar_musicman"
+            android:textColor="@color/tab_text_normal" />
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/tab_btn_upload"
+            style="@style/footbar"
+            android:drawableTop="@drawable/btn_style_tab_add"
+            android:onClick="onTabClick"
+            android:paddingTop="6dp"
+            android:textColor="@color/tab_text_normal" />
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/tab_btn_circle"
+            style="@style/footbar"
+            android:drawableTop="@drawable/tab_circle_normal"
+            android:onClick="onTabClick"
+            android:paddingTop="6dp"
+            android:text="@string/tab_footbar_circle"
+            android:textColor="@color/tab_text_normal" />
+        </RelativeLayout>
+        
+        <RelativeLayout 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        <Button
+            android:id="@+id/tab_btn_mine"
+            style="@style/footbar"
+            android:drawableTop="@drawable/tab_mine_normal"
+            android:onClick="onTabClick"
+            android:paddingTop="6dp"
+            android:text="@string/tab_footbar_mine"
+            android:textColor="@color/tab_text_normal" />
+        <TextView
+                android:id="@+id/unread_msg_number"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="11dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/unread_bg"
+                android:visibility="invisible"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

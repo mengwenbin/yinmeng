@@ -1,0 +1,530 @@
+package com.xiaoxu.music.community.fragment;
+
+import java.util.List;
+
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.utils.Log;
+import com.xiaoxu.music.community.BaseNewFragment;
+import com.xiaoxu.music.community.HandlerHelp;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.MoreRecommendActivity;
+import com.xiaoxu.music.community.activity.RecommendAdActivity;
+import com.xiaoxu.music.community.activity.RecommendMusicActivity;
+import com.xiaoxu.music.community.activity.RecommendMusicUserActivity;
+import com.xiaoxu.music.community.activity.RecommendSongMenuActivity;
+import com.xiaoxu.music.community.activity.VideoActivity;
+import com.xiaoxu.music.community.adapter.AdvertisementAdapter;
+import com.xiaoxu.music.community.adapter.MusicRecommendycAdapter;
+import com.xiaoxu.music.community.adapter.MusicUserRecommedAdapter;
+import com.xiaoxu.music.community.adapter.MusicRecommedrqAdapter;
+import com.xiaoxu.music.community.adapter.SongMenuRecommendAdapter;
+import com.xiaoxu.music.community.adapter.VideoAdapter;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.dao.CacheDB;
+import com.xiaoxu.music.community.dao.CacheData;
+import com.xiaoxu.music.community.entity.AdvertisementEntity;
+import com.xiaoxu.music.community.entity.MusicRecommendEntity;
+import com.xiaoxu.music.community.entity.MusicUserInfoEntity;
+import com.xiaoxu.music.community.entity.MusicUserRecommendEntity;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.HomePageAdTask;
+import com.xiaoxu.music.community.model.task.MusicRecommendTask;
+import com.xiaoxu.music.community.model.task.MusicUserRecommendTask;
+import com.xiaoxu.music.community.parser.ParseUtil;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.util.TimeUtil;
+import com.xiaoxu.music.community.view.MyViewPager;
+
+/*
+ * 推荐模块
+ */
+public class RecommendFragment extends BaseNewFragment {
+
+	private TextView load_vp,load_mz,load_zt,load_or,load_cover;
+	
+	// 各种活动的RelativeLayout
+	private RelativeLayout rel_topmz;
+	private RelativeLayout rel_topyc;
+	private RelativeLayout rel_toprq;
+	private RelativeLayout rel_topnr;
+	private RelativeLayout rel_tophd;
+	private RelativeLayout rel_topzt;
+	
+	private MyViewPager View_Pager;// 轮播广告viewpager
+	private RecyclerView mz_recyclerview;// 盟主推荐横向滚动
+	private RecyclerView zt_recyclerview;// 专题推荐 横向滚动
+	private RecyclerView yc_recyclerview;// 原创推荐横向滚动
+	private RecyclerView rq_recyclerview;// 人气翻唱横向滚动
+	private RecyclerView nr_recyclerview;// 牛人视频横向滚动
+	private RecyclerView ad_recyclerview;// 活动展示横向滚动
+	
+	private MusicRecommendTask musicRecommendTask;// 音乐推荐tast
+	private MusicUserRecommendTask musicuserRecommendTask;// 音乐人推荐tast
+	private HomePageAdTask homePagerAdTask;// 轮播广告tast
+	
+	private AdvertisementAdapter adapter;
+	private VideoAdapter videoAdapter;
+	private SongMenuRecommendAdapter Commendztadapter;
+	private MusicRecommedrqAdapter Commendrqadapter;
+	private MusicRecommendycAdapter Commendycadapter;
+	private MusicUserRecommedAdapter userComemendadapter;
+	
+	private MusicRecommendEntity recommendEntity;
+	private AdvertisementEntity advertisementEntity;
+	private MusicUserRecommendEntity musicUserRecommendEntity;
+	
+	private int time = 4 * 1000;
+	/*
+	 * 缓存信息
+	 */
+	private CacheDB db;
+	private CacheData cacheinfoHomePag;
+	private CacheData cacheinfoMusicRecommend;
+	private CacheData cacheinfoMusicUserRecommend;
+
+	private final String mPageName = "RecommendFragment";
+	
+	@Override
+	public int setLayoutId() {
+		// 发送策略定义了用户由统计分析SDK产生的数据发送回友盟服务器的频率。
+		MobclickAgent.updateOnlineConfig(activity);
+		// SDK会对日志进行加密。加密模式可以有效防止网络攻击，提高数据安全性。
+		AnalyticsConfig.enableEncrypt(true);
+		return R.layout.fragment_recommend;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart(mPageName);// 友盟统计
+		MobclickAgent.onResume(activity);// 友盟统计
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(mPageName);
+		MobclickAgent.onPause(activity);
+	}
+
+	@Override
+	public void setupView(View view) {
+		bitmapUtils.configDefaultLoadingImage(R.drawable.test_default_wait_img);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.test_default_wait_img);// 加载失败图片
+		rotateLoading = getRotateLoading(view, R.id.loading);//加载loading
+		// 广告轮播
+		View_Pager = (MyViewPager) view.findViewById(R.id.view_page);
+		// 萌主推荐 RecyclerView
+		mz_recyclerview = (RecyclerView) view.findViewById(R.id.mz_recyclerview);
+		mz_recyclerview.setHasFixedSize(true);
+		mz_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+		// 专题推荐
+		zt_recyclerview = (RecyclerView) view.findViewById(R.id.zt_recyclerview);
+		zt_recyclerview.setHasFixedSize(true);
+		zt_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+		// 原创推荐 RecyclerView
+		yc_recyclerview = (RecyclerView) view.findViewById(R.id.yc_recyclerview);
+		yc_recyclerview.setHasFixedSize(true);
+		yc_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+		// 人气翻唱 RecyclerView
+		rq_recyclerview = (RecyclerView) view.findViewById(R.id.rq_recyclerview);
+		rq_recyclerview.setHasFixedSize(true);
+		rq_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+		// 牛人视频 RecyclerView
+		nr_recyclerview = (RecyclerView) view.findViewById(R.id.nr_recyclerview);
+		nr_recyclerview.setHasFixedSize(true);
+		nr_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL));
+		// 广告（活动） RecyclerView
+		ad_recyclerview = (RecyclerView) view.findViewById(R.id.ad_recyclerview);
+		ad_recyclerview.setHasFixedSize(true);
+		ad_recyclerview.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL));
+		//更多推荐
+		getImageView(view, R.id.rel_more).setOnClickListener(new ClickListener());
+		
+		// item top 点击更多
+		rel_topmz = (RelativeLayout) view.findViewById(R.id.rel_topmz);//萌主
+		rel_topyc = (RelativeLayout) view.findViewById(R.id.rel_topyc);//原创
+		rel_toprq = (RelativeLayout) view.findViewById(R.id.rel_toprq);//翻唱
+		rel_topnr = (RelativeLayout) view.findViewById(R.id.rel_topnr);//视频
+		rel_tophd = (RelativeLayout) view.findViewById(R.id.rel_tophd);//活动
+		rel_topzt = (RelativeLayout) view.findViewById(R.id.rel_zt);
+		
+		// 加载失败，重新加载
+		load_vp = (TextView) view.findViewById(R.id.load_ad);//广告
+		load_mz = (TextView) view.findViewById(R.id.load_mz);//萌主
+		load_zt = (TextView) view.findViewById(R.id.load_zt);//专题
+		load_or = (TextView) view.findViewById(R.id.load_or);//原创
+		load_cover = (TextView) view.findViewById(R.id.load_cover);//翻唱
+	}
+
+	private void initListener() {
+		rel_topmz.setOnClickListener(new ClickListener());
+		rel_topyc.setOnClickListener(new ClickListener());
+		rel_toprq.setOnClickListener(new ClickListener());
+		rel_topnr.setOnClickListener(new ClickListener());
+		rel_tophd.setOnClickListener(new ClickListener());
+		rel_topzt.setOnClickListener(new ClickListener());
+
+		load_zt.setOnClickListener(new ClickListener());
+		load_vp.setOnClickListener(new ClickListener());
+		load_mz.setOnClickListener(new ClickListener());
+		load_or.setOnClickListener(new ClickListener());
+		load_cover.setOnClickListener(new ClickListener());
+	}
+	
+	private class ClickListener implements OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			Intent intent = null;
+			switch (v.getId()) {
+			case R.id.rel_topmz:
+				intent = new Intent(context, RecommendMusicUserActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.rel_zt:
+				intent = new Intent(context, RecommendSongMenuActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.rel_topyc:
+				intent = new Intent(context, RecommendMusicActivity.class);
+				intent.putExtra("music_category", "51");// 原创
+				startActivity(intent);
+				break;
+			case R.id.rel_toprq:
+				intent = new Intent(context, RecommendMusicActivity.class);
+				intent.putExtra("music_category", "52");// 翻唱
+				startActivity(intent);
+				break;
+			case R.id.rel_topnr:
+				startActivity(new Intent(context, VideoActivity.class));
+				break;
+			case R.id.rel_tophd:
+				intent = new Intent(context, RecommendAdActivity.class);
+				startActivity(intent);
+				break;
+			case R.id.load_mz:
+				load_mz.setVisibility(View.GONE);
+				loadingStart(rotateLoading);
+				new MusicUserRecommendAsync().execute();
+				break;
+			case R.id.load_zt:
+				load_zt.setVisibility(View.GONE);
+				loadingStart(rotateLoading);
+				requestCommend();
+				break;
+			case R.id.load_or:
+				load_or.setVisibility(View.GONE);
+				loadingStart(rotateLoading);
+				requestCommend();
+				break;
+			case R.id.load_cover:
+				load_cover.setVisibility(View.GONE);
+				loadingStart(rotateLoading);
+				requestCommend();
+				break;
+			case R.id.load_ad:
+				load_vp.setVisibility(View.GONE);
+				loadingStart(rotateLoading);
+				new HomePagAsync().execute();
+				break;
+			case R.id.rel_more:
+				intent = new Intent(context, MoreRecommendActivity.class);
+				startActivity(intent);
+				break;
+			}
+		}
+	}
+
+	@Override
+	public void setModel() {
+		initListener();
+		if (db == null) {
+			db = new CacheDB(context);
+		}
+		task();
+	}
+
+	public void loading() {
+		task();
+	}
+
+	private void task() {
+		new HomePagAsync().execute();
+		new MusicRecommendAsync().execute();
+		new MusicUserRecommendAsync().execute();
+	}
+	
+	/*
+	 * 更新UI，适配数据 -------------------------------------------------------------------------
+	 */
+
+	/**
+	 * 更新 【广告】【 活动】【牛人视频】 UI
+	 * @param advertisementEntity
+	 */
+	private void initHomePage(AdvertisementEntity advertisementEntity) {
+		if (advertisementEntity != null && advertisementEntity.getList_res_head() != null
+				&& advertisementEntity.getList_res_head().size() > 0) {
+			String str = advertisementEntity.getList_res_head().get(0).getWidth_height();
+			int width = 0;
+			int height = 0;
+			String[] array = str.split(",");
+			width = Integer.valueOf(array[0]);
+			height = Integer.valueOf(array[1]);
+			int ScreenWidth = ActivityUtil.getScreenWidth(context);
+			ActivityUtil.redrawViewSize(View_Pager, ScreenWidth,(ScreenWidth * height) / width);
+		} else {
+			load_vp.setVisibility(View.VISIBLE);
+		}
+		int width = ActivityUtil.getScreenHeight(context);
+		View_Pager.init(R.drawable.bg_indicator_pressed,R.drawable.bg_indicator_normal, width / 80, 8, 2, width / 80);
+		View_Pager.setAutoNext(true, time);
+		View_Pager.setAdapter(advertisementEntity.getList_res_head(),bitmapUtils);
+		if (advertisementEntity != null && advertisementEntity.getList_res_boot() != null 
+				&& advertisementEntity.getList_res_boot().size() > 0) {
+			adapter = new AdvertisementAdapter(context, advertisementEntity.getList_res_boot());
+			ad_recyclerview.setAdapter(adapter);
+		}
+		if (advertisementEntity != null && advertisementEntity.getList_res_video() != null
+				&& advertisementEntity.getList_res_video().size() > 0) {
+			videoAdapter = new VideoAdapter(context, advertisementEntity.getList_res_video());
+			nr_recyclerview.setAdapter(videoAdapter);
+		}
+	}
+
+	/**
+	 * 更新 【萌主】 UI
+	 * @param musicUserRecommendEntity
+	 */
+	private void initMusicUserCommend(MusicUserRecommendEntity musicUserRecommendEntity) {
+		int list_size = Integer.valueOf(musicUserRecommendEntity.getList_size());
+		if (list_size > 0) {
+			List<MusicUserInfoEntity> list = musicUserRecommendEntity.getList_user();
+			userComemendadapter = new MusicUserRecommedAdapter(context, list);
+			mz_recyclerview.setAdapter(userComemendadapter);
+			if (userComemendadapter.getItemCount() == 0) {
+				load_mz.setVisibility(View.VISIBLE);
+			} else {
+				load_mz.setVisibility(View.GONE);
+			}
+		}
+	}
+	
+	/**
+	 * 更新 【歌曲--原创，翻唱】【 歌单--专题推荐】 UI
+	 * @param recommendEntity
+	 */
+	private void initMusicCommend(MusicRecommendEntity recommendEntity) {
+		Commendztadapter = new SongMenuRecommendAdapter(context, recommendEntity.getList_musiclist());
+		zt_recyclerview.setAdapter(Commendztadapter);
+		if(Commendztadapter.getItemCount() == 0){
+			load_zt.setVisibility(View.VISIBLE);
+		}
+		
+		Commendycadapter = new MusicRecommendycAdapter(context, recommendEntity.getList_music51());
+		yc_recyclerview.setAdapter(Commendycadapter);
+		if (Commendycadapter.getItemCount() == 0) {
+			load_or.setVisibility(View.VISIBLE);
+		}
+		
+		Commendrqadapter = new MusicRecommedrqAdapter(context, recommendEntity.getList_music52());
+		rq_recyclerview.setAdapter(Commendrqadapter);
+		if (Commendrqadapter.getItemCount() == 0) {
+			load_cover.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	
+	/*
+	 * 读取缓存中的数据 -------------------------------------------------------------------------
+	 */
+	class HomePagAsync extends HandlerHelp {
+
+		@Override
+		public void doTask() {
+			cacheinfoHomePag = db.getCacheDataByName(Constant.HomePageAdName);
+		}
+
+		@Override
+		public void handler() {
+			if (cacheinfoHomePag != null && TimeUtil.datePk(TimeUtil.getCurrentTime(), cacheinfoHomePag.getCache_time())) {
+				String result = cacheinfoHomePag.getCache_data();
+				advertisementEntity = (AdvertisementEntity) ParseUtil.parseResultObj(result, AdvertisementEntity.class);
+				initHomePage(advertisementEntity);
+			} else {
+				loadingStart(rotateLoading);
+				if (haveNetwork(context)) {
+					requestHomePage();
+				} else {
+					load_vp.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+	}
+
+	class MusicRecommendAsync extends HandlerHelp {
+
+		@Override
+		public void doTask() {
+			cacheinfoMusicRecommend = db.getCacheDataByName(Constant.MusicRecommend);
+		}
+
+		@Override
+		public void handler() {
+			if (cacheinfoMusicRecommend != null && TimeUtil.datePk(TimeUtil.getCurrentTime(),cacheinfoMusicRecommend.getCache_time())) {
+				String result = cacheinfoMusicRecommend.getCache_data();
+				recommendEntity = (MusicRecommendEntity) ParseUtil.parseResultObj(result, MusicRecommendEntity.class);
+				initMusicCommend(recommendEntity);
+			} else {
+				requestCommend();
+			}
+		}
+	}
+
+	class MusicUserRecommendAsync extends HandlerHelp {
+
+		@Override
+		public void doTask() {
+			cacheinfoMusicUserRecommend = db.getCacheDataByName(Constant.MusicUserRecommend);
+		}
+
+		@Override
+		public void handler() {
+			if (cacheinfoMusicUserRecommend != null && TimeUtil.datePk(TimeUtil.getCurrentTime(), cacheinfoMusicUserRecommend.getCache_time())) {
+				String result = cacheinfoMusicUserRecommend.getCache_data();
+				musicUserRecommendEntity = (MusicUserRecommendEntity) ParseUtil.parseResultObj(result, MusicUserRecommendEntity.class);
+				initMusicUserCommend(musicUserRecommendEntity);
+			} else {
+				if (haveNetwork(context)) {
+					requestUserCommend();
+				} else {
+					load_mz.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * task 广告，活动，视频
+	 */
+	private void requestHomePage() {
+		homePagerAdTask = new HomePageAdTask(context, new BaseRequestCallBack(AdvertisementEntity.class) {
+			@Override
+			public void onFailure(HttpException arg0, String arg1) {
+				loadingCancle(rotateLoading);
+				load_vp.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onResult(String result, int code, String alert,
+					Object obj) {
+				loadingCancle(rotateLoading);
+				if (code != Constant.SUCCESS_REQUEST) {
+					load_vp.setVisibility(View.VISIBLE);
+					ActivityUtil.showShortToast(context, alert);
+					return;
+				}
+				load_vp.setVisibility(View.GONE);
+				// 缓存
+				db.cacheSavaOrUpdate(Constant.HomePageAdName, result, CacheDB.time_advertisement);
+				advertisementEntity = (AdvertisementEntity) obj;
+				initHomePage(advertisementEntity);
+			}
+		});
+		homePagerAdTask.excute();
+	}
+	
+	/**
+	 * task 萌主
+	 */
+	private void requestUserCommend() {
+		musicuserRecommendTask = new MusicUserRecommendTask(context,
+				new BaseRequestCallBack(MusicUserRecommendEntity.class) {
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						load_mz.setVisibility(View.VISIBLE);
+						loadingCancle(rotateLoading);
+					}
+					@Override
+					public void onResult(String result, int code, String alert,Object obj) {
+						loadingCancle(rotateLoading);
+						if (code != Constant.SUCCESS_REQUEST) {
+							ActivityUtil.showShortToast(context, alert);
+							return;
+						}
+						load_mz.setVisibility(View.GONE);
+						db.cacheSavaOrUpdate(Constant.MusicUserRecommend,result, CacheDB.time_musicuserrecommend);//缓存
+						musicUserRecommendEntity = (MusicUserRecommendEntity) obj;
+						initMusicUserCommend(musicUserRecommendEntity);
+					}
+				});
+		musicuserRecommendTask.excute();
+	}
+	
+	/**
+	 * task 专题歌单 ，原创，翻唱
+	 */
+	private void requestCommend() {
+		if (haveNetwork(context)) {
+			musicRecommendTask = new MusicRecommendTask(context, new BaseRequestCallBack(MusicRecommendEntity.class) {
+				@Override
+				public void onFailure(HttpException arg0, String arg1) {
+					loadingCancle(rotateLoading);
+					load_cover.setVisibility(View.VISIBLE);
+					load_or.setVisibility(View.VISIBLE);
+					load_zt.setVisibility(View.VISIBLE);
+				}
+				@Override
+				public void onResult(String result, int code, String alert, Object obj) {
+					if (code != Constant.SUCCESS_REQUEST) {
+						ActivityUtil.showShortToast(context, alert);
+						load_zt.setVisibility(View.VISIBLE);
+						load_cover.setVisibility(View.VISIBLE);
+						load_or.setVisibility(View.VISIBLE);
+						return;
+					}
+					load_cover.setVisibility(View.GONE);
+					load_or.setVisibility(View.GONE);
+					load_zt.setVisibility(View.GONE);
+					// 缓存
+					db.cacheSavaOrUpdate(Constant.MusicRecommend, result, CacheDB.time_musicrecommend);
+					recommendEntity = (MusicRecommendEntity) obj;
+					initMusicCommend(recommendEntity);
+				}
+			});
+			musicRecommendTask.excute();
+		} else {
+			load_cover.setVisibility(View.VISIBLE);
+			load_or.setVisibility(View.VISIBLE);
+		}
+	}
+
+	/*
+	 * 销毁请求task
+	 */
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (musicRecommendTask != null) {
+			musicRecommendTask.cancelTask();
+		}
+		if (musicuserRecommendTask != null) {
+			musicuserRecommendTask.cancelTask();
+		}
+		if (homePagerAdTask != null) {
+			homePagerAdTask.cancelTask();
+		}
+	}
+
+}

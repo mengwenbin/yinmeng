@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+    
+    <ImageView 
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/close_summary"/>
+    <ImageView
+        android:id="@+id/song_cover"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="430dp"
+        android:src="@drawable/test_default_wait_img"/>
+    <TextView 
+        android:id="@+id/musiclist_name"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_above="@+id/musiclist_summary"
+        android:text="古风仙与侠"
+        android:textSize="@dimen/edituser_key_textsize"/>
+    
+    <TextView 
+        android:id="@+id/musiclist_summary"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/white"
+        android:text="简介: 古风仙与侠古风仙与侠古风仙与侠古风仙与侠古风仙与侠"
+        android:textSize="@dimen/text_size_small"/>
+
+</RelativeLayout>

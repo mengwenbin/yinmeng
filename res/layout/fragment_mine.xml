@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.xiaoxu.music.community.view.MyScrollView
+        android:id="@+id/mine_srcoll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fm_mine_bg"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/mine_layout_userinfo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_music_detail" >
+
+                <RelativeLayout
+                    android:id="@+id/title_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/title_height" >
+
+                    <TextView
+                        android:id="@+id/title_center_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/tab_title_font_size" />
+
+                    <ImageButton
+                        android:id="@+id/title_right_btn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/title_margin_right"
+                        android:background="@drawable/anim_rhythm_white" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/mine_userinfo_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@id/title_top" >
+
+                    <ImageView
+                        android:id="@+id/head_bg"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:layout_marginTop="29dp"
+                        android:layout_marginLeft="9dp"
+                        android:src="@drawable/user_head" />
+                    <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+                        android:id="@+id/mine_imv_head"
+                        android:layout_width="@dimen/mine_height_head"
+                        android:layout_height="@dimen/mine_height_head"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginLeft="@dimen/mine_margin_left_10"/>
+
+                    <TextView
+                        android:id="@+id/mine_tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_toRightOf="@id/mine_imv_head"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/mine_imv_sex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/mine_tv_username"
+                        android:layout_alignTop="@id/mine_tv_username"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/mine_tv_username"
+                        android:src="@drawable/sex_martian" />
+
+                    <TextView
+                        android:id="@+id/mine_tv_summary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/mine_tv_username"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@id/mine_imv_head"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/btn_login"
+                        android:layout_width="63dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/please_login"
+                        android:visibility="gone" />
+                    
+                    <Button
+                        android:id="@+id/is_login"
+                        android:layout_width="60dp"
+                        android:layout_height="33dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/sign_in"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/mine_userinfo_top"
+                    android:background="#33000000"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/mine_layout_works"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="com.xiaoxu.music.community.activity.MineWorksActivity" >
+
+                        <TextView
+                            android:id="@+id/textview_works"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_5"
+                            android:text="@string/mine_start_works"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <TextView
+                            android:id="@+id/tv_works"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textview_works"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_3"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/line_color" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rel_attention"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="com.xiaoxu.music.community.activity.MineAttentionActivity" >
+
+                        <TextView
+                            android:id="@+id/textview_attentions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_5"
+                            android:text="@string/mine_start_attentions"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <TextView
+                            android:id="@+id/tv_attentions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textview_attentions"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_3"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/line_color" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rel_fans"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="com.xiaoxu.music.community.activity.MineFansActivity" >
+
+                        <TextView
+                            android:id="@+id/textview_fans"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_5"
+                            android:text="@string/mine_start_fans"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <TextView
+                            android:id="@+id/tv_fans"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/textview_fans"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/mine_userinfo_margin_top_3"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/mine_userinfo_item_text_size" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/line_color" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/mine_layout_edit"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:tag="com.xiaoxu.music.community.activity.EditUserInfoActivity" >
+                        
+                        <ImageView
+                            android:id="@+id/edit_icon" 
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/eidt_mineinfo"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/edit_icon"
+                            android:layout_centerHorizontal="true"
+                            android:text="@string/mine_start_edit"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_mine_song"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.MineSongActivity" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/line_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_songs" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left_line"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mine_layout_posts"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.MineInvitationActivity" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_posts" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left_line"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_mine_message"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:background="@color/white" >
+
+                <TextView
+                    android:id="@+id/mine_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_message" />
+
+                <TextView
+                    android:id="@+id/unread_msg_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/mine_message"
+                    android:background="@drawable/unread_bg"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mine_layout_collects"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:layout_marginTop="@dimen/mine_margin_top"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.MineCollectActivity" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/line_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_collects" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left_line"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mine_layout_downloads"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.MineDownloadActivity" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_downloads" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mine_layout_setting"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:layout_marginTop="@dimen/mine_margin_top"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.SettingActivity" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/line_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/mine_start_item_setting" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left_line"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_inform"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mine_item_height"
+                android:background="@color/white"
+                android:tag="com.xiaoxu.music.community.activity.SysteminformActivity" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/mine_margin_left"
+                    android:gravity="center_vertical"
+                    android:text="@string/system_inform" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/mine_margin_right"
+                    android:background="@drawable/btn_right_gray" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/mine_height_line"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line_color" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.xiaoxu.music.community.view.MyScrollView>
+
+</RelativeLayout>

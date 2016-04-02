@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+    
+    <include layout="@layout/title_layout"/>
+    
+     <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/edit_old_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:hint="@string/please_old_pwd"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:background="@color/white"
+            android:inputType="textPassword"
+            android:layout_marginRight="20dp"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/edit_new_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:hint="@string/please_new_pwd"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:background="@color/white"
+            android:inputType="textPassword"
+            android:layout_marginRight="20dp"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <com.xiaoxu.music.community.view.ClearEditText
+            android:id="@+id/edit_new_pwd2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:hint="@string/please_new_pwd_too"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="30dp"
+            android:background="@color/white"
+            android:inputType="textPassword"
+            android:layout_marginRight="20dp"
+            />
+        
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"/>
+        
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+   	    android:layout_height="50dp">
+        
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="match_parent"
+   	    	android:layout_height="40dp"
+   	    	android:background="@drawable/btn_style_login_or_regist"
+   	    	android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+   	    	android:text="@string/start_btn_resetpwd"
+   	    	android:textColor="@color/white"/>
+        
+    </RelativeLayout>
+
+</LinearLayout>

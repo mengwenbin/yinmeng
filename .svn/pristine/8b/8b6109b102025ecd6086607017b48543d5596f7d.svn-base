@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+    
+    <ImageView
+        android:layout_width="41dp"
+		android:layout_height="41dp"
+		android:layout_centerVertical="true"
+		android:layout_marginTop="9.5dp"
+		android:layout_marginLeft="14.5dp"
+        android:background="@drawable/headiv_bg" />
+    
+    <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+        android:id="@+id/head_img"
+        android:layout_width="40dp"
+		android:layout_height="40dp"
+		android:layout_centerVertical="true"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="15dp"
+		android:layout_marginBottom="10dp"
+		android:layout_marginRight="10dp"
+		android:src="@drawable/test_default_head_bg_blue" />
+    
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/head_img"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        />
+    
+    <View android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_color"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"/>
+	
+</RelativeLayout>

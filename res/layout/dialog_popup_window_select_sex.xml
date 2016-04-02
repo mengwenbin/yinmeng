@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_bg" >
+
+    <RelativeLayout
+        android:id="@+id/popup_layout_man"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp" >
+
+        <ImageView
+            android:id="@+id/image_sex_man"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/sex_man" />
+
+        <TextView
+            android:id="@+id/text_sex_man"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image_sex_man"
+            android:text="@string/sex_man"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/check_sex_man"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkbox_start_checked" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:background="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/popup_layout_woman"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp" >
+
+        <ImageView
+            android:id="@+id/image_sex_woman"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/sex_woman" />
+
+        <TextView
+            android:id="@+id/text_sex_woman"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image_sex_woman"
+            android:text="@string/sex_woman"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/check_sex_woman"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkbox_start_checked"
+            android:visibility="gone"  />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:background="#DDDDDD" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/popup_layout_ladyboy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="10dp" >
+		
+        <ImageView
+            android:id="@+id/image_sex_ladyboy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/sex_martian" />
+
+        <TextView
+            android:id="@+id/text_sex_ladyboy"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/image_sex_ladyboy"
+            android:text="@string/sex_martian"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/check_sex_ladyboy"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/checkbox_start_checked"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 主色调 -->
+    <color name="main_color">#11c7fc</color>
+    <color name="main_bg_color">#e3e3e6</color>
+    <!-- Toast -->
+    <color name="toast_color">#ff2E76B9</color>
+
+    <!-- start_activity 灰色线 -->
+    <color name="line_color">#CFCFCF</color>
+    <color name="cyan9">#b8c4ce</color>
+    <color name="cyan10">#777b83</color>
+    <color name="cyan11">#26292e</color>
+    <color name="line_color2">#e9e9e9</color>
+
+    <color name="title_text_normal">#DEF5FD</color>
+	    
+    <!-- tab_footbar -->
+    <color name="tab_text_normal">#666b74</color>
+    <color name="tab_text_select">#11c7fc</color>
+    <color name="tab_line_bg">#a1a2ae</color>
+    <color name="fm_mine_bg">#e3e3e6</color>
+    <color name="fm_mine_text_color">#646c72</color>
+    <color name="act_set_text_color">#262a2e</color>
+    <color name="act_set_text_color2">#959595</color>
+
+    <!-- blog_detail -->
+    <color name="act_blog_detail_author_name">#0d60ac</color>
+    <color name="act_blog_detail_release_time">#979797</color>
+    <color name="act_blog_detail_line">#e0e0e1</color>
+    <color name="act_blog_detail_body">#262a2e</color>
+    <color name="act_blog_detail_bg">#f5f5f6</color>
+    <color name="input_bg">#f4f4f4</color>
+    <color name="music_list_song_name">#27292e</color>
+    <color name="music_list_song_author">#969696</color>
+    <color name="music_list_song_name_pressed">#00b7f2</color>
+    <color name="music_list_song_author_pressed">#90dffd</color>
+    <color name="music_user_works_title_bg">#f7f7f8</color>
+    
+    <color name="sort_list_indicator_bg">#F6F6F6</color>
+    <color name="sort_list_indicator_tv">#959596</color>
+    <color name="sort_list_indicator_tv_title">#A0A0A0</color>
+    
+    <color name="sort_list_adapter_tv_num">#FF2D4D</color>
+    <color name="sort_list_adapter_tv_name">#26292E</color>
+    <color name="sort_list_adapter_tv_author">#97989A</color>
+    <color name="sort_list_adapter_tv_time">#CECECE</color>
+    <color name="sort_list_menu_title_tv">#2F3034</color>
+    
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+    <!-- 白色 -->
+    <color name="white">#ffffff</color>
+    <!-- 板岩灰色 -->
+    <color name="slategrey">#708090</color>
+    <!-- 雪白色 -->
+    <color name="snow">#FFFAFA</color>
+    <!-- 亮灰 -->
+    <color name="Gainsboro">#DCDCDC</color>
+    <!-- 暗灰 -->
+    <color name="dimgrey">#696969</color>
+    <!-- 甘露 -->
+    <color name="Honeydew">#F0FFF0</color>
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+    <!-- 灰色 -->
+    <color name="grey">#BEBEBE</color>
+    <!-- 灰色2 -->
+    <color name="grey2">#F5F5F7</color>
+    <!-- 深灰色 -->
+    <color name="grey21">#363636</color>
+    <!-- 深灰色41 -->
+    <color name="grey41">#4F4F4F</color>
+    <!-- 灰色91 -->
+    <color name="gray91">#E8E8E8</color>
+    <!-- 刚青色 -->
+    <color name="steelblue">#4682B4</color>
+    <!-- 青灰色 -->
+    <color name="lightslategray">#778899</color>
+    <!-- 深青灰 -->
+    <color name="DarkSlateGray">#2F4F4F</color>
+    
+    <!-- 宝石绿 -->
+    <color name="turquoise4">#00868B</color>
+    <!-- 蓝绿色 -->
+    <color name="turquoise3">#338f50</color>
+    <!-- 淡蓝绿 -->
+    <color name="paleturquoise4">#668B8B</color>
+    <!-- 宝蓝色 -->
+    <color name="dodgerblue">#1E90FF</color>
+    <!-- 鬼白色 -->
+    <color name="ghostwhite">#F8F8FF</color>
+    <!-- 红色 -->
+    <color name="red">#FF0000</color>
+    <!-- 橙红色 -->
+    <color name="orangered">#FF4500</color>
+    <!-- 青色 -->
+    <color name="cyan3">#00CDCD</color>
+    <!-- 红色 -->
+    <color name="cyan4">#ff2d50</color>
+    <!-- 绿色 -->
+    <color name="cyan5">#06ca25</color>
+    <!-- 黄色 -->
+    <color name="cyan6">#ffba01</color>
+    <color name="cyna7">#D1DEE1</color>
+    <!-- 橘黄色 -->
+    <color name="cyan7">#ff7b23</color>
+    <color name="cyan8">#11c7fc</color>
+    
+    <color name="body_text_1">#ff000000</color>
+    <color name="body_text_2">#99000000</color>
+    <color name="body_text_disabled">#66000000</color>
+    <color name="body_text_1_inverse">#ffffffff</color>
+    <color name="body_text_2_inverse">#99ffffff</color>
+    <color name="accent_1">#ff29549f</color>
+    <color name="hyperlink">#ffff549f</color>
+    <color name="background_1">#ffffffff</color>
+    <color name="whats_on_separator">#4d000000</color>
+    <color name="all_track_color">#ff222222</color>
+    <color name="block_column_1">#ff0fabff</color>
+    <color name="block_column_2">#ffdf1831</color>
+    <color name="block_column_3">#ff009939</color>
+    <!-- 环信颜色 -->
+    <color name="common_top_bar_blue">#4ebcd3</color>
+    <color name="btn_login_normal">#00acff</color>
+    <color name="btn_login_pressed">#46678d</color>
+    <color name="btn_logout_normal">#d33f3f</color>
+    <color name="btn_logout_pressed">#DA5A4D</color>
+    <color name="btn_register_normal">#ffffff</color>
+    <color name="btn_register_pressed">#00acff</color>
+    <color name="common_bottom_bar_normal_bg">#2d2f31</color>
+    <color name="common_bottom_bar_selected_bg">#161718</color>
+    <color name="common_botton_bar_blue">#2ea7e0</color>
+    <color name="common_bg">#fcfcfc</color>
+    <color name="btn_pressed_green_solid">#B6DA53</color>
+    <color name="divider_list">#d4d4d4</color>
+    <color name="error_item_color">#F6EBE6</color>
+    <color name="bottom_bar_normal_bg">#2D2F31</color>
+    <color name="bottom_text_color_normal">#ffffff</color>
+    <color name="btn_white_normal">#f7f8f8</color>
+    <color name="btn_white_pressed">#b5b5b6</color>
+    <color name="btn_green_noraml">#68C270</color>
+    <color name="btn_green_pressed">#6FCD78</color>
+    <color name="btn_gray_normal">#c0c0c0</color>
+    <color name="btn_gray_pressed_status">#b5b5b6</color>
+    <color name="btn_gray_pressed">#666667</color>
+    <color name="btn_blue_normal">#1e90ff</color>
+    <color name="btn_blue_pressed">#0066FF</color>
+    <color name="orange">#FFA500</color>
+    <color name="gray_pressed">#b5b5b6</color>
+    <color name="gray_normal">#666667</color>
+    <color name="grid_state_pressed">#1Affffff</color>
+    <color name="grid_state_focused">#80000000</color>
+    <color name="voip_interface_text_color">#bababa</color>
+    <color name="black_deep">#FF000000</color>
+    <color name="btn_answer_pressed">#4ebcd3</color>
+    <color name="btn_answer_normal">#2dafa3</color>
+    <color name="top_bar_normal_bg">#0099bb</color>
+
+</resources>

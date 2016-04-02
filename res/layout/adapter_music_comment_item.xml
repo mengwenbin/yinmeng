@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp" >
+
+        <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+            android:id="@+id/author_head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/test_default_head_bg_blue" />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/author_head"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/author_head"
+            android:textColor="@color/act_blog_detail_author_name"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/author_sex"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignBottom="@+id/author_name"
+            android:layout_alignTop="@+id/author_name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/author_name"
+            android:src="@drawable/sex_man"/>
+
+        <TextView
+            android:id="@+id/release_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/author_head"
+            android:layout_below="@id/author_name"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="1dp"
+            android:layout_toRightOf="@+id/author_head"
+            android:textColor="@color/act_blog_detail_release_time"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/post_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/author_head"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/author_head"
+            android:textSize="16sp" />
+        
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:layout_below="@+id/post_body"
+            android:layout_alignLeft="@+id/post_body"/>
+
+</RelativeLayout>

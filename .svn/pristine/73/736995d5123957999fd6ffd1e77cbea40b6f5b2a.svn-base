@@ -1,0 +1,43 @@
+package com.xiaoxu.music.community.entity;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class BlogEntity implements Serializable {
+	
+	private List<BlogsInfoEntity> list_blogThread;
+	private String count_blogThread;
+	
+	public BlogEntity() {
+		super();
+	}
+	
+	public BlogEntity(List<BlogsInfoEntity> list_blogThread,
+			String count_blogThread) {
+		super();
+		this.list_blogThread = list_blogThread;
+		this.count_blogThread = count_blogThread;
+	}
+	
+	public List<BlogsInfoEntity> getList_blogThread() {
+		return list_blogThread;
+	}
+	public void setList_blogThread(List<BlogsInfoEntity> list_blogThread) {
+		this.list_blogThread = list_blogThread;
+	}
+	public String getCount_blogThread() {
+		return count_blogThread;
+	}
+	public void setCount_blogThread(String count_blogThread) {
+		this.count_blogThread = count_blogThread;
+	}
+	
+	@Override
+	public String toString() {
+		return "BlogEntity [list_blogThread=" + list_blogThread
+				+ ", count_blogThread=" + count_blogThread + "]";
+	}
+	
+	
+	
+}

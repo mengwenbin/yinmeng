@@ -1,0 +1,158 @@
+package com.xiaoxu.music.community.adapter;
+
+import java.util.List;
+
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.bitmap.BitmapDisplayConfig;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadCallBack;
+import com.lidroid.xutils.bitmap.callback.BitmapLoadFrom;
+import com.xiaoxu.music.community.R;
+import com.xiaoxu.music.community.activity.PlayVideoActivity;
+import com.xiaoxu.music.community.activity.VideoPlayActivity;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.AdvertisementInfoEntity;
+import com.xiaoxu.music.community.util.ActivityUtil;
+import com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+public class VideoListAdapter extends BaseAdapter {
+
+	private Context context;
+	private BitmapUtils bitmapUtils;
+	private LayoutInflater inflater;
+	private List<AdvertisementInfoEntity> list;
+	
+	public VideoListAdapter(Context context, List<AdvertisementInfoEntity> list) {
+		super();
+		this.context = context;
+		this.list = list;
+		inflater = LayoutInflater.from(context);
+		setBitmapUtils();
+	}
+	
+	private void setBitmapUtils(){
+		
+		bitmapUtils = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		bitmapUtils.configDefaultBitmapConfig(Config.RGB_565);//设置图片压缩类型
+		bitmapUtils.configDefaultLoadingImage(R.drawable.banner_default);// 默认背景图片
+		bitmapUtils.configDefaultLoadFailedImage(R.drawable.banner_default);// 加载失败图片
+		
+	}
+	
+
+	public List<AdvertisementInfoEntity> getList() {
+		return list;
+	}
+
+
+	public void setList(List<AdvertisementInfoEntity> list) {
+		this.list = list;
+	}
+
+
+	@Override
+	public int getCount() {
+		return list != null ? list.size() / 2 + list.size() % 2 : 0;
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return list.get(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		ViewHolder holder = null;
+		int left = 2 * position;
+		int right = left + 1;
+		if(convertView == null){
+			
+			holder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.adapter_videolist, null);
+			holder.Left_Image = (RectangleImageView) convertView.findViewById(R.id.left_image);
+			holder.LeftVideo_Name = (TextView) convertView.findViewById(R.id.left_video_name);
+			holder.left = (RelativeLayout) convertView.findViewById(R.id.left);
+			holder.Left_Image.setRoundedCorner(true);
+			holder.Left_Image.setRoundPx(ActivityUtil.dip2px(context, 6));
+			holder.Right_Image = (RectangleImageView) convertView.findViewById(R.id.right_image);
+			holder.RightVideo_Name = (TextView) convertView.findViewById(R.id.right_video_name);
+			holder.right = (RelativeLayout) convertView.findViewById(R.id.right);
+			holder.Right_Image.setRoundedCorner(true);
+			holder.Right_Image.setRoundPx(ActivityUtil.dip2px(context, 6));
+			convertView.setTag(holder);
+			
+		}else{
+			holder = (ViewHolder) convertView.getTag();
+		}
+		
+		bitmapUtils.display(holder.Left_Image, list.get(left).getRes_img());
+		holder.LeftVideo_Name.setText(list.get(left).getRes_title()+"");
+		
+		holder.right.setVisibility(View.VISIBLE);
+		if (right <= list.size() - 1) {
+			bitmapUtils.display(holder.Right_Image, list.get(right).getRes_img());
+			holder.RightVideo_Name.setText(list.get(right).getRes_title()+"");
+		}else{
+			holder.right.setVisibility(View.INVISIBLE);
+		}
+		
+		holder.left.setOnClickListener(new ClickListener(left));
+		holder.right.setOnClickListener(new ClickListener(right));
+		return convertView;
+	}
+	
+	class ViewHolder{
+		
+		RelativeLayout left,right;
+		TextView LeftVideo_Name,RightVideo_Name;
+		RectangleImageView Left_Image,Right_Image;
+	}
+	
+	class ClickListener implements OnClickListener{
+
+		private int position;
+		
+		public ClickListener(int position) {
+			super();
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			Intent intent;
+			AdvertisementInfoEntity entity = list.get(position);
+			if(entity != null) {
+//				if(entity.getRes_url().endsWith(".mp4")) {
+//					intent = new Intent(context, PlayVideoActivity.class);
+//					intent.putExtra("video_url", entity.getRes_url());
+//					context.startActivity(intent);
+//				}else{
+					intent = new Intent(context, VideoPlayActivity.class);
+					intent.putExtra("content", entity.getRes_title());
+					intent.putExtra("url", entity.getRes_url());
+					context.startActivity(intent);
+//				}
+			}
+		}
+	}
+}

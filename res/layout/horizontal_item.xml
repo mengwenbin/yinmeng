@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rel_recommend"
+        android:layout_centerHorizontal="true"
+        android:layout_width="140dp"
+        android:layout_height="235dp"
+        android:padding="1dp"
+        android:background="@drawable/item_bg"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        
+        <com.xiaoxu.music.community.view.custom_shape_imageview.RectangleImageView
+            android:id="@+id/image_view"
+            android:layout_width="140dp"
+            android:layout_height="145dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY" />
+        <View 
+            android:layout_width="140dp"
+            android:layout_height="6dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="139dp"
+            android:background="@color/white"/>
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="129dp"
+            android:background="@drawable/headiv_bg" />
+
+        <com.xiaoxu.music.community.view.custom_shape_imageview.CircleImageView
+            android:id="@+id/circle_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/headiv_bg" />
+
+        <TextView
+            android:id="@+id/writer_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/circle_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/cyan10"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/music_name"
+            android:layout_width="100dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/writer_tv"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textSize="14sp" 
+            android:textColor="@color/cyan11"/>
+    </RelativeLayout>
+
+</RelativeLayout>

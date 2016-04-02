@@ -1,0 +1,433 @@
+package com.xiaoxu.music.community;
+
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.umeng.analytics.AnalyticsConfig;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.bean.SocializeConfig;
+import com.umeng.socialize.bean.SocializeEntity;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.controller.listener.SocializeListeners;
+import com.umeng.socialize.media.QQShareContent;
+import com.umeng.socialize.media.QZoneShareContent;
+import com.umeng.socialize.media.SinaShareContent;
+import com.umeng.socialize.media.UMusic;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
+import com.xiaoxu.music.community.ExitAppliation;
+import com.xiaoxu.music.community.constant.Constant;
+import com.xiaoxu.music.community.entity.SimpleUserEntity;
+import com.xiaoxu.music.community.entity.SongInfoEntity;
+import com.xiaoxu.music.community.im.applib.controller.HXSDKHelper;
+import com.xiaoxu.music.community.model.impl.BaseRequestCallBack;
+import com.xiaoxu.music.community.model.task.CountMusicTask;
+import com.xiaoxu.music.community.service.MediaBinder;
+import com.xiaoxu.music.community.service.MediaBinder.OnPlayStatusListener;
+import com.xiaoxu.music.community.service.MediaPlayerService;
+import com.xiaoxu.music.community.util.NetUtils;
+import com.xiaoxu.music.community.view.RotateLoading;
+
+import android.annotation.SuppressLint;
+import android.app.ActionBar.LayoutParams;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+public abstract class BaseNewActivity extends FragmentActivity implements
+		ActivityPageSetting {
+	
+	public Context context;
+	public BitmapUtils bitmapUtils;
+	public RotateLoading rotateLoading;
+	public YmApplication app;
+	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+	
+	public AnimationDrawable ad;
+	public MediaBinder binder = null;
+	
+	private View layout_no_network;
+	private ImageButton btn_no_network;
+	
+	private String share_path = "http://www.inmoe.cn";
+	
+	@Override
+	protected void onCreate(Bundle arg0) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(arg0);
+		context = this;
+		app = YmApplication.getInstance();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);// 强制为竖屏
+		
+		// 友盟统计打开测试模式
+		MobclickAgent.setDebugMode(true);
+		ExitAppliation.getInstance().addActivity(this);// 添加本Activity到退出应用的Application
+		bitmapUtils = new BitmapUtils(context, Constant.DISK_CACHE_PATH,Constant.MAX_MEMORY_SIZE);
+		configPlatforms();
+		setContent();
+		setupView();
+		setModel();
+	}
+	
+	@SuppressLint("NewApi")
+	public void showNoNet(OnClickListener l){
+		if(layout_no_network!=null){
+			layout_no_network.setVisibility(View.VISIBLE);
+			btn_no_network.setVisibility(View.VISIBLE);
+			btn_no_network.setOnClickListener(l);
+		}else{
+			layout_no_network = getLayoutInflater().inflate(R.layout.comment_layout_no_network, null);
+			btn_no_network = (ImageButton) layout_no_network.findViewById(R.id.no_network);
+			btn_no_network.setVisibility(View.VISIBLE);
+			btn_no_network.setOnClickListener(l);
+			addContentView(layout_no_network, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, Gravity.CENTER));
+		}
+	}
+	
+	public void hintNoNet(){
+		if(layout_no_network!=null){
+			btn_no_network.setVisibility(View.GONE);
+		}
+	}
+	
+	public void initAnimation(View iv){
+		ad = (AnimationDrawable) iv.getBackground();
+		if(MediaPlayerService.isPlaying){
+			ad.start();
+		}
+	}
+	
+	public void onResumeBinder(){
+		if(ad!=null){
+			binder = app.getBinder();
+			binder.setOnPlayStatusListener(new OnPlayStatusListener() {
+				@Override
+				public void onPlay() {
+					if(!ad.isRunning()){
+						ad.start();
+					}
+				}
+				@Override
+				public void onPause() {
+					if(ad.isRunning()){
+						ad.stop();
+					}
+				}
+			});
+			if(MediaPlayerService.isPlaying){
+				ad.start();
+			}else{
+				ad.stop();
+			}
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		onResumeBinder();
+		HXSDKHelper.getInstance().getNotifier().reset();
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		UMSsoHandler ssoHandler = SocializeConfig.getSocializeConfig()
+				.getSsoHandler(requestCode);
+		if (ssoHandler != null) {
+			ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+		}
+	}
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	
+	//EditText
+	protected EditText getEditText(int id){
+		return (EditText) findViewById(id);
+	}
+	//EditText
+	protected SeekBar getSeekBar(int id){
+		return (SeekBar) findViewById(id);
+	}
+	
+	//Button
+	protected Button getButton(int id) {
+		return (Button) findViewById(id);
+	}
+	//ImageButton
+	protected ImageButton getImageButton(int id) {
+		return (ImageButton) findViewById(id);
+	}
+	//EditText
+	protected EditText getEdit(int id) {
+		return (EditText) findViewById(id);
+	}
+	//ImageView
+	protected ImageView getImageView(int id) {
+		return (ImageView) findViewById(id);
+	}
+	//ListView
+	protected ListView getListView(int id) {
+		return (ListView) findViewById(id);
+	}
+	//GridView
+	protected GridView getGridView(int id) {
+		return (GridView) findViewById(id);
+	}
+	//ViewPager
+	protected ViewPager getViewPager(int id) {
+		return (ViewPager) findViewById(id);
+	}
+	//CheckBox
+	protected CheckBox getCheckBox(int id) {
+		return (CheckBox) findViewById(id);
+	}
+	//TextView
+	protected TextView getTextView(int id) {
+		return (TextView) findViewById(id);
+	}
+	//TextView setText
+	protected void setTextViewText(int resourceId, int StringId) {
+		getTextView(resourceId).setText(getResources().getString(StringId));
+	}
+	//TextView setText
+	protected void setTextViewText(int resourceId, String string) {
+		getTextView(resourceId).setText(string);
+	}
+	//RelativeLayout
+	protected RelativeLayout getRelativeLayout(int id) {
+		return (RelativeLayout) findViewById(id);
+	}
+	//LinearLayout
+	protected LinearLayout getLinearLayout(int id) {
+		return (LinearLayout) findViewById(id);
+	}
+	
+	protected ProgressBar getProgressBar(int id){
+		return (ProgressBar) findViewById(id);
+	}
+	
+	protected RotateLoading getRotateLoading(int id){
+		return (RotateLoading) findViewById(id);
+	}
+	
+	public void loadingStart(RotateLoading loading){
+		rotateLoading = loading;
+		if(rotateLoading != null)
+			rotateLoading.start();
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				loadingCancle(rotateLoading);
+			}
+		}, 5000);
+	}
+	
+	public void loadingCancle(RotateLoading rotateLoading){
+		if(rotateLoading!=null&&rotateLoading.isStart()){
+			rotateLoading.stop();
+		}
+	}
+	
+	public boolean haveNetwork(){
+		if (NetUtils.getAPNType(context) == -1) { //判断网络状态
+			return false;
+		}else{
+			hintNoNet();
+			return true;
+		}
+	}
+	
+	/**
+	 * 隐藏软键盘
+	 */
+	public void exitSoft() {
+		View view = getWindow().peekDecorView();
+		if (view != null) {
+			InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+	
+	/**
+	 * 分享音乐
+	 */
+	public void shareMusic(SongInfoEntity info) {
+		if(info==null){
+			return;
+		}
+		final String music_id = info.getMusic_id();
+		String title = info.getMusic_name();
+		String thumb = info.getMusic_coverimg();
+		String path = info.getMusic_url();
+		SimpleUserEntity user = info.getUser();
+		String author = "";
+		if(user!=null){
+			author = user.getUser_nick();
+		}
+		String share_url = info.getShare_url();
+		if(TextUtils.isEmpty(share_url)){
+			share_url = share_path;
+		}
+		
+		mController.getConfig().removePlatform(SHARE_MEDIA.TENCENT);
+		mController.getConfig().registerListener(new SocializeListeners.SnsPostListener() {
+			@Override
+            public void onStart() {
+				CountMusicTask task = new CountMusicTask(context, music_id, 2, new BaseRequestCallBack() {
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {}
+					
+					@Override
+					public void onResult(String result, int code, String alert, Object obj) {
+					}
+				});
+				task.excute();
+			}
+			@Override
+			public void onComplete(SHARE_MEDIA arg0, int arg1,SocializeEntity arg2) {}
+        });
+		// 设置分享音乐
+		UMusic uMusic = new UMusic(path);
+		if(!TextUtils.isEmpty(author)){
+			uMusic.setAuthor(author);
+		}
+		if(!TextUtils.isEmpty(title)){
+			uMusic.setTitle(title);
+		}else{
+			uMusic.setTitle("音萌");
+		}
+		// 设置音乐缩略图
+		if(!TextUtils.isEmpty(thumb)){
+			uMusic.setThumb(thumb);
+		}
+		mController.setShareMedia(uMusic);
+		//设置QQ分享内容
+		QQShareContent qqShareContent = new QQShareContent();
+		qqShareContent.setShareMedia(uMusic);
+		qqShareContent.setTargetUrl(share_url);
+		mController.setShareMedia(qqShareContent);
+		
+		//设置QQ空间分享内容
+		QZoneShareContent qzone = new QZoneShareContent();
+		qzone.setShareMedia(uMusic);
+		qzone.setTargetUrl(share_url);
+		mController.setShareMedia(qzone);
+		
+		//设置新浪微博分享内容
+		SinaShareContent sina = new SinaShareContent();
+		if(!TextUtils.isEmpty(title)){
+			sina.setTitle(title);
+		}else{
+			sina.setTitle("音萌");
+		}
+		sina.setShareContent("我正在听"+author+"的歌曲《"+title+"》,很喜欢，推荐给大家！"
+				+ "（来自音萌APP，更多精彩戳这里→（"+share_url+"））");
+		sina.setTargetUrl(share_url);
+		mController.setShareMedia(sina);
+		
+		//设置微信分享内容
+		WeiXinShareContent weixinContent = new WeiXinShareContent();
+		weixinContent.setShareMedia(uMusic);
+		weixinContent.setTargetUrl(share_url);
+		mController.setShareMedia(weixinContent);
+		
+		//设置微信朋友圈分享内容
+		CircleShareContent circleMedia = new CircleShareContent();
+		//设置朋友圈title
+		if(!TextUtils.isEmpty(title)){
+			circleMedia.setTitle(title);
+		}else{
+			circleMedia.setTitle("音萌");
+		}
+		circleMedia.setShareContent("我正在听"+author+"的歌曲《"+title+"》,很喜欢，推荐给大家！"
+					+ "（来自音萌APP，更多精彩戳这里→（"+share_url+"））");
+		circleMedia.setTargetUrl(share_url);
+		mController.setShareMedia(circleMedia);
+		/**
+		 * 弹出窗口
+		 */
+		mController.openShare(this, false);
+	}
+	
+	/**
+     * 配置分享平台参数</br>
+     */
+    private void configPlatforms() {
+        // 添加新浪SSO授权
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        // 添加QQ、QZone平台
+        addQQZonePlatform();
+        // 添加微信、微信朋友圈平台
+        addWXPlatform();
+    }
+
+	private void addQQZonePlatform() {
+		String appId = "1104749644";
+		String appKey = "F19Aijc6m4n6AikM";
+		// 添加QQ支持, 并且设置QQ分享内容的target url
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this,
+				appId, appKey);
+		qqSsoHandler.setTargetUrl("http://www.umeng.com/social");
+		qqSsoHandler.addToSocialSDK();
+
+		// 添加QZone平台
+		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(
+				this, appId, appKey);
+		qZoneSsoHandler.addToSocialSDK();
+	}
+
+	/**
+	 * @功能描述 : 添加微信平台分享
+	 * @return
+	 */
+	private void addWXPlatform() {
+		// 注意：在微信授权的时候，必须传递appSecret
+		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+		String appId = "wxa6b6ab6636ed733c";
+		String appSecret = "0b23145d0f7b20329e29741d1ac43d9b";
+		// 添加微信平台
+		UMWXHandler wxHandler = new UMWXHandler(BaseNewActivity.this, appId,appSecret);
+		wxHandler.addToSocialSDK();
+		// 支持微信朋友圈
+		UMWXHandler wxCircleHandler = new UMWXHandler(BaseNewActivity.this, appId,appSecret);
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
+	}
+	
+	
+}

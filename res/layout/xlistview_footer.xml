@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp"
+    android:paddingLeft="1dp"
+    android:paddingRight="1dp">
+    
+    <RelativeLayout
+        android:id="@+id/xlistview_footer_content"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:background="@drawable/bg_shape_xlistview_footerview">
+        
+        <TextView
+            android:id="@+id/xlistview_footer_hint_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:text="@string/xlistview_footer_hint_normal"
+            android:textColor="@color/black"
+            android:textSize="16.5sp" />
+        
+        <ProgressBar
+            android:id="@+id/xlistview_footer_progressbar"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:indeterminateDrawable="@drawable/common_loading3"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/xlistview_footer_hint_textview" />
+    </RelativeLayout>
+</LinearLayout>

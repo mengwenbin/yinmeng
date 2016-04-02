@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main" >
+    
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/main_color">
+        
+        <ImageButton
+	        android:id="@+id/title_left_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentLeft="true"
+	        android:background="@drawable/back_btn_white"
+	        />
+        
+        <TextView 
+        	android:id="@+id/title_center_content"
+	     	android:layout_width="wrap_content"
+	     	android:layout_height="wrap_content"
+	     	android:layout_centerHorizontal="true"
+	     	android:layout_centerVertical="true"
+	     	android:textSize="@dimen/tab_title_font_size"
+	     	android:textColor="@color/white"
+	     	android:text="发布贴子"/>
+        
+        <ImageButton
+            android:id="@+id/title_right_btn"
+	     	android:layout_width="wrap_content"
+	     	android:layout_height="wrap_content"
+	     	android:background="@drawable/btn_release_blog"
+	     	android:layout_alignParentRight="true"
+	     	android:layout_centerVertical="true"
+	     	android:layout_marginRight="@dimen/title_margin_right" />
+        	
+    </RelativeLayout>
+    
+    <EditText
+        android:id="@+id/edit_post_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/layout_title"
+        android:background="@null"
+        android:gravity="left"
+        android:hint="分享好玩的帖子..."
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_post_content"
+        android:layout_alignParentRight="true"
+        android:text="2222字以内（字多了打你--#）"
+        android:textColor="#8F8F8F" />
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textview"
+        android:background="@color/act_blog_detail_line" />
+    
+    <GridView 
+        android:id="@+id/gridview_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_line"
+        android:numColumns="3"
+        android:scrollbars="none" />
+    
+    <com.xiaoxu.music.community.view.RotateLoading
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:loading_width="5dp"
+        android:id="@+id/loading"
+        android:layout_width="80dp"
+   		android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+    
+    <TextView 
+        android:id="@+id/progress"
+        android:layout_width="80dp"
+   		android:layout_height="80dp"
+   		android:gravity="center"
+   		android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/main_color"/>
+    
+	
+</RelativeLayout>
